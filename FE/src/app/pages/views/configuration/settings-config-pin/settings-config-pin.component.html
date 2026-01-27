@@ -1,0 +1,170 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+    <form [formGroup]="pinConfigForm" (ngSubmit)="onSubmit()">
+        <div class="max-w-6xl mx-auto space-y-4">
+            <!-- Title -->
+            <div>
+                <h1 class="text-3xl font-bold">{{'Breadcrumbs.ConfigurationPin.Title'|translate}}</h1>
+                <p class="text-gray-600 text-sm mt-1">
+                    {{'Breadcrumbs.ConfigurationPin.InforConfigPin'|translate}}
+                </p>
+            </div>
+            <div class="border rounded-xl bg-white p-6 shadow-sm">
+                <h2 class="font-semibold text-lg mb-4">
+                    {{'Breadcrumbs.ConfigurationPin.TitleInfor'|translate}}
+
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium ">
+                            {{ 'ConfigPin.Form.Name.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+
+                        <input pInputText class="w-full"
+                            placeholder="{{ 'ConfigPin.Form.Name.Placeholder' | translate }}" formControlName="name" />
+                        <small
+                            *ngIf="pinConfigForm.get('name')?.touched && pinConfigForm.get('name')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.Name.Required' | translate }}
+                        </small>
+                        <small
+                            *ngIf="pinConfigForm.get('name')?.touched && !pinConfigForm.get('name')?.hasError('required') && pinConfigForm.get('name')?.hasError('pattern')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.Name.Invalid' | translate }}
+                        </small>
+                    </div>
+                    <div>
+                        <label for="storageType">
+                            {{ 'ConfigPin.Form.StorageType.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-select id="storageType" [options]="storage" optionLabel="name" formControlName="storageType"
+                            optionValue="code" [placeholder]="'ConfigPin.Form.StorageType.Placeholder' | translate"
+                            class="w-full">
+                            <ng-template let-option pTemplate="item">
+                                {{ option.name | translate }}
+                            </ng-template>
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                {{ selectedOption?.name | translate }}
+                            </ng-template>
+                        </p-select>
+                        <small
+                            *ngIf="pinConfigForm.get('storageType')?.touched && pinConfigForm.get('storageType')?.invalid"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.StorageType.Required' | translate }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====================== CẤU HÌNH PIN ====================== -->
+            <div class="border rounded-xl bg-white p-6 shadow-sm">
+                <h2 class="font-semibold text-lg mb-4">{{'Breadcrumbs.ConfigurationPin.Title'|translate}}</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Độ dài PIN -->
+                    <div>
+                        <label for="length">
+                            {{ 'ConfigPin.Form.Length.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-select id="length" [options]="lengthList" optionLabel="name" formControlName="length"
+                            optionValue="code" [placeholder]="'ConfigPin.Form.Length.Placeholder' | translate"
+                            class="w-full"></p-select>
+                        <small
+                            *ngIf="pinConfigForm.get('length')?.touched && pinConfigForm.get('length')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.Length.Required' | translate }}
+                        </small>
+                    </div>
+                    <div>
+                        <label class="font-medium block ">
+                            {{ 'ConfigPin.Form.Round.WrongAttempts.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-dropdown formControlName="wrongAttempts" [options]="numberCount" optionLabel="name"
+                            optionValue="code"
+                            [placeholder]="'ConfigPin.Form.Round.WrongAttempts.Placeholder' | translate" class="w-full">
+                        </p-dropdown>
+                        <small
+                            *ngIf="pinConfigForm.get('wrongAttempts')?.touched && pinConfigForm.get('wrongAttempts')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.Round.WrongAttempts.Required' | translate }}
+                        </small>
+                    </div>
+                    <div class="">
+                        <label for="effectivePeriod">
+                            {{ 'ConfigPin.Form.EffectivePeriod.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+
+                        <p-inputnumber inputId="effectivePeriod" mode="decimal" formControlName="effectivePeriod"
+                            [placeholder]="'ConfigPin.Form.EffectivePeriod.Placeholder' | translate" class="w-full">
+                        </p-inputnumber>
+
+                        <small
+                            *ngIf="pinConfigForm.get('effectivePeriod')?.touched && pinConfigForm.get('effectivePeriod')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.EffectivePeriod.Required' | translate }}
+                        </small>
+
+                        <small
+                            *ngIf="pinConfigForm.get('effectivePeriod')?.touched && !pinConfigForm.get('effectivePeriod')?.hasError('required') && pinConfigForm.get('effectivePeriod')?.hasError('max')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.EffectivePeriod.Max' | translate }}
+                        </small>
+                    </div>
+                    <div>
+                        <label for="accessRemindDays">
+                            {{ 'ConfigPin.Form.accessRemindDays.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+
+                        <p-inputnumber inputId="accessRemindDays" mode="decimal" formControlName="accessRemindDays"
+                            [placeholder]="'ConfigPin.Form.accessRemindDays.Placeholder' | translate" class="w-full">
+                        </p-inputnumber>
+
+                        <small
+                            *ngIf="pinConfigForm.get('accessRemindDays')?.touched && pinConfigForm.get('accessRemindDays')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.accessRemindDays.Required' | translate }}
+                        </small>
+
+                        <small
+                            *ngIf="pinConfigForm.get('accessRemindDays')?.touched && !pinConfigForm.get('accessRemindDays')?.hasError('required') && pinConfigForm.get('accessRemindDays')?.hasError('max')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.accessRemindDays.Max' | translate }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-end gap-4">
+                <button *ngIf="permissions['UPDATED'] || false" pButton type="submit"
+                    [label]="'Common.Save' | translate" [icon]="'pi pi-save'" class="mr-2"></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<app-confirm-dialog [visible]="otpConfirmVisiable" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+    [header]="'Common.ChangeConfig' | translate" [confirmLabel]="'Common.ConfirmSave' | translate"
+    [formTemplate]="formTpl" [cancelLabel]="'Common.ConfirmDeleteNo' | translate" [showButtonCancel]="false"
+    [showButtonSubmit]="false" (cancel)="otpConfirmVisiable=false" width="500px">
+    <ng-template #formTpl>
+        <div class="">
+            <div class="flex text-center items-center justify-center">
+                <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium  mb-2"
+                    [innerHTML]="'Common.ConfirmOtpSendMail' | translate">
+                </label>
+            </div>
+            <div class="flex justify-center">
+                <p-inputOtp [length]="6" [(ngModel)]="otpValue"
+                    inputClass="w-10 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 text-lg text-center rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition" />
+            </div>
+            <p-button [disabled]="!otpValue" [label]="'Common.ConfirmChangeConfig' | translate" styleClass="w-full mt-4"
+                (onClick)="updateConfigPin()" type="submit"></p-button>
+        </div>
+    </ng-template>
+</app-confirm-dialog>

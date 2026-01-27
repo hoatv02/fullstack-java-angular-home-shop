@@ -1,0 +1,146 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <h4 class="m-0 text-2xl font-semibold">{{ displayTitlePages | translate }}</h4>
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="userName">
+                    {{ 'Administration.Admin.Detail.UserName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="userName" formControlName="userName"
+                    [placeholder]="'Administration.Admin.EnterUsername' | translate" type="text" class="w-full" />
+                <small *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.UserNameRequired' | translate }}
+                </small>
+                <small *ngIf="
+            userForm.get('userName')?.touched &&
+            !userForm.get('userName')?.hasError('required') &&
+            userForm.get('userName')?.hasError('pattern')
+          " class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.UserNamePattern' | translate }}
+                </small>
+            </div>
+
+            <div class="md:w-1/2 w-full">
+                <label for="role">
+                    {{ 'Administration.Admin.Detail.Role' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="role" formControlName="roleId" [options]="roles" optionLabel="name" optionValue="id"
+                    [placeholder]="'Administration.Admin.Detail.Placeholder.Role' | translate"
+                    class="w-full"></p-select>
+                <small *ngIf="userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid" class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.RoleRequired' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="email">
+                    {{ 'Administration.Admin.Detail.Email' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="email" [placeholder]="'Administration.Admin.EnterEmail' | translate"
+                    formControlName="email" type="email" class="w-full" />
+
+                <small *ngIf="userForm.get('email')?.touched && userForm.get('email')?.errors?.['required']"
+                    class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.EmailRequired' | translate }}
+                </small>
+                <small *ngIf="userForm.get('email')?.touched && userForm.get('email')?.errors?.['pattern']"
+                    class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.EmailInvalid' | translate }}
+                </small>
+            </div>
+
+            <div class="md:w-1/2 w-full">
+                <label for="phone">
+                    {{ 'Administration.Admin.Detail.Phone' | translate }}
+                </label>
+                <input pInputText id="phone" [placeholder]="'Administration.Admin.EnterPhone' | translate"
+                    formControlName="phone" type="text" class="w-full" maxlength="10" minlength="10" />
+                <small *ngIf="
+            userForm.get('phone')?.touched &&
+            !userForm.get('phone')?.hasError('required') &&
+            userForm.get('phone')?.hasError('pattern')
+          " class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.PhonePattern' | translate }}
+                </small>
+
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="firstName">
+                    {{ 'Administration.Admin.Detail.FirstName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="firstName" [placeholder]="'Administration.Admin.EnterFirstName' | translate"
+                    formControlName="firstName" type="text" class="w-full" />
+                <small *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.FirstNameRequired' | translate }}
+                </small>
+                <small *ngIf="
+            userForm.get('firstName')?.touched &&
+            !userForm.get('firstName')?.hasError('required') &&
+            userForm.get('firstName')?.hasError('pattern')
+          " class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.FirstNamePattern' | translate }}
+                </small>
+            </div>
+
+            <div class="md:w-1/2 w-full">
+                <label for="lastName">
+                    {{ 'Administration.Admin.Detail.LastName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="lastName" [placeholder]="'Administration.Admin.EnterLastName' | translate"
+                    formControlName="lastName" type="text" class="w-full" />
+                <small *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.LastNameRequired' | translate }}
+                </small>
+                <small *ngIf="
+            userForm.get('lastName')?.touched &&
+            !userForm.get('lastName')?.hasError('required') &&
+            userForm.get('lastName')?.hasError('pattern')
+          " class="text-red-600">
+                    {{ 'Administration.Admin.Detail.Error.LastNamePattern' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="status">{{ 'Administration.Admin.Detail.Status' | translate }}</label>
+                <div class="flex items-center gap-2">
+                    <p-toggleswitch formControlName="status" id="status"></p-toggleswitch>
+                    <span class="text-sm font-medium"
+                        [ngClass]="userForm.get('status')?.value ? 'text-green-600' : 'text-red-600'">
+                        {{
+                        (userForm.get('status')?.value
+                        ? 'Administration.Admin.Detail.StatusActive'
+                        : 'Administration.Admin.Detail.StatusInactive') | translate
+                        }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="flex justify-end mt-4">
+            <button pButton type="submit" *ngIf="action !== 'detail'" [label]="
+          action === 'edit'
+            ? ('Common.Save' | translate)
+            : ('Common.New' | translate)
+        " [icon]="action !== 'edit' ? 'pi pi-check' : 'pi pi-save'" class="mr-2"></button>
+            <button pButton type="button" [label]="'Administration.Admin.Detail.Cancel' | translate" icon="pi pi-undo"
+                severity="secondary" [routerLink]="'/admin'"></button>
+        </div>
+    </div>
+</form>

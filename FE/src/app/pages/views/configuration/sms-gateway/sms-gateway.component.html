@@ -1,0 +1,20 @@
+<ng-container *ngIf="!router.url.includes('/customer-detail')">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <app-table [title_list]="'Danh sách cấu hình SMS gateway'" [data]="[]" [columns]="columns" [selection]="[]"
+            [config]="{
+                toolbar: { new: true, delete: false, export: false, sync: false },
+                actions: { view: true, edit: true, delete: true, isShowAction: true }
+            }" [isShowFromToDate]="true" [selectFilter]="true" [isShowInputSearch]="false"
+            [selectFilter1Data]="statusList" (fromToDateChange)="formToDateChange($event)"
+            placeholderSelectFilter="Loại cấu hình" (selectFilter1Change)="statusChange($event)"
+            (onEdit)="editTransactionType($event)"
+            [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+            [exportdata]="true" [showSelectionColumn]="false" [tagConfig]="tagConfig" (onExportCSV)="exportExcel()"
+            (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)" (onView)="onView($event)"
+            [totalRecords]="totalRecords" (onSwitchChange)="handleSwitchChange($event)" />
+    </div>
+</ng-container>
+<app-confirm-dialog [visible]="displayConfirmation" [message]="'Bạn có chắc chắn muốn xoá mục này?'"
+    [header]="'Xác nhận xoá'" [confirmLabel]="'Đồng ý'" [cancelLabel]="'Huỷ'" (confirm)="onConfirmSwitchChange()"
+    (cancel)="displayConfirmation = false" />

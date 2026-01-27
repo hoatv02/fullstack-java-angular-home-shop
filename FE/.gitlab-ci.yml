@@ -1,0 +1,47 @@
+stages:
+  - build
+  - test
+  - sonarqube
+
+variables:
+  SONAR_HOST_URL: "https://sonar.savis.vn"
+
+cache:
+  paths:
+    - node_modules/
+
+# 1. Build Angular
+build:
+  stage: build
+  image: node:20
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+# 2. Test Angular + tạo coverage
+test:
+  stage: test
+  image: node:20
+  script:
+    - npm ci
+    - npm run test -- --watch=false --code-coverage
+  artifacts:
+    paths:
+      - coverage/
+
+# 3. Quét SonarQube
+sonarqube-check:
+  stage: sonarqube
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - sonar-scanner \
+        -Dsonar.projectKey=admin-system-frontend \
+        -Dsonar.sources=src \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+  dependencies:
+    - test

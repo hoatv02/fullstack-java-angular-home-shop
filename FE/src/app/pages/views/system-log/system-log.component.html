@@ -1,0 +1,24 @@
+<ng-container *ngIf="
+   permissions['VIEW']
+  ">
+    <div class="card">
+        <ng-container>
+            <app-table [title_list]="tableTitle" [data]="dataList" [columns]="columns" [selection]="[]" [config]="{
+                                toolbar: { new: false, delete: false, export: true, sync: false },
+                                actions: { view: true, edit: false, delete: false,isShowAction:false }
+                            }" (fromToDateChange)="formToDateChange($event)" [selectFilterData]="serviceList"
+                [selectFilter1Data]="httpCode" [selectFilter2Data]="actionList"
+                (selectFilter1Change)="handleFilterHttpCodeChange($event)" [isShowFromToDate]="true"
+                [selectFilter1]="true" [selectFilter2]="true" (selectFilter2Change)="handleFilterMethodChange($event)"
+                [placeholderSelectFilter2]="'SystemLogRAS.Filter.Method'" [selectFilter]="true" [showClear]="true"
+                [placeholderSelectFilter1]="'SystemLogRAS.Filter.Status'"
+                [placeholderSelectFilter]="'SystemLogThirdParty.ServiceName'"
+                (selectFilterChange)="handleServiceNameChange($event)"
+                [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+                [exportdata]="true" [showSelectionColumn]="false" [first]="first" [exportdata]="true"
+                [showSelectionColumn]="false" [tagConfig]="tagConfig" (onExportCSV)="exportExcel()"
+                (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)"
+                [totalRecords]="totalRecords" />
+        </ng-container>
+    </div>
+</ng-container>

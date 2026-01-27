@@ -1,0 +1,16 @@
+<div class="captcha-wrap">
+  <div class="flex items-center gap-2">
+    <canvas #canvas class="captcha-canvas flex-[0.8]" (click)="generate()">
+    </canvas>
+
+    <button type="button" class="flex-[0.2] h-full 
+           flex items-center justify-center
+           rounded-md  transition" (click)="generate()">
+      <i class="pi pi-refresh text-xl"></i>
+    </button>
+  </div>
+
+
+  <input type="text" placeholder="Enter captcha" (blur)="onBlur()" [(ngModel)]="userInput" class="captcha-input"
+    (keydown.enter)="verify()" />
+</div>

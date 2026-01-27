@@ -1,0 +1,236 @@
+<form [formGroup]="pinConfigForm" (ngSubmit)="onSubmit()">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <h4 class="m-0 text-2xl font-semibold">{{ displayTitlePages|translate }}</h4>
+        <!-- Hàng 1 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/3 w-full">
+                <label for="name">
+                    {{ 'ConfigPin.Form.Name.Label' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="name" formControlName="name" type="text" class="w-full"
+                    [placeholder]="'ConfigPin.Form.Name.Placeholder' | translate" />
+                <small *ngIf="pinConfigForm.get('name')?.touched && pinConfigForm.get('name')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'ConfigPin.Form.Name.Required' | translate }}
+                </small>
+                <small
+                    *ngIf="pinConfigForm.get('name')?.touched && !pinConfigForm.get('name')?.hasError('required') && pinConfigForm.get('name')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'ConfigPin.Form.Name.Invalid' | translate }}
+                </small>
+            </div>
+
+            <div class="md:w-1/3 w-full">
+                <label for="storageType">
+                    {{ 'ConfigPin.Form.StorageType.Label' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="storageType" [options]="storage" optionLabel="name" formControlName="storageType"
+                    optionValue="code" [placeholder]="'ConfigPin.Form.StorageType.Placeholder' | translate"
+                    class="w-full">
+                    <ng-template let-option pTemplate="item">
+                        {{ option.name | translate }}
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                        {{ selectedOption?.name | translate }}
+                    </ng-template>
+
+
+                </p-select>
+                <small *ngIf="pinConfigForm.get('storageType')?.touched && pinConfigForm.get('storageType')?.invalid"
+                    class="text-red-600">
+                    {{ 'ConfigPin.Form.StorageType.Required' | translate }}
+                </small>
+            </div>
+
+            <div class="md:w-1/3 w-full">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="length">
+                            {{ 'ConfigPin.Form.Length.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-select id="length" [options]="lengthList" optionLabel="name" formControlName="length"
+                            optionValue="code" [placeholder]="'ConfigPin.Form.Length.Placeholder' | translate"
+                            class="w-full"></p-select>
+                        <small
+                            *ngIf="pinConfigForm.get('length')?.touched && pinConfigForm.get('length')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.Length.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <div>
+                        <label for="maxCheckTimes">
+                            {{ 'ConfigPin.Form.MaxCheckTimes.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-dropdown formControlName="maxCheckTimes" [options]="numberConfirmOTP" optionValue="code"
+                            optionLabel="name" [placeholder]="'ConfigPin.Form.MaxCheckTimes.Placeholder' | translate"
+                            class="w-full" (onChange)="onMaxCheckTimesChange($event)"></p-dropdown>
+                        <small
+                            *ngIf="pinConfigForm.get('maxCheckTimes')?.touched && pinConfigForm.get('maxCheckTimes')?.invalid"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.MaxCheckTimes.Required' | translate }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Hàng 2 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/3 w-full">
+                <label for="effectivePeriod">
+                    {{ 'ConfigPin.Form.EffectivePeriod.Label' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+
+                <p-inputnumber inputId="effectivePeriod" mode="decimal" formControlName="effectivePeriod"
+                    [placeholder]="'ConfigPin.Form.EffectivePeriod.Placeholder' | translate" class="w-full">
+                </p-inputnumber>
+
+                <small
+                    *ngIf="pinConfigForm.get('effectivePeriod')?.touched && pinConfigForm.get('effectivePeriod')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'ConfigPin.Form.EffectivePeriod.Required' | translate }}
+                </small>
+
+                <small *ngIf="pinConfigForm.get('effectivePeriod')?.touched &&
+               !pinConfigForm.get('effectivePeriod')?.hasError('required') &&
+               pinConfigForm.get('effectivePeriod')?.hasError('max')" class="text-red-600">
+                    {{ 'ConfigPin.Form.EffectivePeriod.Max' | translate }}
+                </small>
+            </div>
+
+
+            <div class="md:w-1/3 w-full">
+                <div class="flex flex-col md:flex-row gap-2">
+                    <div class="md:w-1/2 w-full">
+                        <label for="effectiveFrom">
+                            {{ 'ConfigPin.Form.EffectiveFrom.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-datepicker formControlName="effectiveFrom" [showButtonBar]="true" class="w-[100%]"
+                            inputId="effectiveFrom" [showIcon]="true" [showClear]="true" dateFormat="dd/mm/yy"
+                            [placeholder]="'ConfigPin.Form.EffectiveFrom.Placeholder' | translate"
+                            [maxDate]="pinConfigForm.get('effectiveTo')?.value"></p-datepicker>
+                        <small
+                            *ngIf="pinConfigForm.get('effectiveFrom')?.touched && pinConfigForm.get('effectiveFrom')?.invalid"
+                            class="text-red-600">
+                            {{ 'ConfigPin.Form.EffectiveFrom.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <div class="md:w-1/2 w-full">
+                        <label for="effectiveTo">
+                            {{ 'ConfigPin.Form.EffectiveTo.Label' | translate }}
+                        </label>
+                        <p-datepicker formControlName="effectiveTo" [showButtonBar]="true" class="w-[100%]"
+                            [minDate]="pinConfigForm.get('effectiveFrom')?.value" inputId="effectiveTo"
+                            dateFormat="dd/mm/yy" [showIcon]="true" [showClear]="true"
+                            [placeholder]="'ConfigPin.Form.EffectiveTo.Placeholder' | translate"></p-datepicker>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:w-1/3 w-full">
+                <div class="flex flex-col md:flex-row gap-2">
+                    <div class="md:w-1/2 w-full">
+                        <label for="status">{{ 'ConfigPin.Form.Status.Label' | translate }}</label>
+                        <div class="flex items-center gap-2">
+                            <p-toggleswitch id="status" formControlName="status"></p-toggleswitch>
+                            <span class="text-sm font-medium"
+                                [ngClass]="pinConfigForm.get('status')?.value ? 'text-green-600' : 'text-red-600'">
+                                {{ (pinConfigForm.get('status')?.value ? 'ConfigPin.Form.Status.Active' :
+                                'ConfigPin.Form.Status.Inactive') | translate }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danh sách cấu hình đợt -->
+        <div class="flex mt-4">
+            <div *ngIf="detailConfigs.length > 0" class="w-full md:w-3/3 border p-4 rounded-md bg-gray-50">
+                <div formArrayName="detailConfigs">
+                    <div *ngFor="let detail of detailConfigs.controls; let i = index" [formGroupName]="i" class="mt-4">
+                        <h6 class="my-1">{{'ConfigPin.Form.Round.Title' | translate}} {{i+1}}</h6>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="font-medium">
+                                    {{ 'ConfigPin.Form.Round.WrongAttempts.Label' | translate }}
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-dropdown formControlName="wrongAttempts" [options]="numberCount" optionLabel="name"
+                                    optionValue="code"
+                                    [placeholder]="'ConfigPin.Form.Round.WrongAttempts.Placeholder' | translate"
+                                    class="w-full"></p-dropdown>
+                                <small
+                                    *ngIf="detail.get('wrongAttempts')?.touched && detail.get('wrongAttempts')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'ConfigPin.Form.Round.WrongAttempts.Required' | translate }}
+                                </small>
+                                <small
+                                    *ngIf="detail.get('wrongAttempts')?.touched  &&detailConfigs?.errors?.['totalExceeded']"
+                                    class="text-red-600">
+                                    {{ 'ConfigPin.Form.Round.WrongAttempts.CountValid' | translate }}
+                                </small>
+                            </div>
+
+                            <div>
+                                <label class="font-medium">
+                                    {{ 'ConfigPin.Form.Round.WaitTime.Label' | translate }}
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-inputnumber inputId="minmax" mode="decimal" formControlName="waitTimeBetweenAttempts"
+                                    [placeholder]="'ConfigPin.Form.Round.WaitTime.Placeholder' | translate"
+                                    class="w-full" />
+                                <small
+                                    *ngIf="detail.get('waitTimeBetweenAttempts')?.touched && detail.get('waitTimeBetweenAttempts')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'ConfigPin.Form.Round.WaitTime.Required' | translate }}
+                                </small>
+                            </div>
+
+                            <div *ngIf="i < detailConfigs.length - 1">
+                                <label class="font-medium">
+                                    {{ 'ConfigPin.Form.Round.LockDuration.Label' | translate }}
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-inputnumber inputId="minmax" mode="decimal" formControlName="lockDuration"
+                                    [placeholder]="'ConfigPin.Form.Round.LockDuration.Placeholder' | translate"
+                                    class="w-full" />
+                                <small
+                                    *ngIf="detail.get('lockDuration')?.touched && detail.get('lockDuration')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'ConfigPin.Form.Round.LockDuration.Required' | translate }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="flex justify-end mt-4">
+            <button pButton type="submit" *ngIf="action !== 'detail'"
+                [label]="action === 'edit' ? ('Common.Save' | translate) : ('Common.New' | translate)"
+                [icon]="action !== 'edit' ? 'pi pi-check' : 'pi pi-save'" class="mr-2"></button>
+
+            <button pButton type="button" [label]="'Common.Back' | translate" icon="pi pi-undo" severity="secondary"
+                [routerLink]="'/configuration-pin'"></button>
+        </div>
+    </div>
+</form>
+
+
+<app-confirm-dialog [visible]="confirmUpdateConfig" [message]="'OtpConfig.ConfirmUpdateConfigContent' | translate"
+    [header]="'OtpConfig.ConfirmUpdateConfigTitle' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.Cancel' | translate" (confirm)="this.updateConfigPin()"
+    (cancel)="confirmUpdateConfig = false" />

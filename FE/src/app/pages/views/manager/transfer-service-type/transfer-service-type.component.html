@@ -1,0 +1,25 @@
+<ng-container *ngIf="permissions['VIEW'] && !router.url.includes('/detail') && !router.url.includes('/edit')">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <app-table [title_list]="'TRANSFER_SERVICE_TYPE.TITLE'" [data]="dataList" [columns]="columns" [selection]="[]"
+            [config]="{
+              toolbar: { new: permissions['CREATED'] || false, delete: false, export: false, sync: false },
+              actions: { view: permissions['DETAIL'] || false, edit: permissions['UPDATED'] || false, delete: false, reset: false,isShowAction:permissions['UPDATED'] ||permissions['DETAIL']|| false }
+            }" [actionCondition]="actionCondition"
+            [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+            [exportdata]="false" (onView)="handleAction($event)" (onEdit)="handleAction($event)"
+            (onNew)="handleAction()" [selectFilter]="true" [selectFilterData]="statusList"
+            (selectFilterChange)="statusChange($event)" [placeholderSelectFilter]="'Common.Status'"
+            [showSelectionColumn]="false" [tagConfig]="tagConfig" (onLazyLoad)="handleLazyLoad($event)"
+            (onSearch)="handleSearchKeyword($event)" [totalRecords]="totalRecords"
+            (onSwitchChange)="handleSwitchChange($event)"
+            placeholderTextSearch="TRANSFER_SERVICE_TYPE.placeholderTextSearch.Search" />
+    </div>
+</ng-container>
+
+<app-confirm-dialog [visible]="displayConfirmationStatus" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+    [header]="'Common.ConfirmChangeStatusHeader' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="onConfirmSwitchChange()"
+    (cancel)="onCancelSwitchChange()" />
+
+<router-outlet></router-outlet>

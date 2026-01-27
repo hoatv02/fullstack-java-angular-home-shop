@@ -1,0 +1,103 @@
+<app-confirm-dialog [visible]="informationModal" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+    [header]="'Information.Title' | translate" [confirmLabel]="'Common.ConfirmSave' | translate"
+    [formTemplate]="formTpl" [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="submitUpdateProfile()"
+    (cancel)="onHide()" width="700px" />
+<ng-template #formTpl>
+    <form [formGroup]="userForm">
+        <!-- Row 1 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="userName">
+                    {{ 'Information.UserForm.UserName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="userName" formControlName="userName" type="text" class="w-full"
+                    [placeholder]="'Information.UserForm.Placeholder.UserName' | translate" />
+                <small *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.UserNameRequired' | translate }}
+                </small>
+                <small *ngIf="userForm.get('userName')?.touched && userForm.get('userName')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.UserNamePattern' | translate }}
+                </small>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <label for="role">
+                    {{ 'Information.UserForm.Role' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="role" formControlName="roleId" [options]="roles" optionLabel="name" optionValue="id"
+                    [placeholder]="'Information.UserForm.Placeholder.Role' | translate" class="w-full">
+                </p-select>
+                <small *ngIf="userForm.get('roleId')?.touched && userForm.get('roleId')?.invalid" class="text-red-600">
+                    {{ 'Information.UserForm.Error.RoleRequired' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="email">
+                    {{ 'Information.UserForm.Email' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="email" [placeholder]="'Information.UserForm.Placeholder.Email' | translate"
+                    formControlName="email" type="email" class="w-full" />
+                <small *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="text-red-600">
+                    {{ 'Information.UserForm.Error.EmailInvalid' | translate }}
+                </small>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <label for="phone">
+                    {{ 'Information.UserForm.Phone' | translate }}
+                </label>
+                <input pInputText id="phone" formControlName="phone"
+                    [placeholder]="'Information.UserForm.Placeholder.Phone' | translate" type="text" class="w-full"
+                    maxlength="10" minlength="10" />
+                <small *ngIf="userForm.get('phone')?.touched && userForm.get('phone')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.PhonePattern' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/2 w-full">
+                <label for="firstName">
+                    {{ 'Information.UserForm.FirstName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="firstName"
+                    [placeholder]="'Information.UserForm.Placeholder.FirstName' | translate" formControlName="firstName"
+                    type="text" class="w-full" />
+                <small *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.FirstNameRequired' | translate }}
+                </small>
+                <small *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.FirstNamePattern' | translate }}
+                </small>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <label for="lastName">
+                    {{ 'Information.UserForm.LastName' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="lastName" [placeholder]="'Information.UserForm.Placeholder.LastName' | translate"
+                    formControlName="lastName" type="text" class="w-full" />
+                <small *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.LastNameRequired' | translate }}
+                </small>
+                <small *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'Information.UserForm.Error.LastNamePattern' | translate }}
+                </small>
+            </div>
+        </div>
+    </form>
+</ng-template>

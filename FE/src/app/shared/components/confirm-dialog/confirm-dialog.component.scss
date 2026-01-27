@@ -1,0 +1,14 @@
+.content-scroll-wrapper {
+    max-height: 70vh; /* hoặc giá trị cụ thể, ví dụ 500px */
+    overflow-y: auto;
+    padding-right: 8px; /* để không che scrollbar */
+}
+
+/* Ẩn bớt scrollbar nếu muốn mượt hơn */
+.content-scroll-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+.content-scroll-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.4);
+    border-radius: 4px;
+}

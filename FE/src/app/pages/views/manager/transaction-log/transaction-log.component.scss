@@ -1,0 +1,32 @@
+:host::ng-deep {
+    .jsoneditor {
+        border: 1px solid rgb(220 220 220) !important;
+        border-radius: 6px;
+        padding: 1rem !important;
+    }
+    .ace_gutter {
+        left: 0 !important;
+        width: 0 !important;
+    }
+    .ace_scroller {
+        left: 0 !important;
+    }
+    .p-dialog-content {
+        padding: 0 1.5rem 1.5rem 1.5rem !important;
+    }
+    .p-toast {
+        width: 250px !important;
+    }
+    .p-toast-message-content {
+        padding: 0.4rem !important;
+        align-items: center !important;
+    }
+    .p-toast-message-text {
+        gap: 0 !important;
+    }
+    .p-toast-close-button {
+        align-items: center !important;
+        margin: 0 !important;
+        right: 0 !important;
+    }
+}

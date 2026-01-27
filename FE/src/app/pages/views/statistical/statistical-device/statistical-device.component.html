@@ -1,0 +1,27 @@
+<ng-container *ngIf="permissions['VIEW']">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+
+        <app-table [title_list]="'STATISTICS.DEVICE.LIST_TITLE' | translate" [data]="dataList" [columns]="columns"
+            [selection]="[]" [config]="{
+                toolbar: { new: false, delete: false, export: true, sync: false },
+                actions: { view: false, edit: false, delete: false, isShowAction: false }
+            }" [isShowFromToDate]="true" [isShowInputSearch]="false" [selectFilter]="false" [selectFilter1]="true"
+            [selectFilter1Data]="deviceList" [selectFilterData]="OSList"
+            [placeholderSelectFilter]="'STATISTICS.DEVICE.OS_PLACEHOLDER' | translate"
+            [placeholderSelectFilter1]="'STATISTICS.DEVICE.DEVICE_TYPE_PLACEHOLDER' | translate"
+            (fromToDateChange)="formToDateChange($event)" (selectFilter1Change)="deviceChange($event)"
+            (selectFilterChange)="osChange($event)" [paginationConfig]="{
+                enabled: true,
+                rows: 10,
+                rowsPerPageOptions: [5, 10, 25, 50]
+            }" [first]="first" [exportdata]="true" [showSelectionColumn]="false" [tagConfig]="tagConfig"
+            (onExportCSV)="exportExcel()" (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)"
+            (onView)="onView($event)" [totalRecords]="totalRecords" (onSwitchChange)="handleSwitchChange($event)" />
+    </div>
+</ng-container>
+
+<app-confirm-dialog [visible]="displayConfirmation" [message]="'STATISTICS.DEVICE.DELETE_MESSAGE' | translate"
+    [header]="'STATISTICS.DEVICE.DELETE_HEADER' | translate" [confirmLabel]="'STATISTICS.DEVICE.OK' | translate"
+    [cancelLabel]="'STATISTICS.DEVICE.CANCEL' | translate" (confirm)="onConfirmSwitchChange()"
+    (cancel)="displayConfirmation = false" />

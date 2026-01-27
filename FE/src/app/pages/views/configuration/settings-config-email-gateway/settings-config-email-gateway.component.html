@@ -1,0 +1,205 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+        <div class="max-w-6xl mx-auto space-y-4 ">
+            <div>
+                <h1 class="text-3xl font-bold">
+                    {{'Breadcrumbs.ConfigEmailGateWay.Title'|translate}}
+                </h1>
+                <p class="text-gray-600 text-sm mt-1">
+                    {{ 'EmailGateway.Description' | translate }}
+                </p>
+            </div>
+
+            <div class="border rounded-xl bg-white p-6 shadow-sm">
+                <h2 class="font-semibold text-lg mb-4">
+                    {{ 'EmailGateway.GeneralInfo' | translate }}
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.Name.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input pInputText id="name" formControlName="name"
+                            [placeholder]="'EmailGateway.Form.Name.Placeholder' | translate" type="text"
+                            class="w-full" />
+                        <small *ngIf="emailForm.get('name')?.touched && emailForm.get('name')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.Name.Required' | translate }}
+                        </small>
+                        <small
+                            *ngIf="emailForm.get('name')?.touched && !emailForm.get('name')?.hasError('required') && emailForm.get('name')?.hasError('pattern')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.Name.Pattern' | translate }}
+                        </small>
+                    </div>
+
+                    <!-- Type -->
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.Type.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-dropdown [options]="GetwayList" formControlName="type" optionLabel="name" optionValue="code"
+                            [placeholder]="'EmailGateway.Form.Type.Placeholder' | translate"
+                            class="w-full"></p-dropdown>
+                        <small *ngIf="emailForm.get('type')?.touched && emailForm.get('type')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.Type.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <!-- Host -->
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.Host.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input pInputText id="host" [placeholder]="'EmailGateway.Form.Host.Placeholder' | translate"
+                            formControlName="host" type="text" class="w-full" />
+                        <small *ngIf="emailForm.get('host')?.touched && emailForm.get('host')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.Host.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <!-- Port -->
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.Port.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input pInputText id="port" formControlName="port"
+                            [placeholder]="'EmailGateway.Form.Port.Placeholder' | translate" type="text"
+                            class="w-full" />
+                        <small *ngIf="emailForm.get('port')?.touched && emailForm.get('port')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.Port.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <!-- User -->
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.User.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input pInputText id="user" formControlName="user"
+                            [placeholder]="'EmailGateway.Form.User.Placeholder' | translate" type="text"
+                            class="w-full" />
+                        <small *ngIf="emailForm.get('user')?.touched && emailForm.get('user')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.User.Required' | translate }}
+                        </small>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password">
+                            {{ 'EmailGateway.Form.Password.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <p-password id="password" formControlName="password"
+                            [ngClass]="{ 'p-invalid': emailForm.get('password')?.touched && emailForm.get('password')?.invalid }"
+                            [placeholder]="'EmailGateway.Form.Password.Placeholder' | translate" [toggleMask]="true"
+                            [fluid]="true" (keydown.space)="$event.preventDefault()" [feedback]="false"></p-password>
+
+                        <ng-container *ngIf="emailForm.get('password')?.touched">
+                            <small *ngIf="emailForm.get('password')?.hasError('required')" class="text-red-600">
+                                {{ 'EmailGateway.Form.Password.Required' | translate }}
+                            </small>
+                            <small
+                                *ngIf="!emailForm.get('password')?.hasError('required') && emailForm.get('password')?.hasError('minlength')"
+                                class="text-red-600">
+                                {{ 'EmailGateway.Form.Password.MinLength' | translate }}
+                            </small>
+
+                            <ng-container
+                                *ngIf="!emailForm.get('password')?.hasError('required') && !emailForm.get('password')?.hasError('minlength')">
+                                <ng-container *ngIf="emailForm.get('password')?.errors?.['passwordComplexity'] as errs">
+                                    <small *ngIf="errs.includes('uppercase')" class="text-red-600">
+                                        {{ 'EmailGateway.Form.Password.RequireUppercase' | translate }}
+                                    </small>
+                                    <small *ngIf="errs.includes('lowercase')" class="text-red-600">
+                                        {{ 'EmailGateway.Form.Password.RequireLowercase' | translate }}
+                                    </small>
+                                    <small *ngIf="errs.includes('number')" class="text-red-600">
+                                        {{ 'EmailGateway.Form.Password.RequireNumber' | translate }}
+                                    </small>
+                                    <small *ngIf="errs.includes('special')" class="text-red-600">
+                                        {{ 'EmailGateway.Form.Password.RequireSpecial' | translate }}
+                                    </small>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <!-- From -->
+                    <div>
+                        <label class="font-medium">
+                            {{ 'EmailGateway.Form.From.Label' | translate }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input pInputText id="from" formControlName="from"
+                            [placeholder]="'EmailGateway.Form.From.Placeholder' | translate" type="text"
+                            class="w-full" />
+                        <small *ngIf="emailForm.get('from')?.touched && emailForm.get('from')?.hasError('required')"
+                            class="text-red-600">
+                            {{ 'EmailGateway.Form.From.Required' | translate }}
+                        </small>
+                    </div>
+
+                </div>
+            </div>
+            <div class="border rounded-xl bg-white p-6 shadow-sm">
+                <h2 class="font-semibold text-lg mb-4">
+                    {{ 'EmailGateway.SystemSetting' | translate }}
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="hasSsl" class="font-medium">
+                            {{ 'EmailGateway.Form.SSL.Label' | translate }}
+                        </label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <p-checkbox formControlName="hasSsl" [binary]="true" inputId="hasSsl"></p-checkbox>
+                            <label for="hasSsl" class="cursor-pointer select-none">
+                                {{ 'EmailGateway.Form.SSL.Enable' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button *ngIf="permissions['UPDATED'] || false" pButton type="submit"
+                    [label]="('Common.Save' | translate)" icon="pi pi-save">
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<app-confirm-dialog [visible]="otpConfirmVisiable" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+    [header]="'Common.ChangeConfig' | translate" [confirmLabel]="'Common.ConfirmSave' | translate"
+    [formTemplate]="formTpl" [cancelLabel]="'Common.ConfirmDeleteNo' | translate" [showButtonCancel]="false"
+    [showButtonSubmit]="false" (cancel)="otpConfirmVisiable=false" width="500px">
+    <ng-template #formTpl>
+        <div class="">
+            <div class="flex text-center items-center justify-center">
+                <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium  mb-2"
+                    [innerHTML]="'Common.ConfirmOtpSendMail' | translate">
+                </label>
+            </div>
+            <div class="flex justify-center">
+                <p-inputOtp [length]="6" [(ngModel)]="otpValue"
+                    inputClass="w-10 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 text-lg text-center rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition" />
+            </div>
+            <p-button [disabled]="!otpValue" [label]="'Common.ConfirmChangeConfig' | translate" styleClass="w-full mt-4"
+                (onClick)="updateConfigEmail()" type="submit"></p-button>
+        </div>
+    </ng-template>
+</app-confirm-dialog>

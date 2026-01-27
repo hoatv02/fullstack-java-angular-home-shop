@@ -1,0 +1,270 @@
+<div class="flex justify-between items-center mb-4 flex-wrap gap-2" *ngIf="title_list">
+    <h4 class="m-0 text-2xl font-semibold">{{ title_list | translate }}</h4>
+</div>
+<ng-content select="[customOutlet]"></ng-content>
+<ng-container>
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div class="w-full sm:w-auto flex gap-2 flex-wrap">
+            <p-iconfield class="w-full sm:w-72" *ngIf="isShowInputSearch">
+                <p-inputicon styleClass="pi pi-search" />
+                <input pInputText type="text" (keyup.enter)="handleSearch($event)" (blur)="handleBlur($event)"
+                    [placeholder]="placeholderTextSearch | translate" class="w-full"
+                    [ngStyle]="{ 'border-radius': '24px', border: '1px solid #e5e7eb' }"
+                    pTooltip="{{ placeholderTextSearch | translate }}" tooltipPosition="bottom"
+                    tooltipStyleClass="long-tooltip" />
+            </p-iconfield>
+            <p-select [showClear]="showClear" *ngIf="selectFilter" [options]="selectFilterData" optionLabel="name"
+                [filter]="selectFilterSearch" (onChange)="onSelectFilterChange($event)" [(ngModel)]="selectFilterValue"
+                [placeholder]="placeholderSelectFilter | translate" class="w-[150px] sm:w-30" [ngStyle]="{
+                    border: '1px solid #e5e7eb',
+                    'border-radius': '1rem',
+                    height: '34px',
+                    'align-items': 'center',
+                    'font-size': ' 0.875rem'
+                }">
+                <ng-template let-option pTemplate="item">
+                    {{ option.name | translate }}
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    {{ selectedOption?.name | translate }}
+                </ng-template></p-select>
+            <p-select [showClear]="showClear1" *ngIf="selectFilter1" [filter]="selectFilterSearch1"
+                [options]="selectFilter1Data" optionLabel="name" (onChange)="onSelectFilter1Change($event)"
+                [(ngModel)]="selectFilter1Value" [placeholder]="placeholderSelectFilter1 | translate"
+                class="w-[150px] sm:w-30" [ngStyle]="{
+                    border: '1px solid #e5e7eb',
+                    'border-radius': '1rem',
+                    height: '34px',
+                    'align-items': 'center',
+                    'font-size': ' 0.875rem'
+                }">
+                <ng-template let-option pTemplate="item">
+                    {{ option.name | translate }}
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    {{ selectedOption?.name | translate }}
+                </ng-template></p-select>
+            <p-select [showClear]="showClear2" *ngIf="selectFilter2" [options]="selectFilter2Data" optionLabel="name"
+                [filter]="selectFilterSearch2" (onChange)="onSelectFilter2Change($event)"
+                [(ngModel)]="selectFilter2Value" [placeholder]="placeholderSelectFilter2 | translate"
+                class="w-[150px] sm:w-30" [ngStyle]="{
+                    border: '1px solid #e5e7eb',
+                    'border-radius': '1rem',
+                    height: '34px',
+                    'align-items': 'center',
+                    'font-size': ' 0.875rem'
+                }">
+                <ng-template let-option pTemplate="item">
+                    {{ option.name | translate }}
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    {{ selectedOption?.name | translate }}
+                </ng-template></p-select>
+            <p-select [showClear]="showClear3" *ngIf="selectFilter3" [options]="selectFilter3Data" optionLabel="name"
+                [filter]="selectFilterSearch3" (onChange)="onSelectFilter3Change($event)"
+                [(ngModel)]="selectFilter3Value" [placeholder]="placeholderSelectFilter3 | translate"
+                class="w-[150px] sm:w-30" [ngStyle]="{
+                    border: '1px solid #e5e7eb',
+                    'border-radius': '1rem',
+                    height: '34px',
+                    'align-items': 'center',
+                    'font-size': ' 0.875rem'
+                }">
+                <ng-template let-option pTemplate="item">
+                    {{ option.name | translate }}
+                </ng-template>
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    {{ selectedOption?.name | translate }}
+                </ng-template></p-select>
+            <ng-container *ngIf="translate.getLanguage() as lang">
+                <p-datepicker *ngIf="lang && isShowFromToDate" dateFormat="dd/mm/yy" [(ngModel)]="dateRange"
+                    [selectionMode]="'range'" [attr.data-lang]="lang" (ngModelChange)="handleDateRangeChange($event)"
+                    inputId="toDate" [showClear]="showClear" styleClass="calendar-24h" [readonlyInput]="true"
+                    [placeholder]="'DATE_RANGE.PLACEHOLDER' | translate" [showButtonBar]="showButtonBar"
+                    [appendTo]="'body'">
+                </p-datepicker>
+            </ng-container>
+        </div>
+        <div class="w-full sm:w-auto">
+            <div class="flex items-center flex-wrap gap-2">
+                <p-button *ngIf="config.toolbar?.reload" [label]="'Table.Reload' | translate" icon="pi pi-refresh"
+                    class="bg-transparent" (click)="onReload.emit(null)" tooltipPosition="top"></p-button>
+                <p-button *ngIf="config.toolbar?.new" [label]="'Table.New' | translate" icon="pi pi-plus"
+                    class="bg-transparent" (click)="onEdit.emit({ row: null, action: 'create' })"
+                    tooltipPosition="top"></p-button>
+                <p-button *ngIf="config.toolbar?.delete" severity="danger" [label]="'Table.Delete' | translate"
+                    icon="pi pi-trash" outlined (click)="onDeleteSelected.emit()" [disabled]="!selection.length"
+                    tooltipPosition="top"></p-button>
+                <p-button *ngIf="config.toolbar?.export" [label]="'Table.Export' | translate" icon="pi pi-upload"
+                    (click)="onExportCSV.emit()" tooltipPosition="top"></p-button>
+                <p-button *ngIf="config.toolbar?.sync" [label]="'Table.Sync' | translate" icon="pi pi-refresh"
+                    class="bg-transparent" (click)="onSync.emit()" tooltipPosition="top"></p-button>
+                <p-button *ngIf="config.customerButton?.isShow" [label]="config.customerButton?.label"
+                    class="bg-transparent" (click)="onCustomerButton.emit()" tooltipPosition="top"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <p-table #dt [value]="data" [scrollable]="true" scrollDirection="horizontal" [paginator]="paginationConfig.enabled"
+        [rows]="paginationConfig.rows || 10" [first]="first" [lazy]="true" (onLazyLoad)="handleLazyLoad($event)"
+        [rowHover]="true" [columns]="columns" dataKey="id" [totalRecords]="totalRecords"
+        [globalFilterFields]="globalFilterFields" [style]="{ minWidth: '100%', overflowX: 'auto' }"
+        [(selection)]="selection" (selectionChange)="onSelectionChange($event)" [tableStyle]="{ minWidth: '100%' }"
+        [rowsPerPageOptions]="paginationConfig.rowsPerPageOptions" [styleClass]="'custom-bordered-table'"
+        [paginator]="false">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th scope="col" *ngIf="showSelectionColumn" style="width: 50px; text-align: center">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th scope="col" style="right: 0; z-index: 1 !important" *ngFor="let col of columns"
+                    [style.width]="col.width" [ngStyle]="col.style" [ngClass]="col.styleClass">
+                    <div class="flex items-center w-full"
+                        [ngClass]="col.type === 'stt' ? 'justify-center' : getAlignmentClass(col.styleClass)">
+                        {{ col.header | translate }}
+                    </div>
+                </th>
+                <th scope="col" class="sticky-actions-header action-col"
+                    style="right: 0; z-index: 999 !important; text-align: center" *ngIf="config?.actions?.isShowAction">
+                    {{ 'Table.Action' | translate }}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row let-rowIndex="rowIndex" let-columns="columns">
+            <tr>
+                <td *ngIf="showSelectionColumn" class="text-center">
+                    <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns" [style.width]="col.width" [ngStyle]="col.style"
+                    [ngClass]="col.styleClass" tooltipPosition="top">
+                    <ng-container [ngSwitch]="col.type">
+                        <ng-container *ngSwitchCase="'stt'">
+                            <div class="flex items-center w-full justify-center">
+                                <span>{{row[col.field]}}</span>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'switch'">
+                            <div class="flex items-center gap-2 w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                <p-toggleswitch [ngModel]="row[col.field]"
+                                    (onChange)="handleSwitchChange(row, col.field, $event.checked)"
+                                    [disabled]="col.disableStatus" />
+
+                                <span *ngIf="col.active || col.deactive"
+                                    [ngClass]="row[col.field] ? 'text-gray-500' : 'text-red-500'">
+                                    {{ (row[col.field] ? col.active : col.deactive) | translate }}
+                                </span>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'tag'">
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                <p-tag *ngIf="isDefaultSeverity(getTagClass(col.field, row[col.field]))"
+                                    [value]="getTranslatedValue(row[col.field])"
+                                    [severity]="getTagClass(col.field, row[col.field])">
+                                </p-tag>
+
+                                <p-tag *ngIf="!isDefaultSeverity(getTagClass(col.field, row[col.field]))"
+                                    [value]="getTranslatedValue(row[col.field])"
+                                    [ngClass]="getTagClass(col.field, row[col.field])">
+                                </p-tag>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'dateRange'">
+                            <div class="flex flex-col w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                <p class="m-0">{{ row[col.field] }}</p>
+                                <p class="m-0">
+                                    {{ row[col.secondField] }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'link'">
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                <a [routerLink]="getRoute(col, row)" [queryParams]="getQueryParams(col, row)"
+                                    class="text-blue-600 underline cursor-pointer" [ngClass]="col.class">
+                                    {{ (row[col.field] !== null && row[col.field] !== undefined) ?
+                                    (isTranslatable(row[col.field]) ? (row[col.field] | translate) :
+                                    row[col.field]) : '' }}
+                                </a>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'formatDate'">
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                {{ row[col.field] | date:col.formatDate}}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                {{ row[col.field] | date: 'dd/MM/yyyy HH:mm:ss' }}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'dateSSS'">
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                {{ row[col.field] | date: 'dd/MM/yyyy HH:mm:ss.SSS' }}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <div class="flex items-center w-full" [ngClass]="getAlignmentClass(col.styleClass)">
+                                <span [ngClass]="col.class">
+                                    {{ (row[col?.field] !== null && row[col?.field] !== undefined) ?
+                                    (isTranslatable(row[col?.field]) ? (row[col?.field] |
+                                    translate) :
+                                    row[col?.field]) : '' }}
+                                </span>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </td>
+
+                <td class="flex gap-2 sticky-actions-cell items-center text-center"
+                    *ngIf="config.actions?.isShowAction">
+                    <ng-container>
+                        <p-button *ngIf="canShowAction('view', row)" icon="pi pi-eye" severity="warn" [rounded]="true"
+                            [outlined]="true" (click)="onView.emit({ row: row, action: 'detail', rowIndex: rowIndex })"
+                            [pTooltip]="'Table.View' | translate" tooltipPosition="top" />
+                        <p-button *ngIf="canShowAction('edit', row)" icon="pi pi-file-edit" class="" [rounded]="true"
+                            severity="info" [outlined]="true"
+                            (click)="onEdit.emit({ row: row, action: 'edit', rowIndex: rowIndex })"
+                            [pTooltip]="'Table.Edit' | translate" tooltipPosition="top" />
+                        <p-button *ngIf="canShowAction('sync', row)" icon="pi pi-sync" severity="info" class=""
+                            [rounded]="true" [outlined]="true" (click)="onSync.emit(row)"
+                            [pTooltip]="'Table.Sync' | translate" tooltipPosition="top" />
+                        <p-button *ngIf="canShowAction('reset', row)" icon="pi pi-sync" severity="info" class=""
+                            [rounded]="true" [outlined]="true" (click)="onReset.emit(row)"
+                            [pTooltip]="'Table.ResetPassword' | translate" tooltipPosition="top" />
+                        <p-button *ngIf="canShowAction('delete', row)" icon="pi pi-trash" severity="danger"
+                            [rounded]="true" [outlined]="true" (click)="onDelete.emit({ row: row, rowIndex: rowIndex })"
+                            [pTooltip]="'Table.Delete' | translate" tooltipPosition="top" />
+                        <p-button
+                            *ngIf="canShowAction('lock', row) && (row.status === 'Common.StatusList.StatusInactive' || row.status === 'Common.StatusList.StatusActive'|| row.status === 'Common.StatusList.Lock')  "
+                            [icon]="((row.status === 'Common.StatusList.StatusInactive' ||row.status === 'Common.StatusList.Lock')? 'pi pi-lock' : 'pi pi-lock-open')|translate"
+                            [severity]="(row.status !== ('Common.StatusList.StatusInactive'|translate)||row.status !== ('Common.StatusList.Lock'|translate)) ? 'primary' : 'danger'"
+                            [rounded]="true" [outlined]="true" (click)="onLock.emit(row)"
+                            [pTooltip]="((row.status === 'Common.StatusList.StatusInactive'||row.status === 'Common.StatusList.Lock') ? 'Table.unLock' : 'Table.Lock') | translate"
+                            tooltipPosition="top" />
+                        <p-button *ngIf="canShowAction('export', row) && exportdata" icon="pi pi-download"
+                            severity="info" [rounded]="true" [outlined]="true" (click)="this.onExportCSV.emit(row)"
+                            [pTooltip]="'Table.Download' | translate" tooltipPosition="top" />
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td [attr.colspan]="columns.length + 2" class="text-center empty-message-cell">
+                    <div class="flex justify-center items-center h-24 text-gray-500 dark:text-gray-400 italic"><i
+                            class="pi pi-info-circle mr-2"></i> {{ NoDataTable | translate }}</div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary" *ngIf="isShowPagination">
+            <div class="flex justify-end items-center mt-2 px-2">
+                <span class="text-sm text-gray-600">{{ 'Table.CountTotalRecords' | translate }} {{ totalRecords }} {{
+                    'Table.Record' | translate }} </span>
+                <p-paginator [rows]="paginationConfig.rows || 10" [totalRecords]="totalRecords"
+                    [rowsPerPageOptions]="paginationConfig.rowsPerPageOptions" [first]="first"
+                    (onPageChange)="handleLazyLoad($event)" [dropdownAppendTo]="'body'">
+                </p-paginator>
+            </div>
+        </ng-template>
+    </p-table>
+</ng-container>

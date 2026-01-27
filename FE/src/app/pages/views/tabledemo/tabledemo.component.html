@@ -1,0 +1,28 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+    <app-table
+        title_list="Quản lý nhân sự"
+        [data]="dataList"
+        [columns]="columns"
+        [selection]="[]"
+        [globalFilterFields]="['name', 'email']"
+        [config]="{
+            toolbar: { new: true, delete: false, export: true, sync: false },
+            actions: { view: true, edit: true, delete: true }
+        }"
+        [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }"
+        [first]="first"
+        [exportdata]="true"
+        (onView)="editCustomer($event)"
+        (onEdit)="editCustomer($event)"
+        [showSelectionColumn]="false"
+        [tagConfig]="tagConfig"
+        (onDelete)="editCustomer($event)"
+        (onSync)="editCustomer($event)"
+        (onDeleteSelected)="editCustomer()"
+        (onExportCSV)="exportCSV()"
+        (onLazyLoad)="handleLazyLoad($event)"
+        (onSearch)="handleSearchKeyword($event)"
+        [totalRecords]="10"
+    />
+</div>

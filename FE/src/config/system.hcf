@@ -1,0 +1,7 @@
+{
+  "production": false,
+  "APP_API_URL": "https://sam-admin-api-uat.savyint.com/api/v1",
+  "ORGANIZATION_CODE": "BAB",
+  "APPLICATION_CODE": "BAB_APP",
+  "REQUEST_TIMEOUT": 30000
+}

@@ -1,0 +1,386 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+    <h4 class="m-0 text-2xl mb-2 font-semibold">
+        {{ 'TransactionLog.Detail' | translate }}
+    </h4>
+    <div class="flex flex-col lg:flex-row gap-6">
+        <div class="lg:w-2/3 w-full flex flex-col">
+            <div class="bg-white p-8 border rounded-xl shadow-sm space-y-8 flex-grow">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b pb-2">
+                            <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                <i class="pi pi-user text-lg"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-600 m-0">
+                                {{ 'Payment.SenderInfo' | translate }}
+                            </h3>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.SenderName' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.debtor?.name || '--' }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.AccountNumber' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.debtor?.accountId || '--' }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.Bank' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.debtor?.bankName }}
+                                    ({{ paymentInfoData?.paymentInfo?.debtor?.bankCode }})
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b pb-2">
+                            <div class="p-2 bg-green-50 text-green-600 rounded-lg">
+                                <i class="pi pi-user-plus text-lg"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-600 m-0">
+                                {{ 'Payment.ReceiverInfo' | translate }}
+                            </h3>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4"
+                            *ngIf="paymentInfoData?.paymentInfo?.creditor; else multipleCreditors">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.ReceiverName' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.creditor?.name || '--' }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.AccountNumber' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.creditor?.accountId || '--' }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.Bank' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.creditor?.bankName }}
+                                    ({{ paymentInfoData?.paymentInfo?.creditor?.bankCode }})
+                                </div>
+                            </div>
+                        </div>
+
+                        <ng-template #multipleCreditors>
+                            <div class="grid grid-cols-1 gap-4"
+                                *ngIf="paymentInfoData?.paymentInfo?.creditors?.length > 0">
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                        {{ 'Payment.ReceiverInfo' | translate }}
+                                    </label>
+                                    <div class="text-base text-blue-600 cursor-pointer hover:underline font-medium flex items-center gap-2"
+                                        (click)="op.toggle($event)">
+                                        <i class="pi pi-users"></i>
+                                        {{ 'Payment.ViewReceiversList' | translate }}
+                                        ({{ paymentInfoData?.paymentInfo?.creditors?.length }})
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <p-popover #op>
+                            <div class="p-4 w-[50rem]">
+                                <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                    <i class="pi pi-users text-blue-600"></i>
+                                    {{ 'Payment.ReceiversList' | translate }}
+                                </h4>
+                                <p-table [value]="paymentInfoData?.paymentInfo?.creditors" [rows]="5"
+                                    [paginator]="paymentInfoData?.paymentInfo?.creditors?.length > 5"
+                                    responsiveLayout="scroll" styleClass="p-datatable-sm">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th  scope="col">{{ 'Payment.ReceiverName' | translate }}</th>
+                                            <th  scope="col">{{ 'Payment.AccountNumber' | translate }}</th>
+                                            <th  scope="col">{{ 'Payment.MethodLabel' | translate }}</th>
+                                            <th  scope="col">{{ 'Payment.Amount' | translate }}</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-creditor>
+                                        <tr>
+                                            <td>
+                                                <div class="font-medium text-gray-900">{{ creditor.name }}</div>
+                                                <div class="text-xs text-gray-500">{{ creditor.bankName }} ({{
+                                                    creditor.bankCode }})</div>
+                                            </td>
+                                            <td class="text-sm font-mono">{{ creditor.accountId }}</td>
+                                            <td class="text-sm">
+                                                <span
+                                                    class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] uppercase font-semibold">
+                                                    {{ creditor.paymentMethod?.paymentRail }}
+                                                </span>
+                                            </td>
+                                            <td class="text-sm">
+                                                <span class="text-emerald-600 font-medium">
+                                                    {{ creditor.instructedAmount?.value | number }}
+                                                </span>
+                                                <span class="text-[10px] text-emerald-600 ml-1">
+                                                    {{ creditor.instructedAmount?.currency }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </p-popover>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 border-b pb-2">
+                        <div class="p-2 bg-orange-50 text-orange-600 rounded-lg">
+                            <i class="pi pi-wallet text-lg"></i>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-600 m-0">
+                            {{ 'Payment.TransactionInfo' | translate }}
+                        </h3>
+                    </div>
+                    <div class="p-4 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-4">
+                        <!-- Top Row: 4 Boxes -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-center">
+                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                                    {{ 'Payment.Amount' | translate }}
+                                </label>
+                                <div class="text-base text-emerald-500">
+                                    {{ paymentInfoData?.paymentInfo?.instructedAmount?.value | number}}
+                                    <span class="text-sm text-emerald-500">{{
+                                        paymentInfoData?.paymentInfo?.instructedAmount?.currency }}</span>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-center">
+                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                                    {{ 'Payment.CustomerType' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ (paymentInfoData?.paymentInfo?.customerType === 'BC' ? 'Payment.Individual' :
+                                    'Payment.Enterprise') | translate }}
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-center">
+                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                                    {{ 'Payment.Time' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.paymentInfo?.requestedExecutionDate | date: 'dd/MM/yyyy HH:mm'
+                                    }}
+                                </div>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-center">
+                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                                    {{ 'Payment.ChannelLabel' | translate }}
+                                </label>
+                                <div class="text-sm text-blue-600">
+                                    <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] uppercase">
+                                        {{ paymentInfoData?.paymentInfo?.channel }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bottom Row: Method and Content -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div
+                                class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-center">
+                                <label class="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                                    {{ 'Payment.MethodLabel' | translate }}
+                                </label>
+                                <div class="text-sm text-gray-600 break-all">
+                                    {{ paymentInfoData?.paymentInfo?.paymentMethod?.paymentRail }}
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+                                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">
+                                    {{ 'Payment.Content' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 leading-relaxed break-words">
+                                    {{ paymentInfoData?.paymentInfo?.remittanceInformation || '--' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="paymentInfoData?.confirmHistory" class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-4">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b pb-2">
+                            <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                                <i class="pi pi-shield text-lg"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-600 m-0">
+                                {{ 'Payment.ConfirmationInfo' | translate }}
+                            </h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div *ngIf="paymentInfoData?.confirmHistory?.deviceId">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.DeviceId' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 break-all"
+                                    [title]="paymentInfoData?.confirmHistory?.deviceId">
+                                    {{ paymentInfoData?.confirmHistory?.deviceId }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.applicationId">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.ApplicationId' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 break-all">
+                                    {{ paymentInfoData?.confirmHistory?.applicationId }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.actionBy">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.ActionBy' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 break-words">
+                                    {{ paymentInfoData?.confirmHistory?.actionBy }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.cifNumber">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.CIF' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 tracking-widest break-all">
+                                    {{ paymentInfoData?.confirmHistory?.cifNumber }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b pb-2">
+                            <div class="p-2 bg-teal-50 text-teal-600 rounded-lg">
+                                <i class="pi pi-info-circle text-lg"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-600 m-0">
+                                {{ 'Payment.StatusInfo' | translate }}
+                            </h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div *ngIf="paymentInfoData?.confirmHistory?.confirmedAt">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.ConfirmedAt' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600">
+                                    {{ paymentInfoData?.confirmHistory?.confirmedAt | date: 'dd/MM/yyyy HH:mm:ss' }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.paymentInfo?.ipAddress">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.IPAddress' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 break-all">
+                                    {{ paymentInfoData?.paymentInfo?.ipAddress }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.authMethod" class="flex gap-8">
+                                <div>
+                                    <label
+                                        class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                        {{ 'Payment.AuthMethod' | translate }}
+                                    </label>
+                                    <div class="text-base font-semibold text-blue-600 break-words">
+                                        {{ paymentInfoData?.confirmHistory?.authMethod === 'OCRA' ? 'Smart OTP' :
+                                        paymentInfoData?.confirmHistory?.authMethod }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.otp">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.OTPVerification' | translate }}
+                                </label>
+                                <div class="text-base text-gray-600 break-all">
+                                    {{ paymentInfoData?.confirmHistory?.otp }}
+                                </div>
+                            </div>
+                            <div *ngIf="paymentInfoData?.confirmHistory?.status !== null">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">
+                                    {{ 'Payment.Status' | translate }}
+                                </label>
+                                <div class="text-base px-3 py-1 rounded-lg inline-block break-words"
+                                    [ngClass]="{'bg-green-100 text-green-700': paymentInfoData?.confirmHistory?.status === 1, 'bg-red-100 text-red-700': paymentInfoData?.confirmHistory?.status !== 1}">
+                                    {{ paymentInfoData?.confirmHistory?.statusDesc || '--' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lg:w-1/3 w-full shrink-0 flex flex-col lg:relative">
+            <div class="lg:absolute lg:inset-0 bg-white p-6 border rounded-xl shadow-sm flex flex-col overflow-hidden">
+                <h3 class="text-base font-semibold text-gray-600 mb-6 flex items-center gap-2 shrink-0">
+                    <i class="pi pi-history"></i>
+                    {{ 'TransactionLog.TransactionSteps' | translate }}
+                </h3>
+                <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar min-h-0">
+                    <div
+                        class="relative space-y-4 before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                        <div *ngFor="let item of timelineItems"
+                            class="relative flex items-center justify-between group">
+                            <div class="flex" [ngClass]="item.isDetailed ? 'items-start' : 'items-center'">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-full text-white shadow ring-8 ring-white shrink-0 z-10"
+                                    [ngClass]="item.iconBg">
+                                    <i class="text-xs"
+                                        [ngClass]="item.icon + (item.iconClass ? ' ' + item.iconClass : '')"></i>
+                                </div>
+                                <div class="ml-5">
+                                    <div class="text-base font-semibold mb-2"
+                                        [ngClass]="item.isFinal ? (item.status === 1 ? 'text-slate-700' : (item.status === -1 ? 'text-red-600' : 'text-slate-700')) : 'text-slate-700'">
+                                        {{ item.label | translate }}
+                                    </div>
+                                    <div *ngIf="item.isDetailed" class="space-y-1.5">
+                                        <ng-container *ngFor="let detail of item.details">
+                                            <div class="text-sm" [ngClass]="{'flex items-center': detail.isStatus}">
+                                                <span class="text-slate-500 ">{{ detail.label | translate }}:</span>
+                                                <span *ngIf="!detail.isStatus && !detail.isDate"
+                                                    class="text-slate-700 ml-1"
+                                                    [ngClass]="{'font-semibold': detail.isTitle, 'italic': detail.isItalic}">{{
+                                                    detail.value }}</span>
+                                                <span *ngIf="detail.isDate" class="text-slate-700 ml-1">{{ detail.value
+                                                    |
+                                                    date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+                                                <span *ngIf="detail.isStatus" class="font-semibold ml-1"
+                                                    [ngClass]="{'text-emerald-600': detail.statusValue === 1, 'text-red-600': detail.statusValue !== 1 && detail.statusValue !== null, 'text-slate-600': detail.statusValue === null}">{{
+                                                    detail.value | translate }}</span>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <div *ngIf="!item.isDetailed && item.subLabel" class="text-xs text-gray-600 italic">
+                                        {{ item.subLabel | date: 'dd/MM/yyyy HH:mm:ss' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-end mt-8 border-t pt-6">
+        <button pButton type="button" [label]="'Common.Back' | translate" icon="pi pi-arrow-left"
+            class="p-button-outlined p-button-secondary" [routerLink]="'/transaction-log'"></button>
+    </div>
+</div>

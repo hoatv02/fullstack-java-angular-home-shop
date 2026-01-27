@@ -1,0 +1,412 @@
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <h4 class="m-0 text-2xl font-semibold">
+            {{ displayTitlePages | translate }}
+        </h4>
+
+        <!-- Hàng 1 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <!-- Tên cấu hình -->
+            <div class="md:w-1/3 w-full">
+                <label for="name">
+                    {{ 'OtpConfig.Name' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="name" formControlName="name" type="text" class="w-full"
+                    [placeholder]="'OtpConfig.NamePlaceholder' | translate" />
+                <small *ngIf="configForm.get('name')?.touched && configForm.get('name')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.NameRequired' | translate }}
+                </small>
+                <small
+                    *ngIf="configForm.get('name')?.touched && !configForm.get('name')?.hasError('required') && configForm.get('name')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.NamePattern' | translate }}
+                </small>
+            </div>
+
+            <!-- Loại OTP -->
+            <div class="md:w-1/3 w-full">
+                <label for="type">
+                    {{ 'OtpConfig.Type' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="type" [options]="otpList" optionLabel="name" optionValue="code" formControlName="type"
+                    [placeholder]="'OtpConfig.TypePlaceholder' | translate" class="w-full"
+                    (onChange)="selectTypeOtpChange($event)"></p-select>
+                <small *ngIf="configForm.get('type')?.touched && configForm.get('type')?.invalid" class="text-red-600">
+                    {{ 'OtpConfig.Validation.TypeRequired' | translate }}
+                </small>
+            </div>
+
+            <!-- Thuật toán Hash -->
+            <div class="md:w-1/3 w-full">
+                <label for="hashAlgo">
+                    {{ 'OtpConfig.HashAlgorithm' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="hashAlgo" formControlName="hashAlgo" [options]="algorithmList" optionLabel="name"
+                    optionValue="code" [placeholder]="'OtpConfig.HashAlgorithmPlaceholder' | translate"
+                    class="w-full"></p-select>
+                <small *ngIf="configForm.get('hashAlgo')?.touched && configForm.get('hashAlgo')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.HashAlgorithmRequired' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <!-- Hàng 2 -->
+        <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <!-- Độ dài OTP -->
+            <div class="md:w-1/3 w-full">
+                <label for="length">
+                    {{ 'OtpConfig.Length' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-select id="length" [options]="lengthList" optionLabel="name" formControlName="length"
+                    optionValue="code" [placeholder]="'OtpConfig.LengthPlaceholder' | translate"
+                    class="w-full"></p-select>
+                <small *ngIf="configForm.get('length')?.touched && configForm.get('length')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.LengthRequired' | translate }}
+                </small>
+            </div>
+
+            <!-- Thời gian hiệu lực -->
+            <div class="md:w-1/3 w-full">
+                <label for="effectivePeriod">
+                    {{ 'OtpConfig.EffectivePeriod' | translate }} (s)
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-inputnumber inputId="effectivePeriod" mode="decimal" formControlName="effectivePeriod"
+                    [placeholder]="'OtpConfig.EffectivePeriodPlaceholder' | translate" class="w-full"
+                    [useGrouping]="false"></p-inputnumber>
+                <small
+                    *ngIf="configForm.get('effectivePeriod')?.touched && configForm.get('effectivePeriod')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.EffectivePeriodRequired' | translate }}
+                </small>
+                <small
+                    *ngIf="configForm.get('effectivePeriod')?.touched && configForm.get('effectivePeriod')?.hasError('min')"
+                    class="text-red-600">
+                    {{ configForm.get('type')?.value === 3 ? ('OtpConfig.Validation.EffectivePeriodMinType3' |
+                    translate) : ('OtpConfig.Validation.EffectivePeriodMinOther' | translate) }}
+                </small>
+                <small
+                    *ngIf="configForm.get('effectivePeriod')?.touched && configForm.get('effectivePeriod')?.hasError('max')"
+                    class="text-red-600">
+                    {{ configForm.get('type')?.value === 3 ? ('OtpConfig.Validation.EffectivePeriodMaxType3' |
+                    translate) : ('OtpConfig.Validation.EffectivePeriodMaxOther' | translate) }}
+                </small>
+            </div>
+
+            <!-- Thời gian chênh lệch -->
+            <div class="md:w-1/3 w-full">
+                <label for="clockSkew">
+                    {{ 'OtpConfig.ClockSkew' | translate }} (s)
+                    <span class="text-red-500">*</span>
+                </label>
+                <p-inputnumber inputId="clockSkew" mode="decimal" formControlName="clockSkew"
+                    [placeholder]="'OtpConfig.ClockSkewPlaceholder' | translate" class="w-full"
+                    [useGrouping]="false"></p-inputnumber>
+                <small *ngIf="configForm.get('clockSkew')?.touched && configForm.get('clockSkew')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.ClockSkewRequired' | translate }}
+                </small>
+                <small
+                    *ngIf="configForm.get('clockSkew')?.touched && !configForm.get('clockSkew')?.hasError('required') && configForm.get('clockSkew')?.hasError('max')"
+                    class="text-red-600">
+                    {{ 'OtpConfig.Validation.ClockSkewMax' | translate }}
+                </small>
+            </div>
+        </div>
+
+        <!-- Case: SMS OTP (Type 3) -->
+        <ng-container *ngIf="configForm.get('type')?.value === 3">
+            <!-- Hàng 3: Resend settings -->
+            <div class="flex flex-col md:flex-row gap-4 mt-4">
+                <!-- Số lần gửi lại -->
+                <div class="md:w-1/3 w-full">
+                    <label for="maxResend">
+                        {{ 'OtpConfig.ResendCount' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-inputnumber id="maxResend" formControlName="maxResend"
+                        [placeholder]="'OtpConfig.ResendCountPlaceholder' | translate" class="w-full"
+                        [useGrouping]="false"></p-inputnumber>
+                    <small
+                        *ngIf="configForm.get('maxResend')?.touched && configForm.get('maxResend')?.hasError('required')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.ResendCountRequired' | translate }}
+                    </small>
+                    <small
+                        *ngIf="configForm.get('maxResend')?.touched && !configForm.get('maxResend')?.hasError('required') && configForm.get('maxResend')?.hasError('min')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.ResendCountMin' | translate }}
+                    </small>
+                </div>
+                <!-- Thời gian chờ resend -->
+                <div class="md:w-1/3 w-full">
+                    <label for="waitTimeResend">
+                        {{ 'OtpConfig.WaitTimeResend' | translate }} (s)
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-inputnumber id="waitTimeResend" formControlName="waitTimeResend"
+                        [placeholder]="'OtpConfig.WaitTimeResendPlaceholder' | translate" class="w-full"
+                        [useGrouping]="false"></p-inputnumber>
+                    <small
+                        *ngIf="configForm.get('waitTimeResend')?.touched && configForm.get('waitTimeResend')?.hasError('required')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.WaitTimeResendRequired' | translate }}
+                    </small>
+                    <small
+                        *ngIf="configForm.get('waitTimeResend')?.touched && !configForm.get('waitTimeResend')?.hasError('required') && configForm.get('waitTimeResend')?.hasError('min')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.WaitTimeResendMin' | translate }}
+                    </small>
+                </div>
+                <!-- Resend Lockout Time -->
+                <div class="md:w-1/3 w-full">
+                    <label for="resendLockTime">
+                        {{ 'OtpConfig.ResendLockTime' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-inputnumber id="resendLockTime" formControlName="resendLockTime"
+                        [placeholder]="'OtpConfig.ResendLockTimePlaceholder' | translate" class="w-full"
+                        [useGrouping]="false"></p-inputnumber>
+                    <small
+                        *ngIf="configForm.get('resendLockTime')?.touched && configForm.get('resendLockTime')?.hasError('required')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.ResendLockTimeRequired' | translate }}
+                    </small>
+                </div>
+            </div>
+
+            <!-- Hàng 4: User Lockout + MaxCheckTimes + Status -->
+            <div class="flex flex-col md:flex-row gap-4 mt-4">
+                <!-- User Lockout Time -->
+                <div class="md:w-1/3 w-full">
+                    <label for="userLockTime">
+                        {{ 'OtpConfig.UserLockTime' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-inputnumber id="userLockTime" formControlName="userLockTime"
+                        [placeholder]="'OtpConfig.UserLockTimePlaceholder' | translate" class="w-full"
+                        [useGrouping]="false"></p-inputnumber>
+                    <small
+                        *ngIf="configForm.get('userLockTime')?.touched && configForm.get('userLockTime')?.hasError('required')"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.UserLockTimeRequired' | translate }}
+                    </small>
+                </div>
+                <!-- Số đợt thao tác -->
+                <div class="md:w-1/3 w-full">
+                    <label for="maxCheckTimes">
+                        {{ 'OtpConfig.MaxCheckTimes' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-dropdown formControlName="maxCheckTimes" [options]="numberConfirmOTP" optionValue="code"
+                        optionLabel="name" placeholder="{{ 'OtpConfig.MaxCheckTimesPlaceholder' | translate }}"
+                        class="w-full" (onChange)="onMaxCheckTimesChange($event)"></p-dropdown>
+                    <small *ngIf="configForm.get('maxCheckTimes')?.touched && configForm.get('maxCheckTimes')?.invalid"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.MaxCheckTimesRequired' | translate }}
+                    </small>
+                </div>
+                <!-- Trạng thái -->
+                <div class="md:w-1/3 w-full">
+                    <label for="status">
+                        {{ 'OtpConfig.Status.Title' | translate }}
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <p-toggleswitch formControlName="status" id="status"></p-toggleswitch>
+                        <span class="text-sm font-medium"
+                            [ngClass]="configForm.get('status')?.value ? 'text-green-600' : 'text-red-600'">
+                            {{ configForm.get('status')?.value ? ('OtpConfig.StatusActive' | translate) :
+                            ('OtpConfig.StatusInactive' | translate) }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hàng 5: Dates -->
+            <div class="flex flex-col md:flex-row gap-4 mt-4">
+                <div class="md:w-1/3 w-full">
+                    <label for="effectiveFrom" class="block">
+                        {{ 'OtpConfig.EffectiveFrom' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-datepicker formControlName="effectiveFrom" [showButtonBar]="true" class="w-full"
+                        styleClass="w-full" [inputStyle]="{'width': '100%'}" inputId="effectiveFrom" [showIcon]="true"
+                        [showClear]="true" [maxDate]="configForm.get('effectiveTo')?.value" dateFormat="dd/mm/yy"
+                        [placeholder]="'OtpConfig.EffectiveFromPlaceholder' | translate"></p-datepicker>
+                    <small *ngIf="configForm.get('effectiveFrom')?.touched && configForm.get('effectiveFrom')?.invalid"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.EffectiveFromRequired' | translate }}
+                    </small>
+                </div>
+                <div class="md:w-1/3 w-full">
+                    <label for="effectiveTo" class="block">
+                        {{ 'OtpConfig.EffectiveTo' | translate }}
+                    </label>
+                    <p-datepicker formControlName="effectiveTo" [showButtonBar]="true" class="w-full"
+                        styleClass="w-full" [inputStyle]="{'width': '100%'}" dateFormat="dd/mm/yy"
+                        [minDate]="configForm.get('effectiveFrom')?.value" inputId="effectiveTo" [showIcon]="true"
+                        [showClear]="true"
+                        [placeholder]="'OtpConfig.EffectiveToPlaceholder' | translate"></p-datepicker>
+                </div>
+                <div class="md:w-1/3 w-full"></div>
+            </div>
+        </ng-container>
+
+        <!-- Case: Other OTP types -->
+        <ng-container *ngIf="configForm.get('type')?.value !== 3">
+            <!-- Hàng 3: MaxCheckTimes + Dates + Status -->
+            <div class="flex flex-col md:flex-row gap-4 mt-4">
+                <div class="md:w-1/3 w-full">
+                    <label for="maxCheckTimes">
+                        {{ 'OtpConfig.MaxCheckTimes' | translate }}
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <p-dropdown formControlName="maxCheckTimes" [options]="numberConfirmOTP" optionValue="code"
+                        optionLabel="name" placeholder="{{ 'OtpConfig.MaxCheckTimesPlaceholder' | translate }}"
+                        class="w-full" (onChange)="onMaxCheckTimesChange($event)"></p-dropdown>
+                    <small *ngIf="configForm.get('maxCheckTimes')?.touched && configForm.get('maxCheckTimes')?.invalid"
+                        class="text-red-600">
+                        {{ 'OtpConfig.Validation.MaxCheckTimesRequired' | translate }}
+                    </small>
+                </div>
+                <div class="md:w-1/3 w-full">
+                    <div class="flex flex-col md:flex-row gap-2">
+                        <div class="md:w-1/2 w-full">
+                            <label for="effectiveFrom">
+                                {{ 'OtpConfig.EffectiveFrom' | translate }}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <p-datepicker formControlName="effectiveFrom" [showButtonBar]="true" class="w-[100%]"
+                                inputId="effectiveFrom" [showIcon]="true" [showClear]="true"
+                                [maxDate]="configForm.get('effectiveTo')?.value" dateFormat="dd/mm/yy"
+                                [placeholder]="'OtpConfig.EffectiveFromPlaceholder' | translate"></p-datepicker>
+                            <small
+                                *ngIf="configForm.get('effectiveFrom')?.touched && configForm.get('effectiveFrom')?.invalid"
+                                class="text-red-600">
+                                {{ 'OtpConfig.Validation.EffectiveFromRequired' | translate }}
+                            </small>
+                        </div>
+                        <div class="md:w-1/2 w-full">
+                            <label for="effectiveTo">
+                                {{ 'OtpConfig.EffectiveTo' | translate }}
+                            </label>
+                            <p-datepicker formControlName="effectiveTo" [showButtonBar]="true" class="w-[100%]"
+                                dateFormat="dd/mm/yy" [minDate]="configForm.get('effectiveFrom')?.value"
+                                inputId="effectiveTo" [showIcon]="true" [showClear]="true"
+                                [placeholder]="'OtpConfig.EffectiveToPlaceholder' | translate"></p-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/3 w-full">
+                    <label for="status">
+                        {{ 'OtpConfig.Status.Title' | translate }}
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <p-toggleswitch formControlName="status" id="status"></p-toggleswitch>
+                        <span class="text-sm font-medium"
+                            [ngClass]="configForm.get('status')?.value ? 'text-green-600' : 'text-red-600'">
+                            {{ configForm.get('status')?.value ? ('OtpConfig.StatusActive' | translate) :
+                            ('OtpConfig.StatusInactive' | translate) }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div class="flex mt-4">
+            <div *ngIf="detailConfigs.length > 0" class="w-full md:w-3/3 border p-4 rounded-md bg-gray-50">
+                <div formArrayName="detailConfigs">
+                    <div *ngFor="let detail of detailConfigs.controls; let i = index" [formGroupName]="i" class="mt-4">
+                        <h6 class="my-1">{{ 'OtpConfig.DetailRound' | translate }} {{ i + 1 }}</h6>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="font-medium">
+                                    {{ 'OtpConfig.WrongAttempts' | translate }}
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-dropdown formControlName="wrongAttempts" [options]="numberConfirmOTP"
+                                    optionLabel="name" optionValue="code"
+                                    [placeholder]="'OtpConfig.WrongAttemptsPlaceholder' | translate"
+                                    class="w-full"></p-dropdown>
+                                <small
+                                    *ngIf="detail.get('wrongAttempts')?.touched && detail.get('wrongAttempts')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'OtpConfig.Validation.WrongAttemptsRequired' | translate }}
+                                </small>
+                            </div>
+
+                            <div>
+                                <label class="font-medium">
+                                    {{ 'OtpConfig.WaitTimeBetweenAttempts' | translate }} (s)
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-inputnumber inputId="waitTimeBetweenAttempts" mode="decimal"
+                                    formControlName="waitTimeBetweenAttempts"
+                                    [placeholder]="'OtpConfig.WaitTimeBetweenAttemptsPlaceholder' | translate"
+                                    class="w-full" [useGrouping]="false"></p-inputnumber>
+                                <small
+                                    *ngIf="detail.get('waitTimeBetweenAttempts')?.touched && detail.get('waitTimeBetweenAttempts')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'OtpConfig.Validation.WaitTimeBetweenAttemptsRequired' | translate }}
+                                </small>
+                            </div>
+
+                            <div *ngIf="i < detailConfigs.length - 1">
+                                <label class="font-medium">
+                                    {{ 'OtpConfig.LockDuration' | translate }} (s)
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <p-inputnumber inputId="lockDuration" mode="decimal" formControlName="lockDuration"
+                                    [placeholder]="'OtpConfig.LockDurationPlaceholder' | translate" class="w-full"
+                                    [useGrouping]="false"></p-inputnumber>
+                                <small
+                                    *ngIf="detail.get('lockDuration')?.touched && detail.get('lockDuration')?.hasError('required')"
+                                    class="text-red-600">
+                                    {{ 'OtpConfig.Validation.LockDurationRequired' | translate }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="flex justify-end mt-4">
+            <button pButton type="submit" *ngIf="action !== 'detail'"
+                [label]="action === 'edit' ? ('Common.Save' | translate) : ('Common.New' | translate)"
+                [icon]="action !== 'edit' ? 'pi pi-check' : 'pi pi-save'" class="mr-2"></button>
+
+            <button pButton type="button" [label]="'Common.Back' | translate" icon="pi pi-undo" severity="secondary"
+                [routerLink]="'/configuration-otp'"></button>
+        </div>
+    </div>
+</form>
+
+<app-confirm-dialog [visible]="otpConfirmVisiable" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+    [header]="'Common.ChangeConfig' | translate" [confirmLabel]="'Common.ConfirmSave' | translate"
+    [formTemplate]="formTpl" [cancelLabel]="'Common.ConfirmDeleteNo' | translate" [showButtonCancel]="false"
+    [showButtonSubmit]="false" (cancel)="otpConfirmVisiable=false" width="500px">
+    <ng-template #formTpl>
+        <div class="">
+            <div class="flex text-center items-center justify-center">
+                <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium  mb-2"
+                    [innerHTML]="'Common.ConfirmOtpSendMail' | translate">
+                </label>
+            </div>
+            <div class="flex justify-center">
+                <p-inputOtp [length]="6" [(ngModel)]="otpValue"
+                    inputClass="w-10 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 text-lg text-center rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition" />
+            </div>
+            <p-button [disabled]="!otpValue" [label]="'Common.ConfirmChangeConfig' | translate" styleClass="w-full mt-4"
+                (onClick)="updateConfigOtp()" type="submit"></p-button>
+        </div>
+    </ng-template>
+</app-confirm-dialog>

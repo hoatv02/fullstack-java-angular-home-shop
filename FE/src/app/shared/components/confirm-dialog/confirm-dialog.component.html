@@ -1,0 +1,20 @@
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: width }" [header]="header" (onHide)="cancel.emit()"
+  [closable]="closable">
+  <ng-container *ngIf="formTemplate; else defaultMessage">
+    <div class="content-scroll-wrapper">
+      <ng-container *ngTemplateOutlet="formTemplate"></ng-container>
+    </div>
+  </ng-container>
+  <ng-template #defaultMessage>
+    <div class="flex items-center">
+      <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"></i>
+      <span>{{ message }}</span>
+    </div>
+  </ng-template>
+  <ng-template #footer *ngIf="showButtonCancel ||showButtonSubmit">
+    <p-button *ngIf="showButtonCancel" [label]="cancelLabel" icon="pi pi-times" (click)="cancel.emit()"
+      severity="secondary" />
+    <p-button *ngIf="showButtonSubmit" [label]="confirmLabel" icon="pi pi-check" [disabled]="confirmVisiable"
+      (click)="confirm.emit()" autofocus />
+  </ng-template>
+</p-dialog>

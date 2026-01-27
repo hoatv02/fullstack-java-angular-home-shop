@@ -1,0 +1,29 @@
+<ng-container *ngIf="permissions['VIEW']">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <app-table [title_list]="'STATISTICS.TRANSACTION.transaction_list'" [data]="dataList" [columns]="columns"
+            [selection]="[]" [config]="{
+        toolbar: { new: false, delete: false, export: true, sync: false },
+        actions: { view: false, edit: false, delete: false, isShowAction: false }
+      }" [isShowFromToDate]="true" [selectFilter1]="true" [selectFilter]="true" [selectFilter1Data]="customerTypeList"
+            [selectFilterData]="transactionList" [placeholderSelectFilter]="'STATISTICS.TRANSACTION.transaction_type'"
+            [isShowInputSearch]="false" (fromToDateChange)="formToDateChange($event)"
+            [placeholderSelectFilter1]="'STATISTICS.TRANSACTION.customer_group'"
+            (selectFilterChange)="transactionTypeChange($event)" (selectFilter1Change)="customerTypeChange($event)"
+            (selectFilter2Change)="deviceChangeChange($event)" [paginationConfig]="{
+            enabled: true,
+            rows: 10,
+            rowsPerPageOptions: [5, 10, 25, 50]
+            }" [first]="first" [exportdata]="true" [showSelectionColumn]="false" [tagConfig]="tagConfig"
+            (onExportCSV)="exportExcel()" (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)"
+            (onView)="onView($event)" [totalRecords]="totalRecords" (onSwitchChange)="handleSwitchChange($event)" />
+    </div>
+</ng-container>
+
+<app-confirm-dialog [visible]="displayConfirmation" [message]="'STATISTICS.TRANSACTION.confirm_delete'"
+    [header]="'STATISTICS.TRANSACTION.delete_title'" [confirmLabel]="'STATISTICS.TRANSACTION.agree'"
+    [cancelLabel]="'STATISTICS.TRANSACTION.cancel'" (confirm)="onConfirmSwitchChange()"
+    (cancel)="displayConfirmation = false" />
+<!-- TRANSACTION_STATISTIC -->
+<!-- OTP_STATISTIC -->
+<!-- DEVICE_STATISTIC -->

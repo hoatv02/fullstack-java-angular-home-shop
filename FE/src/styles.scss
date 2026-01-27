@@ -1,0 +1,64 @@
+/* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+@use './assets/demo/demo.scss';
+@import 'jsoneditor/dist/jsoneditor.css';
+:where(input, select, textarea, .p-inputtext, .p-dropdown, .p-select, .p-password-input) {
+    &.ng-invalid.ng-touched {
+        @apply border border-red-500 rounded-md;
+    }
+    &.ng-invalid.ng-touched.ng-dirty::placeholder {
+        color: var(--p-select-placeholder-color) !important;
+    }
+}
+
+p-inputnumber.ng-invalid.ng-touched input.p-inputtext {
+    border: 1px solid #ef4444 !important;
+    border-radius: 6px !important;
+}
+
+p-inputnumber.ng-invalid.ng-touched .p-inputwrapper-filled .p-inputnumber {
+    @apply border border-red-500 rounded-md;
+}
+
+p-calendar.ng-invalid.ng-touched .p-inputwrapper .p-inputtext {
+    @apply border border-red-500;
+}
+
+p-datepicker.ng-invalid.ng-touched .p-inputwrapper .p-inputtext {
+    @apply border border-red-500;
+}
+
+p-password.ng-invalid.ng-touched input.p-inputtext {
+    border: 1px solid #ef4444 !important;
+    border-radius: 6px !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #e7e7e7;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-track {
+    background-color: #f8f8f8;
+    border-radius: 6px;
+}
+
+// Dành cho màu savyint
+// .p-button,
+// .p-button-primary {
+//     background: linear-gradient(90deg, #f38312 30%, #ed0743 100%) !important;
+//     border: none !important;
+//     color: #fff !important;
+// }
+
+// .p-button:not(.p-button-outlined) {
+//     background: linear-gradient(90deg, #f38312 30%, #ed0743 100%) !important;
+//     border: none !important;
+//     color: #fff !important;
+// }

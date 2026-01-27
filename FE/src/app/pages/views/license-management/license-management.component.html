@@ -1,0 +1,138 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+
+    <div class="flex items-center justify-between">
+        <h4 class="m-0 text-xl md:text-2xl uppercase font-semibold">
+            {{ 'LICENSE.TITLE' | translate }}
+        </h4>
+
+        <div class="flex gap-2" *ngIf="permissions['UPDATED'] || false">
+            <p-fileUpload name="file" mode="basic" chooseIcon="pi pi-upload"
+                [chooseLabel]="'LICENSE.UPLOAD' | translate" accept=".xml" maxFileSize="1000000" [auto]="true"
+                [customUpload]="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-4">
+        <!-- LICENSE -->
+        <div class="grid grid-cols-4 gap-4 mb-4 w-full items-stretch">
+            <div class="card border rounded-xl p-4 shadow-sm bg-white">
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.LICENSE_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.LICENSE_ID' | translate }}:</span>
+                        {{xmlContent?.licenseId}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.LICENSE_NAME' | translate }}:</span>
+                        {{xmlContent?.licenseName}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.LICENSE_CODE' | translate }}:</span>
+                        {{xmlContent?.licenseCode}}</li>
+                </ul>
+            </div>
+
+            <!-- PARTNER -->
+            <div class="card border rounded-xl p-4 shadow-sm bg-white">
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.PARTNER_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.PARTNER_NAME' | translate }}:</span>
+                        {{xmlContent?.partnerName}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.SALE_CONTACT' | translate }}:</span>
+                        {{xmlContent?.saleContact}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.EMAIL' | translate }}:</span> {{xmlContent?.partnerEmail}}
+                    </li>
+                    <li><span class="font-medium">{{ 'LICENSE.PHONE' | translate }}:</span> {{xmlContent?.partnerPhone}}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- COMPANY -->
+            <div class="card border rounded-xl p-4 shadow-sm bg-white">
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.COMPANY_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.COMPANY_NAME' | translate }}:</span>
+                        {{xmlContent?.companyName}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.ADDRESS' | translate }}:</span>
+                        {{xmlContent?.companyAddress}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.PHONE' | translate }}:</span> {{xmlContent?.contactPhone}}
+                    </li>
+                    <li><span class="font-medium">{{ 'LICENSE.FAX' | translate }}:</span> {{xmlContent?.contactFax ||
+                        '—'}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.EMAIL' | translate }}:</span> {{xmlContent?.contactEmail}}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PRODUCT -->
+            <div class="card border rounded-xl p-4 shadow-sm bg-white">
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.PRODUCT_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.PRODUCT_CODE' | translate }}:</span>
+                        {{xmlContent?.productCode}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.PRODUCT_NAME' | translate }}:</span>
+                        {{xmlContent?.productName}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.DESCRIPTION' | translate }}:</span>
+                        {{xmlContent?.description}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ACTIVATION -->
+        <div class="card border rounded-xl p-4 mb-4 shadow-sm bg-white lg:col-span-2">
+            <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.ACTIVATION_SECTION' | translate }}</h2>
+            <div class="grid grid-cols-2 gap-6 text-sm">
+                <div>
+                    <span class="font-medium">{{ 'LICENSE.START_DATE' | translate }}:</span> {{xmlContent?.startDate}}
+                </div>
+                <div>
+                    <span class="font-medium">{{ 'LICENSE.EXPIRY_DATE' | translate }}:</span> {{xmlContent?.expiryDate}}
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULES -->
+        <div class="card border rounded-xl mb-4 p-4 shadow-sm bg-white lg:col-span-2">
+            <h2 id="modulesTableTitle" class="font-semibold text-lg mb-4">{{ 'LICENSE.MODULES_SECTION' | translate }}
+            </h2>
+            <table class="w-full border text-sm" aria-labelledby="modulesTableTitle">
+
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border px-2 py-1">{{ 'LICENSE.MODULE' | translate }}</th>
+                        <th class="border px-2 py-1">{{ 'LICENSE.STATUS' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let m of xmlContent?.modules">
+                        <td class="border px-2 py-1">{{m?.name}}</td>
+                        <td class="border px-2 py-1">{{m?.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- LIMITATIONS + SIGNATURE -->
+        <div class="card border rounded-xl grid grid-cols-2 p-4 shadow-sm bg-white">
+            <div>
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.LIMITATIONS_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.KEY_COUNT' | translate }}:</span> {{xmlContent?.keyCount}}
+                    </li>
+                    <li><span class="font-medium">{{ 'LICENSE.SIGNATURE_COUNT' | translate }}:</span>
+                        {{xmlContent?.signatureCount}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.CERTIFICATE_COUNT' | translate }}:</span>
+                        {{xmlContent?.certificateCount}}</li>
+                </ul>
+            </div>
+
+            <div>
+                <h2 class="font-semibold text-lg mb-4">{{ 'LICENSE.SIGNATURE_SECTION' | translate }}</h2>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="font-medium">{{ 'LICENSE.SIGNED_INFO' | translate }}:</span>
+                        {{xmlContent?.signedInfo}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.SIGNATURE_VALUE' | translate }}:</span>
+                        {{xmlContent?.signatureValue}}</li>
+                    <li><span class="font-medium">{{ 'LICENSE.KEY_INFO' | translate }}:</span> {{xmlContent?.keyInfo}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

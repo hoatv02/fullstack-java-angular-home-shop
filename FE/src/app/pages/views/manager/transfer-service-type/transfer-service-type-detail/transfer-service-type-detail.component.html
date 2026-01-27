@@ -1,0 +1,74 @@
+<form [formGroup]="detailForm" (ngSubmit)="onSubmit()">
+    <div class="card shadow-sm rounded-lg bg-white">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <h4 class="m-0 text-2xl font-semibold">
+            {{ displayTitlePages | translate }}
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <!-- Mã dịch vụ -->
+            <div>
+                <label for="code" class="font-medium text-gray-700">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_CODE.LABEL' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="code" formControlName="code"
+                    [placeholder]="'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_CODE.PLACEHOLDER' | translate"
+                    (keydown.space)="$event.preventDefault()" type="text" class="w-full mt-1" />
+                <small *ngIf="detailForm.get('code')?.touched && detailForm.get('code')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_CODE.REQUIRED' | translate }}
+                </small>
+                <small
+                    *ngIf="detailForm.get('code')?.touched && !detailForm.get('code')?.hasError('required') && detailForm.get('code')?.hasError('pattern')"
+                    class="text-red-600">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_CODE.INVALID' | translate }}
+                </small>
+            </div>
+
+            <!-- Tên dịch vụ -->
+            <div>
+                <label for="name" class="font-medium text-gray-700">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_NAME.LABEL' | translate }}
+                    <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="name"
+                    [placeholder]="'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_NAME.PLACEHOLDER' | translate"
+                    formControlName="name" type="text" class="w-full mt-1" />
+                <small *ngIf="detailForm.get('name')?.touched && detailForm.get('name')?.hasError('required')"
+                    class="text-red-600">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.SERVICE_NAME.REQUIRED' | translate }}
+                </small>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+            <!-- Trạng thái -->
+            <div>
+                <label for="status" class="font-medium text-gray-700">
+                    {{ 'TRANSFER_SERVICE_TYPE.FIELDS.STATUS.LABEL' | translate }}
+                </label>
+                <div class="flex items-center gap-3 mt-1">
+                    <p-toggleswitch formControlName="status" id="status"></p-toggleswitch>
+                    <span class="text-sm font-medium"
+                        [ngClass]="detailForm.get('status')?.value ? 'text-green-600' : 'text-red-600'">
+                        {{ detailForm.get('status')?.value ? ('Common.StatusActive' | translate) :
+                        ('Common.StatusInactive' | translate) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3 mt-8">
+            <button pButton type="submit" *ngIf="action !== 'detail'"
+                [label]="(action === 'edit' ? 'Common.Save' : 'Common.New') | translate"
+                [icon]="action === 'edit' ? 'pi pi-save' : 'pi pi-check'"></button>
+
+            <button pButton type="button" [label]="'Common.Back' | translate" icon="pi pi-undo" severity="secondary"
+                [routerLink]="'/transfer-service-type'"></button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+<ng-container>
+  <app-table [title_list]="'SystemLog.SAM.TITLE_SAM' | translate" [data]="dataList" [columns]="columns" [selection]="[]"
+    [config]="{
+      toolbar: { new: false, delete: false, export: true, sync: false },
+      actions: { view: true, edit: false, delete: false, isShowAction: true }
+    }" (fromToDateChange)="formToDateChange($event)" [selectFilterData]="httpCode"
+    (selectFilterChange)="handleFilterHttpCodeChange($event)" [isShowFromToDate]="true" [selectFilter]="true"
+    [placeholderSelectFilter]="'SystemLog.SAM.PLACEHOLDER_FILTER' | translate"
+    [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+    [exportdata]="true" [showSelectionColumn]="false" [tagConfig]="tagConfig" (onExportCSV)="exportExcel()"
+    (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)" [totalRecords]="totalRecords"
+    (onView)="viewSystemLogSam($event)" />
+</ng-container>
+
+<app-confirm-dialog [visible]="otpConfirmVisiable" [message]="'Common.ConfirmChangeStatusMessage' | translate"
+  [header]="'SystemLog.SAM.DETAIL_TITLE' | translate" [confirmLabel]="'Common.ConfirmSave' | translate"
+  [formTemplate]="formTpl" [cancelLabel]="'Common.ConfirmDeleteNo' | translate" [showButtonCancel]="false"
+  [showButtonSubmit]="false" (cancel)="otpConfirmVisiable=false" width="700px">
+  <ng-template #formTpl>
+    <div class="">
+      <div class="px-6 pb-6">
+        <div *ngFor="let item of dataSystemLog | keyvalue" class="grid grid-cols-2 gap-4 mb-2">
+          <span class="font-semibold text-gray-700">
+            {{ ('SYSTEM_LOG_SAM.LABEL.' + item.key) | translate }}:
+          </span>
+          <span [ngClass]="getValueClass(item.key, item.value)">
+            {{
+            isDateField(item.key)
+            ? (item.value | date:'dd/MM/yyyy HH:mm:ss')
+            : (item.value || '--')
+            }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-confirm-dialog>

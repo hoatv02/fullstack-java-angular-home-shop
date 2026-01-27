@@ -1,0 +1,102 @@
+<div class="card">
+    <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+
+    <form [formGroup]="form" (ngSubmit)="submitForm()" class="space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block font-medium mb-1">First Name <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="firstName" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+            <div>
+                <label class="block font-medium mb-1">Last Name <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="lastName" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block font-medium mb-1">Email <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="email" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+                <small class="text-red-500" *ngIf="form.get('email')?.hasError('email')">Email không hợp lệ</small>
+            </div>
+            <div>
+                <label class="block font-medium mb-1">Website <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="website" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('website')?.touched && form.get('website')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block font-medium mb-1">Phone <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="phone" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('phone')?.touched && form.get('phone')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+            <div>
+                <label class="block font-medium mb-1">Company <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="company" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('company')?.touched && form.get('company')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+        </div>
+        <hr class="my-4" />
+        <div class="text-xl font-semibold">Card Design</div>
+
+        <!-- Name on card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block font-medium mb-1">Name on card <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-2 gap-2">
+                    <input pInputText formControlName="cardFirstName" placeholder="First" class="w-full" />
+                    <input pInputText formControlName="cardLastName" placeholder="Last" class="w-full" />
+                </div>
+                <small class="text-red-500" *ngIf="form.get('cardFirstName')?.touched && form.get('cardFirstName')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+                <small class="text-red-500" *ngIf="form.get('cardLastName')?.touched && form.get('cardLastName')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+
+            <div>
+                <label class="block font-medium mb-1">Job title <span class="text-red-500">*</span></label>
+                <input pInputText formControlName="jobTitle" class="w-full" />
+                <small class="text-red-500" *ngIf="form.get('jobTitle')?.touched && form.get('jobTitle')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="w-full">
+                <label class="block font-medium mb-1">Birthday <span class="text-red-500">*</span></label>
+                <p-calendar appendTo="body" formControlName="birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" dateFormat="dd/mm/yy" styleClass="w-full" inputStyleClass="w-full"></p-calendar>
+                <small class="text-red-500" *ngIf="form.get('birthday')?.touched && form.get('birthday')?.hasError('required')"> Trường dữ liệu bắt buộc! </small>
+            </div>
+            <div></div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block font-medium mb-1">Quantity <span class="text-red-500">*</span></label>
+                <p-dropdown [options]="quantities" formControlName="quantity" placeholder="Select quantity" optionLabel="label" class="w-full"></p-dropdown>
+                <small class="text-red-500" *ngIf="form.get('quantity')?.touched && form.get('quantity')?.hasError('required')">Trường dữ liệu bắt buộc!</small>
+            </div>
+            <div>
+                <label class="block font-medium mb-1">Ship to: <span class="text-red-500">*</span></label>
+                <div class="flex gap-4 mt-2">
+                    <p-radioButton name="shipTo" [value]="true" formControlName="shipTo" inputId="home" />
+                    <label for="home">Home</label>
+                    <p-radioButton name="shipTo" [value]="false" formControlName="shipTo" inputId="office" />
+                    <label for="office">Office</label>
+                </div>
+                <small class="text-red-500" *ngIf="form.get('shipTo')?.touched && form.get('shipTo')?.hasError('required')">Trường dữ liệu bắt buộc! chọn</small>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div>
+            <label class="block font-medium mb-1">Additional notes</label>
+            <textarea pInputTextarea formControlName="notes" rows="3" class="w-full"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+            <button pButton type="submit" class="p-button-primary" label="Submit" [disabled]="form.invalid" (click)="submitForm()"></button>
+        </div>
+    </form>
+</div>

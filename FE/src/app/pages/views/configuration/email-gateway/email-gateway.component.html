@@ -1,0 +1,25 @@
+<ng-container *ngIf="permissions['VIEW']">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+
+        <app-table [title_list]="'EmailGateway.TitleList' | translate" [data]="dataList" [columns]="columns"
+            [selection]="[]" [config]="{
+                toolbar: { new:  permissions['CREATED'] || false, delete: false, export: false, sync: false },
+                actions: { view:  permissions['DETAIL'] || false, edit:  permissions['UPDATED'] || false, delete:  permissions['REMOVE'] || false, isShowAction: true }
+            }" [isShowFromToDate]="true" [selectFilter]="true" [selectFilterData]="GetwayList"
+            [isShowInputSearch]="false" (fromToDateChange)="formToDateChange($event)"
+            (selectFilterChange)="typeConfigChange($event)"
+            [placeholderSelectFilter]="'EmailGateway.PlaceholderSelectFilter' | translate"
+            (onEdit)="editConfigOtp($event)" (onDelete)="onConfirmDeletefirm($event)"
+            [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+            [unlimitedDateRange]="true" [exportdata]="true" [showSelectionColumn]="false" [tagConfig]="tagConfig"
+            [showClear]="true" [showButtonBar]="true" (onExportCSV)="exportExcel()"
+            (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)" (onView)="onView($event)"
+            [totalRecords]="totalRecords" (onSwitchChange)="handleSwitchChange($event)" />
+    </div>
+</ng-container>
+
+<app-confirm-dialog [visible]="displayConfirmation" [message]="'Common.ConfirmDeleteMessage' | translate"
+    [header]="'Common.ConfirmDeleteHeader' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="deleteConfigEmail()"
+    (cancel)="displayConfirmation = false" />

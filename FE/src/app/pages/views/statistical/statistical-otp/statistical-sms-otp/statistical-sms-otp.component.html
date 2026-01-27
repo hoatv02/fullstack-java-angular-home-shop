@@ -1,0 +1,12 @@
+<ng-container>
+    <app-table [title_list]="'Thống kê SMS OTP'" [data]="dataList" [columns]="columns" [selection]="[]" [config]="{
+                                toolbar: { new: false, delete: false, export: true, sync: false },
+                                actions: { view: true, edit: false, delete: false,isShowAction:false }
+                            }" (fromToDateChange)="formToDateChange($event)" [selectFilterData]="validationStatusList"
+        [isShowInputSearch]="false" (selectFilterChange)="handleFilterHttpCodeChange($event)" [isShowFromToDate]="true"
+        [selectFilter]="true" placeholderSelectFilter="Trạng thái"
+        [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+        [exportdata]="true" [showSelectionColumn]="false" [first]="first" [exportdata]="true"
+        [showSelectionColumn]="false" [tagConfig]="tagConfig" (onExportCSV)="exportExcel()"
+        (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)" [totalRecords]="totalRecords" />
+</ng-container>
