@@ -4,6 +4,23 @@
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
 @import 'jsoneditor/dist/jsoneditor.css';
+
+:root {
+    --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+* {
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+}
 :where(input, select, textarea, .p-inputtext, .p-dropdown, .p-select, .p-password-input) {
     &.ng-invalid.ng-touched {
         @apply border border-red-500 rounded-md;

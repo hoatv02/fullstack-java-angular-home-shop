@@ -8,17 +8,28 @@ import { ChangePasswordSuccessComponent } from './app/pages/Admin/new-password-b
 import { NewPasswordByEMailComponent } from './app/pages/Admin/new-password-by-email/new-password-by-email.component';
 import { Notfound } from './app/pages/Admin/notfound/notfound';
 import pagesRoutes from './app/pages/Admin/pages.routes';
+import { Landing } from './app/pages/Clients/landing/landing';
+import { AppClientLayout } from './app/layout/Clients/app.layout';
+import { HomeComponent } from './app/pages/Clients/home/home.component';
 
 export const appRoutes: Routes = [
     {
         path: '',
-        component: AppLayout,
-        canActivate: [AuthGuard],
-        children: [{ path: '', redirectTo: 'dashboard', pathMatch: 'full' }, { path: 'dashboard', component: Dashboard },
-        ...pagesRoutes
+        component: AppClientLayout,
+        children: [
+            { path: '', component: HomeComponent }
         ]
     },
-    // { path: 'landing', component: Landing },
+    {
+        path: 'admin',
+        component: AppLayout,
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'dashboard', component: Dashboard },
+            ...pagesRoutes
+        ]
+    },
     { path: 'empty', component: Empty },
     { path: 'reset-password/:token', component: NewPasswordByEMailComponent },
     { path: 'update-password-success', component: ChangePasswordSuccessComponent },

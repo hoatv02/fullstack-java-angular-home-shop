@@ -1,0 +1,158 @@
+<section class="px-0 md:px-5">
+    <div class="hero-diagonal relative w-full h-[500px] md:h-[700px] md:rounded-[2.5rem] overflow-hidden group"
+        (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+        <div class="relative w-full h-full">
+            <div *ngFor="let slide of slides; let i = index" class="slider-item transition-all duration-700 ease-in-out"
+                [class.opacity-100]="currentSlide === i" [class.opacity-0]="currentSlide !== i"
+                [class.pointer-events-none]="currentSlide !== i" [style.background-image]="'url(' + slide.image + ')'">
+                <div class="container mx-auto px-16 md:px-32 slider-content h-full flex items-center">
+                    <div class="text-left space-y-6 max-w-2xl">
+                        <p class="text-white text-sm md:text-base font-bold tracking-[0.2em] uppercase opacity-80 animate-fade-left"
+                            [class.hide-animation]="currentSlide !== i">
+                            {{ slide.subtitle }}
+                        </p>
+                        <h1 class="text-2xl md:text-4xl font-black text-white leading-tight uppercase animate-fade-left"
+                            [class.hide-animation]="currentSlide !== i" style="animation-delay: 0.1s"
+                            [innerHTML]="slide.title"></h1>
+                        <p class="text-white/70 text-sm md:text-lg max-w-md hidden md:block animate-fade-left"
+                            [class.hide-animation]="currentSlide !== i" style="animation-delay: 0.2s">
+                            {{ slide.description }}
+                        </p>
+                        <div class="pt-6 animate-fade-left" [class.hide-animation]="currentSlide !== i"
+                            style="animation-delay: 0.3s">
+                            <a class="inline-flex items-center gap-3 bg-white/10 text-white px-10 py-4 rounded-full font-extrabold text-sm uppercase tracking-widest hover:bg-primary transition-all backdrop-blur-md border border-white/20 shadow-2xl hover:scale-105 active:scale-95"
+                                href="#">
+                                KHÁM PHÁ NGAY
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button (click)="prevSlide()"
+            class="absolute left-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 hover:bg-primary backdrop-blur-md hidden md:flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 border border-white/20">
+            <i class="fa-solid fa-angle-left text-2xl"></i>
+        </button>
+        <button (click)="nextSlide()"
+            class="absolute right-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 hover:bg-primary backdrop-blur-md hidden md:flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 border border-white/20">
+            <i class="fa-solid fa-angle-right text-2xl"></i>
+        </button>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+            <div *ngFor="let dot of slides; let i = index" (click)="setSlide(i)"
+                class="cursor-pointer transition-all duration-300 h-2 rounded-full"
+                [ngClass]="currentSlide === i ? 'w-10 bg-white' : 'w-3 bg-white/40'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mx-auto px-16 md:px-32 py-12">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">Danh mục</h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-20">
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Phụ kiện" class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBybFLrU5tmFxN1zdFbIgu_4J80GiWQnqjcW7RBNCLDI-XHGKCcVsiNusi2sAeSwndpA2Iw7rjENHfnsZQd9II8uhuOq2KSGQb12mBX8fkRBZzn60adua7c2gheZXBVx0mnJRwVOLDjfPGXlGlB_4O7vdDHY-9p_sbK2VHucNrCrj67nN8godF4DKD6YR_vzYmAvB65YacV0M03V-AraAruFbo9F20SqH7q3ezIboidbWf24jKVXx7P0_UldmkkyXIY1C6VTg6FbBI" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Phụ
+                kiện</span>
+        </div>
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Khóa thông minh" class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuADzaZ_4EQl321VUz8Q3E6dBIAEVv70GgYVKlueUnBlsMUBd4zf6XQgkWFFhtUAvSgdoZmGu35j9ea9fYg6F6fJiU8AvYqIg_3t0CvDAxH8u-ypBtWsBL4-v2x7A8QN5R86QkSQknoCQxOSqC5FinwI0-5J6jIEvMDY7EK9z-m7dgyETQ034lfMJImDCzx7VGIdHZxRXbQ0l2zvF9ITksLCRJH-4yS9ZRFxCimAF9xsnWov8i-0D79V7ySTINE8oluKczJcPKe7HLs" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Khóa
+                thông minh</span>
+        </div>
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Đèn thông minh" class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxZU-Q14rKM7J-hNANj2ihLYtE_lVFSEnh4KA_b7PB8ytau8SbqahFxhCtP9TlR0_yK4azJkNse0uwupoaR3aQwqR9q2y4DM2a42PhX-Zm2_PFa5vk0sUYRYgawnQjlhrghsmfrS6zbgqShZmlzqwS4oTMHmnedjSP4OunReZpHLTiviPJl3vIblSN0nJoFTYf5s3ZchKrN11sMn8J6Gnrvh8sKGE8nKQxRylxU7JQI78b84e8Pvb5HD0mHj7tKKEv8HrjKNMvrbM" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Đèn
+                thông minh</span>
+        </div>
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Hệ thống giám sát" class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oeWP_ifM_aMRTLx3XAEP6QKbfezg6besMamt1RzJiHTRV1xc8EP00togS_9lwZNFoL2GC1dOaPCOEJ4BqSQ-zSQPUKhALkKoVGtlqD17TFkfxcd2NF63ZSPWW81beLhGFImZIaKH7mFE5Yu423BTaw4MH8CZkZs8YVYq595mViWl4rMXPkSoPlrO05mGkEvP0qNVMI8pfj_g5sgws4W3Vji232spoqCRBbAriS1i6CPZEsWmTPfngjSrog3XvhHsxA3sCEjv13A" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Hệ
+                thống giám sát</span>
+        </div>
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Thiết bị nghe nhìn" class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmx9mgu6vxWenPCyAwb1HhuxRQ3Y-hyNSWX8hhttG2C6DsY_93zi3WGLkjSV16cjljyF8XXuEPNgwkhttSztQvAdNvDEokrKLH5NSQ4cEx6CHeFI0uQL-1gPT0yXutHYjzEQLqPj0kw1ttTZSahgq_3Hqy-s6e863268I15P3OvS44UpxfKrzhLboJVkpUIH2UMm0UI5xgxKAMLWkhI0R08kHHSOoMJeiiUWnfJlrZbW4srChQ3_KzoXkwUV3nDH8kYS52ZuKmgEs" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Thiết
+                bị nghe nhìn</span>
+        </div>
+        <div class="category-card flex flex-col items-center group cursor-pointer">
+            <div
+                class="w-full aspect-[4/3] bg-gray-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 group-hover:bg-gray-100 border border-gray-100/50 dark:border-slate-700">
+                <img alt="Gia dụng thông minh"
+                    class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHS84uP4-nxXy1fdd1v4WELmDdPB34eVL6GldmZdFSLcpXXtSok4aXJZgf8bU0Q7qGbuzqNW1nkyVwVlFv_Dk5MtOt5IbQfoK3VsZUzj-kPjNbW98UEQGO3rGWjcXRefeM8RY-XzKWgiV89eEpwoYTUEJViMfj7JZnxxy5cdPOz2-sWAMf91mzgEvMqe7fPZ3y9c0FKohFLB6_PQrZwrKapX3jbG5oT0bNBepXOdD0PrcCfVgc2DPv440t0m2NiVTcPvL4698dJDs" />
+            </div>
+            <span
+                class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Gia
+                dụng thông minh</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div
+            class="promo-banner-dark relative overflow-hidden rounded-[2rem] group cursor-pointer min-h-[360px] flex items-center">
+            <div class="relative z-10 p-12 md:p-14 w-full md:w-1/2">
+                <span class="text-[11px] font-bold tracking-[0.1em] text-primary uppercase mb-3 block opacity-90">Ánh
+                    sáng tốt nhất</span>
+                <h3 class="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">Đèn thông minh</h3>
+                <a class="text-xs font-bold text-primary hover:underline flex items-center gap-1 transition-all"
+                    href="#">
+                    Khám phá thêm
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+            </div>
+            <div
+                class="absolute right-0 bottom-0 top-0 w-full md:w-3/5 flex items-center justify-center p-6 pointer-events-none">
+                <img alt="Smart Light" class="max-h-[85%] w-auto object-contain drop-shadow-2xl"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsLyROh3HT3vc0nQNg0bIgS1uReQxV4CoP8zg8QbTqAfvMl7VIcvnJdaRTYgGCMGQUFNumsTeBE9G46rLVy3mFb_BIvbOMEL-8h3Y0mAH3fwL1Xknd_hKYXNIL-upQrEq0T5jMQMYry5JbNZKPMoIM8WgrsgXIFbt_7EDRwD7GDFmHkI2AaFvqNehaN2oeDbYvjM_tuSwa8FPMeMH8twcPFL0PF5E5u0KkqGdW-K8R94JfLvjoYXpipRUlIYI_LIHDB8NhYjGvCo0" />
+            </div>
+        </div>
+
+        <div
+            class="promo-banner-light relative overflow-hidden rounded-[2rem] group cursor-pointer min-h-[360px] flex items-center">
+            <div class="relative z-10 p-12 md:p-14 w-full md:w-1/2">
+                <span class="text-[11px] font-bold tracking-[0.1em] text-primary uppercase mb-3 block opacity-90">Camera
+                    an ninh</span>
+                <h3 class="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">Bảo vệ nhà của bạn</h3>
+                <a class="text-xs font-bold text-primary hover:underline flex items-center gap-1 transition-all"
+                    href="#">
+                    Khám phá thêm
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+            </div>
+            <div
+                class="absolute right-0 bottom-0 top-0 w-full md:w-3/5 flex items-center justify-center p-6 pointer-events-none">
+                <img alt="Security Camera" class="max-h-[85%] w-auto object-contain drop-shadow-2xl"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1xE_n3i9hHSgyYHRyYFR3ars7dUmGWYz-v6pd71N3MryoC2Rv2xPO45xES6zfJS38n6KYjKRPa151Nbza6X-gmzI7xo0_a0JO7z0VGxy1OlaKjuEJ6hB9qRAn3F3VVhwx8wmTamdYAXkaci-E4gGqDe9Hh09EkHaNxHlXaH2L69Vzn-V6j8Mcy_OKU2xjXC_JHFZnCR0QNn5Hmy14zDXKO3nDeZUBfQyyfrK6l9zC5g5GGAYfpNqSB64x901lYwkn9m-_Fg3B5B0" />
+            </div>
+        </div>
+    </div>
+</div>
