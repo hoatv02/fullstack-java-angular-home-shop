@@ -25,7 +25,5 @@ public class AuthController {
         apiResponse.setData(result);
         apiResponse.setMessage("Success");
         return ResponseEntity.ok(apiResponse);
-
     }
-
 }

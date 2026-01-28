@@ -4,13 +4,13 @@ import { Router, RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
 import { ToastModule } from 'primeng/toast';
 import { Subscription } from 'rxjs';
-import { LoadingComponent } from './app/layout/component/app.loading';
-import { ChangePasswordComponent } from './app/pages/components/change-password/change-password.component';
+import { LoadingComponent } from './app/layout/Admins/component/app.loading';
+import { ChangePasswordComponent } from './app/pages/Admin/components/change-password/change-password.component';
 import { TranslationService } from './assets/i18n/translation.service';
-import { AuthService } from './app/layout/service/auth.service';
+import { AuthService } from './app/layout/Admins/service/auth.service';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd } from '@angular/router';
-import { NotificationService } from './app/layout/service/notification.service';
+import { NotificationService } from './app/layout/Admins/service/notification.service';
 @Component({
     selector: 'app-root',
     standalone: true,

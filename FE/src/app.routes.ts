@@ -1,14 +1,13 @@
 import { Routes } from '@angular/router';
-import { AppLayout } from './app/layout/component/app.layout';
-import { Dashboard } from './app/pages/dashboard/dashboard';
-import { Notfound } from './app/pages/notfound/notfound';
-import { Empty } from './app/pages/empty/empty';
-import pagesRoutes from './app/pages/pages.routes';
-import { Access } from './app/pages/auth/access';
-import { Landing } from './app/pages/landing/landing';
-import { ChangePasswordSuccessComponent } from './app/pages/new-password-by-email/change-password-success/change-password-success.component';
-import { NewPasswordByEMailComponent } from './app/pages/new-password-by-email/new-password-by-email.component';
-import { AuthGuard } from './app/layout/service/AuthGuard.service';
+import { AppLayout } from './app/layout/Admins/component/app.layout';
+import { AuthGuard } from './app/layout/Admins/service/AuthGuard.service';
+import { Access } from './app/pages/Admin/auth/access';
+import { Dashboard } from './app/pages/Admin/dashboard/dashboard';
+import { Empty } from './app/pages/Admin/empty/empty';
+import { ChangePasswordSuccessComponent } from './app/pages/Admin/new-password-by-email/change-password-success/change-password-success.component';
+import { NewPasswordByEMailComponent } from './app/pages/Admin/new-password-by-email/new-password-by-email.component';
+import { Notfound } from './app/pages/Admin/notfound/notfound';
+import pagesRoutes from './app/pages/Admin/pages.routes';
 
 export const appRoutes: Routes = [
     {
@@ -25,6 +24,6 @@ export const appRoutes: Routes = [
     { path: 'update-password-success', component: ChangePasswordSuccessComponent },
     { path: 'notfound', component: Notfound },
     { path: 'forbidden', component: Access },
-    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+    { path: 'auth', loadChildren: () => import('./app/pages/Admin/auth/auth.routes') },
     { path: '**', redirectTo: '/notfound' }
 ];
