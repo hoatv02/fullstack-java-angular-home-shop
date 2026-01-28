@@ -1,0 +1,10 @@
+com\example\HomeShop\controller\AuthController.class
+com\example\HomeShop\entity\User.class
+com\example\HomeShop\dto\RegisterDTO$RegisterDTOBuilder.class
+com\example\HomeShop\controller\HealthController.class
+com\example\HomeShop\service\UserService.class
+com\example\HomeShop\config\SwaggerConfig.class
+com\example\HomeShop\entity\User$UserBuilder.class
+com\example\HomeShop\repository\UserRepository.class
+com\example\HomeShop\config\SecurityConfig.class
+com\example\HomeShop\dto\RegisterDTO.class
