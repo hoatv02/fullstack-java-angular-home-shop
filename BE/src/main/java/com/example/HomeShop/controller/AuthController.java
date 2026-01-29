@@ -1,6 +1,7 @@
 package com.example.HomeShop.controller;
 
 import com.example.HomeShop.dto.ApiResponse;
+import com.example.HomeShop.dto.LoginDTO;
 import com.example.HomeShop.dto.RegisterDTO;
 import com.example.HomeShop.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,7 +9,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,6 +32,18 @@ public class AuthController {
         apiResponse.setMessage("Success");
         return ResponseEntity.ok(apiResponse);
 
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "Đăng nhập", description = "Đăng nhập với username và password")
+    public ResponseEntity<ApiResponse<Map<String, String>>> login(@Valid @RequestBody LoginDTO loginDTO) {
+        Map<String, String> result = userService.login(loginDTO);
+
+        ApiResponse<Map<String, String>> apiResponse = new ApiResponse<>();
+        apiResponse.setData(result);
+        apiResponse.setMessage("Đăng nhập thành công");
+
+        return ResponseEntity.ok(apiResponse);
     }
 
 }
