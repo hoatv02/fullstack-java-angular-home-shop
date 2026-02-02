@@ -8,16 +8,25 @@ import { ChangePasswordSuccessComponent } from './app/pages/Admin/new-password-b
 import { NewPasswordByEMailComponent } from './app/pages/Admin/new-password-by-email/new-password-by-email.component';
 import { Notfound } from './app/pages/Admin/notfound/notfound';
 import pagesRoutes from './app/pages/Admin/pages.routes';
-import { Landing } from './app/pages/Clients/landing/landing';
 import { AppClientLayout } from './app/layout/Clients/app.layout';
 import { HomeComponent } from './app/pages/Clients/home/home.component';
+import { IntroduceComponent } from './app/pages/Clients/introduce/introduce.component';
+import { ProductsComponent } from './app/pages/Clients/products/products.component';
+import { ProductDetailComponent } from './app/pages/Clients/product-detail/product-detail.component';
+import { CartComponent } from './app/pages/Clients/cart/cart.component';
+import { CheckoutComponent } from './app/pages/Clients/checkout/checkout.component';
 
 export const appRoutes: Routes = [
     {
         path: '',
         component: AppClientLayout,
         children: [
-            { path: '', component: HomeComponent }
+            { path: '', component: HomeComponent },
+            { path: 'introduce', component: IntroduceComponent },
+            { path: 'products', component: ProductsComponent },
+            { path: 'products/:id', component: ProductDetailComponent },
+            { path: 'cart', component: CartComponent },
+            { path: 'checkout', component: CheckoutComponent },
         ]
     },
     {

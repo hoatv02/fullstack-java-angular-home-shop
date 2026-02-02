@@ -1,16 +1,27 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HomeBannerComponent } from './home-banner/home-banner.component';
+import { HomeCategoryComponent } from './home-category/home-category.component';
+import { HomeBestSellingProductComponent } from './home-best-selling-product/home-best-selling-product.component';
+import { HomePromotionProductComponent } from './home-promotion-product/home-promotion-product.component';
+import { HomePostNewsComponent } from './home-post-news/home-post-news.component';
+import { HomeCustomerCommentComponent } from './home-customer-comment/home-customer-comment.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HomeCustomerCommentComponent, HomeBannerComponent, HomePostNewsComponent, HomeCategoryComponent, HomeBestSellingProductComponent, HomePromotionProductComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   currentSlide = 0;
   touchStartX = 0;
+
+  // News Slider State
+  currentNewsIndex = 0;
+
+
   slides = [
     {
       image: 'https://cdn3630.cdn-template-4s.com/media/banner/slider1.webp',

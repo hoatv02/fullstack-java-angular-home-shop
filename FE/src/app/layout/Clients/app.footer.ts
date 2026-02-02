@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,
     selector: 'app-footer',
+    imports: [CommonModule],
     template: `
-        <div class="min-h-screen flex flex-col justify-end">
+        <div class=" flex flex-col justify-end">
             <footer class="w-full border-t border-surface pt-16 pb-12">
                 <div class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 grid grid-cols-1 md:grid-cols-5 gap-8 mb-16">
                     <div class="space-y-5">
@@ -94,28 +96,32 @@ import { Component } from '@angular/core';
                     </div>
                 </div>
             </footer>
-            <div class="fixed bottom-6 left-6 flex flex-col gap-3 z-50">
-                <button class="flex items-center gap-3 bg-[#0084FF] text-white px-5 py-3 rounded-full shadow-xl transition-all hover:translate-x-1 active:scale-95">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C6.477 2 2 6.145 2 11.258c0 2.908 1.462 5.503 3.746 7.231.197.149.32.373.33.616l.034 2.13c.01.65.65 1.12 1.25.86l2.408-.996a.913.913 0 01.666.027c1.13.487 2.378.76 3.682.76 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2z"
-                        ></path>
-                    </svg>
-                    <span class="text-sm font-semibold pr-1">Tư vấn qua Zalo</span>
-                </button>
-                <button class="flex items-center gap-3 bg-[#1877F2] text-white px-5 py-3 rounded-full shadow-xl transition-all hover:translate-x-1 active:scale-95">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                        <path
-                            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
-                        ></path>
-                    </svg>
-                    <span class="text-sm font-semibold pr-1">Facebook Chat</span>
-                </button>
-                <button class="flex items-center gap-3 bg-surface-900 dark:bg-surface-700 text-white px-5 py-3 rounded-full shadow-xl transition-all hover:translate-x-1 active:scale-95 border border-white/10">
-                    <i class="fa-solid fa-headset text-primary text-lg"></i>
-                    <span class="text-sm font-semibold pr-1">Hotline 0901.191.616</span>
+            <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50 items-end">
+                <div class="flex flex-col gap-3 transition-all duration-300 ease-in-out origin-bottom" [ngClass]="isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0 h-0 pointer-events-none'">
+                    <button class="flex items-center gap-3 bg-[#0084FF] text-white px-5 py-3 rounded-full shadow-xl transition-all hover:translate-x-1 active:scale-95 whitespace-nowrap">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.908 1.462 5.503 3.746 7.231.197.149.32.373.33.616l.034 2.13c.01.65.65 1.12 1.25.86l2.408-.996a.913.913 0 01.666.027c1.13.487 2.378.76 3.682.76 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2z"></path>
+                        </svg>
+                        <span class="text-sm font-semibold pr-1">Tư vấn qua Zalo</span>
+                    </button>
+                    <button class="flex items-center gap-3 bg-[#1877F2] text-white px-5 py-3 rounded-full shadow-xl transition-all hover:translate-x-1 active:scale-95 whitespace-nowrap">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
+                        </svg>
+                        <span class="text-sm font-semibold pr-1">Facebook Chat</span>
+                    </button>
+                </div>
+                <button (click)="toggleOpen()" class="flex items-center justify-center bg-surface-900 dark:bg-surface-700 text-white rounded-full shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 border border-white/10" [ngClass]="isOpen ? 'px-5 py-3 w-auto gap-3' : 'w-12 h-12'">
+                    <i class="fa-solid fa-headset text-primary text-xl" [ngClass]="{'mr-0': !isOpen}"></i>
+                    <span class="text-sm font-semibold pr-1 whitespace-nowrap overflow-hidden transition-all duration-300" [style.max-width]="isOpen ? '200px' : '0'" [style.opacity]="isOpen ? '1' : '0'">Hotline 0901.191.616</span>
                 </button>
             </div>
         </div>`
 })
-export class AppFooter { }
+export class AppFooter {
+    isOpen = false;
+
+    toggleOpen() {
+        this.isOpen = !this.isOpen;
+    }
+}

@@ -1,0 +1,171 @@
+<div class="bg-slate-50 dark:bg-slate-950 min-h-screen pb-20">
+    <!-- Breadcrumb / Header -->
+    <div class="h-[150px] w-full bg-slate-900 relative flex items-center justify-center">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxgY81BlkXLAsOYXbPn2tXlWVYq1pOCAkO2--B34J7z-gEv_vatuftlQ_YjNbOuDXJ-KXb45HSwB6pAr6H3GiypDBE6EScdeL58NrELC7ZmlNZa2CGNMMUnWcyPhFpqHqsxsfvkiSsxrybfuiMQ_g6kt9CXO84I8X1KSxpignIuoEtjZpji0QeNk2g_DfS60V2P742qXS8A8csiFhXvEPK8KiL_Vu2PKF77n99FkyLqC7Z1x4xOUrboUpTK2uBcQHxAh8Xb4YuFzU"
+            class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="relative z-10 text-center">
+            <h1 class="text-white text-3xl font-bold mb-2">Giỏ hàng của bạn</h1>
+            <nav class="flex justify-center items-center text-sm text-slate-300">
+                <a routerLink="/" class="hover:text-white transition-colors">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Giỏ hàng</span>
+            </nav>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-12" *ngIf="(cartItems$ | async) as items">
+        <div class="flex flex-col lg:flex-row gap-8" *ngIf="items.length > 0; else emptyCart">
+            <!-- Cart Items List -->
+            <div class="flex-1 space-y-4">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+                    <div
+                        class="hidden md:grid grid-cols-12 gap-4 p-4 border-b bg-slate-50 dark:bg-slate-800/50 text-xs font-bold uppercase text-slate-500 tracking-wider">
+                        <div class="col-span-6">Sản phẩm</div>
+                        <div class="col-span-2 text-center">Giá</div>
+                        <div class="col-span-2 text-center">Số lượng</div>
+                        <div class="col-span-2 text-right">Tổng</div>
+                    </div>
+
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <div *ngFor="let item of items"
+                            class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-center group">
+                            <!-- Product Info -->
+                            <div class="col-span-6 flex items-center gap-4">
+                                <div
+                                    class="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100 dark:border-slate-800">
+                                    <img [src]="item.image" [alt]="item.name" class="w-full h-full object-contain p-2">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-bold text-slate-800 dark:text-white text-sm hover:text-primary transition-colors cursor-pointer"
+                                        [routerLink]="['/products', item.id]">
+                                        {{ item.name }}
+                                    </h3>
+                                    <button (click)="removeItem(item.id)"
+                                        class="text-xs text-red-500 hover:text-red-600 mt-2 font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-trash-can"></i> Xóa
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="col-span-2 text-center">
+                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300" *ngIf="item.price">
+                                    {{ formatPrice(item.price) }}
+                                </span>
+                                <span class="text-sm font-bold text-primary" *ngIf="!item.price">Liên hệ</span>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="col-span-2 flex justify-center">
+                                <div
+                                    class="flex items-center border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden h-9 bg-white dark:bg-slate-900">
+                                    <button (click)="decrementQuantity(item)"
+                                        class="w-8 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 transition-colors">
+                                        <i class="fa-solid fa-minus text-[10px]"></i>
+                                    </button>
+                                    <span
+                                        class="w-10 h-full flex items-center justify-center text-xs font-bold text-slate-700 dark:text-slate-300 border-x border-slate-200 dark:border-slate-700">
+                                        {{ item.quantity }}
+                                    </span>
+                                    <button (click)="incrementQuantity(item)"
+                                        class="w-8 h-full flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 transition-colors">
+                                        <i class="fa-solid fa-plus text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Subtotal -->
+                            <div class="col-span-2 text-right">
+                                <span class="text-sm font-black text-primary" *ngIf="item.price">
+                                    {{ formatPrice(item.price * item.quantity) }}
+                                </span>
+                                <span class="text-sm font-bold text-primary" *ngIf="!item.price">Liên hệ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center py-4">
+                    <button routerLink="/products"
+                        class="text-primary font-bold text-sm flex items-center gap-2 hover:translate-x-[-4px] transition-transform">
+                        <i class="fa-solid fa-arrow-left"></i> Tiếp tục mua sắm
+                    </button>
+                    <button (click)="cartService.clearCart()"
+                        class="text-slate-400 hover:text-slate-600 text-sm font-medium transition-colors">
+                        Xóa tất cả giỏ hàng
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="w-full lg:w-[380px] space-y-6">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-6 sticky top-24">
+                    <h2 class="text-xl font-black text-slate-800 dark:text-white mb-6 uppercase tracking-wider">Tổng đơn
+                        hàng</h2>
+
+                    <div class="space-y-4 pb-6 border-b border-dashed border-slate-200 dark:border-slate-700">
+                        <div class="flex justify-between text-slate-500 text-sm">
+                            <span>Tạm tính ({{ cartCount$ | async }} sản phẩm)</span>
+                            <span class="font-bold text-slate-800 dark:text-white">{{ formatPrice((cartTotal$ | async)
+                                || 0) }}</span>
+                        </div>
+                        <div class="flex justify-between text-slate-500 text-sm">
+                            <span>Phí vận chuyển</span>
+                            <span
+                                class="text-green-500 font-bold uppercase text-[10px] bg-green-50 px-2 py-1 rounded">Miễn
+                                phí</span>
+                        </div>
+                        <div class="flex justify-between text-slate-500 text-sm">
+                            <span>Mã giảm giá</span>
+                            <button class="text-primary hover:text-primary-dark transition-colors font-medium">Nhấn để
+                                áp dụng</button>
+                        </div>
+                    </div>
+
+                    <div class="py-6 flex justify-between items-center">
+                        <span class="text-slate-800 dark:text-white font-bold">Tổng cộng</span>
+                        <span class="text-2xl font-black text-primary">{{ formatPrice((cartTotal$ | async) || 0)
+                            }}</span>
+                    </div>
+
+                    <button routerLink="/checkout"
+                        class="w-full py-4 bg-primary text-white font-black rounded-xl hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/30 transition-all uppercase tracking-widest text-sm mb-4">
+                        Tiến hành thanh toán
+                    </button>
+
+                    <div class="bg-blue-50 dark:bg-slate-800/50 rounded-xl p-4 flex gap-3">
+                        <i class="fa-solid fa-shield-check text-blue-500 text-xl mt-0.5"></i>
+                        <p class="text-[11px] text-blue-800 dark:text-blue-300 leading-relaxed font-medium">
+                            An tâm mua sắm: Chúng tôi cam kết bảo mật thông tin và đổi trả dễ dàng trong vòng 7 ngày nếu
+                            có lỗi từ nhà sản xuất.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #emptyCart>
+            <div
+                class="py-20 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-500">
+                <div
+                    class="w-32 h-32 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-8 relative">
+                    <i class="fa-solid fa-cart-arrow-down text-5xl text-slate-300"></i>
+                    <div
+                        class="absolute -top-1 -right-1 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold animate-bounce">
+                        0</div>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-4">Giỏ hàng của bạn đang trống</h2>
+                <p class="text-slate-500 max-w-md mx-auto mb-10 leading-relaxed">
+                    Có vẻ như bạn chưa thêm sản phẩm nào vào giỏ hàng. Hãy khám phá những sản phẩm tuyệt vời của chúng
+                    tôi ngay nhé!
+                </p>
+                <button routerLink="/products"
+                    class="px-10 py-4 bg-primary text-white font-black rounded-xl hover:bg-primary-dark shadow-xl shadow-primary/30 hover:-translate-y-1 transition-all uppercase tracking-widest text-sm">
+                    Khám phá sản phẩm
+                </button>
+            </div>
+        </ng-template>
+    </div>
+</div>
