@@ -27,11 +27,11 @@ public class Category {
 
     // Danh mục cha (null nếu là root)
     @Column(name = "parent_id")
-    private Long parentId;
+    private String parentId;
 
     // Cấp độ danh mục (0: root, 1: con, 2: cháu)
     @Column(nullable = false)
-    private Integer level;
+    private String level;
 
     // Trạng thái: ACTIVE / INACTIVE
     @Enumerated(EnumType.STRING)
@@ -40,5 +40,9 @@ public class Category {
 
     // Thứ tự hiển thị
     @Column(name = "sort_order")
-    private Integer sortOrder;
+    private String sortOrder;
+
+    // Ảnh danh mục (URL / CDN)
+    @Column(name = "image_url")
+    private String imageUrl;
 }
