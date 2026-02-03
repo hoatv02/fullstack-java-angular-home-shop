@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-login-modal',
-    standalone: true,
-    imports: [CommonModule],
-    styles: [`
+  selector: 'app-login-modal',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  styles: [`
     @keyframes scaleIn {
       0% { opacity: 0; transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
@@ -21,7 +22,7 @@ import { CommonModule } from '@angular/common';
         animation: fadeIn 0.2s ease-out forwards;
     }
   `],
-    template: `
+  template: `
     <div *ngIf="visible" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity backdrop" (click)="close()"></div>
 
@@ -64,7 +65,7 @@ import { CommonModule } from '@angular/common';
           </form>
 
           <div class="mt-6 text-left">
-            <a href="#" class="text-[#007bfb] font-bold text-sm hover:underline uppercase">Đăng ký ngay</a>
+            <a routerLink="/register" (click)="close()" class="text-[#007bfb] font-bold text-sm hover:underline uppercase">Đăng ký ngay</a>
           </div>
         </div>
       </div>
@@ -72,11 +73,11 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class LoginModalComponent {
-    @Input() visible: boolean = false;
-    @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() visible: boolean = false;
+  @Output() visibleChange = new EventEmitter<boolean>();
 
-    close() {
-        this.visible = false;
-        this.visibleChange.emit(this.visible);
-    }
+  close() {
+    this.visible = false;
+    this.visibleChange.emit(this.visible);
+  }
 }

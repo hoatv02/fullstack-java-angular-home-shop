@@ -15,6 +15,7 @@ import { ProductsComponent } from './app/pages/Clients/products/products.compone
 import { ProductDetailComponent } from './app/pages/Clients/product-detail/product-detail.component';
 import { CartComponent } from './app/pages/Clients/cart/cart.component';
 import { CheckoutComponent } from './app/pages/Clients/checkout/checkout.component';
+import { RegisterComponent } from './app/pages/Clients/register/register.component';
 
 export const appRoutes: Routes = [
     {
@@ -27,6 +28,7 @@ export const appRoutes: Routes = [
             { path: 'products/:id', component: ProductDetailComponent },
             { path: 'cart', component: CartComponent },
             { path: 'checkout', component: CheckoutComponent },
+            { path: 'register', component: RegisterComponent },
         ]
     },
     {

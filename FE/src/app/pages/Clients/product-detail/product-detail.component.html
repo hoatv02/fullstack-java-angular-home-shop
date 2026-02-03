@@ -1,17 +1,11 @@
 <div class="bg-white dark:bg-slate-900 min-h-screen pb-20">
     <p-toast></p-toast>
     <!-- Header Banner / Breadcrumb -->
-    <div class="h-[150px] w-full bg-slate-900 relative flex items-center justify-center">
+    <div class="bg-slate-900 relative">
         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxgY81BlkXLAsOYXbPn2tXlWVYq1pOCAkO2--B34J7z-gEv_vatuftlQ_YjNbOuDXJ-KXb45HSwB6pAr6H3GiypDBE6EScdeL58NrELC7ZmlNZa2CGNMMUnWcyPhFpqHqsxsfvkiSsxrybfuiMQ_g6kt9CXO84I8X1KSxpignIuoEtjZpji0QeNk2g_DfS60V2P742qXS8A8csiFhXvEPK8KiL_Vu2PKF77n99FkyLqC7Z1x4xOUrboUpTK2uBcQHxAh8Xb4YuFzU"
-            class="absolute inset-0 w-full h-full object-cover opacity-50">
-        <div class="relative z-10 text-center">
-            <nav class="flex justify-center items-center text-sm text-slate-300">
-                <a routerLink="/" class="hover:text-white transition-colors">Trang chủ</a>
-                <span class="mx-2">></span>
-                <a routerLink="/products" class="hover:text-white transition-colors">Gia dụng thông minh</a>
-                <span class="mx-2">></span>
-                <span class="text-white truncate max-w-[200px] md:max-w-none">{{ product.name }}</span>
-            </nav>
+            class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="relative z-10">
+            <app-client-breadcrumb [items]="breadcrumbItems"></app-client-breadcrumb>
         </div>
     </div>
 

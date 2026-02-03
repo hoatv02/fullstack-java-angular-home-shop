@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ClientBreadcrumbComponent, BreadcrumbItem } from '../../../shared/components/client-breadcrumb/client-breadcrumb.component';
 
 interface Product {
     id: number;
@@ -29,7 +30,7 @@ interface Category {
 @Component({
     selector: 'app-product-detail',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, ToastModule],
+    imports: [CommonModule, FormsModule, RouterModule, ToastModule, ClientBreadcrumbComponent],
     providers: [MessageService],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.scss'
@@ -135,6 +136,13 @@ export class ProductDetailComponent implements OnInit {
     quantity = 1;
     activeTab = 'info';
     isZoomed = false;
+
+    get breadcrumbItems(): BreadcrumbItem[] {
+        return [
+            { label: 'Gia dụng thông minh', routerLink: '/products' },
+            { label: this.product.name }
+        ];
+    }
 
     constructor(
         private route: ActivatedRoute,
