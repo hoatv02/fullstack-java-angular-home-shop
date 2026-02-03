@@ -1,21 +1,26 @@
 package com.example.HomeShop.service;
 
+import com.example.HomeShop.dto.LoginDTO;
 import com.example.HomeShop.dto.RegisterDTO;
 import com.example.HomeShop.entity.User;
 import com.example.HomeShop.exception.AppException;
 import com.example.HomeShop.exception.ErrorCode;
-import com.example.HomeShop.exception.UserErrorCode;
+import com.example.HomeShop.model.context.TokenContext;
 import com.example.HomeShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenContext tokenContext;
 
     @Transactional
     public String register(RegisterDTO registerDTO) {
@@ -68,5 +73,22 @@ public class UserService {
 
     public java.util.List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    public Map<String, String> login(LoginDTO loginDTO) {
+        User user = userRepository.findByUsername(loginDTO.getUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        String token = tokenContext.generateToken(user);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("token", token);
+        result.put("username", user.getUsername());
+
+        return result;
     }
 }
