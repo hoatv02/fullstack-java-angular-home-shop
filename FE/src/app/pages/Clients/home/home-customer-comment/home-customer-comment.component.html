@@ -1,0 +1,40 @@
+<div class="mb-12 flex items-center justify-center gap-4 mt-20">
+    <h2 class="text-xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-white truncate">Mua sắm an tâm
+    </h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20">
+    <div *ngFor="let item of policyItems"
+        class="bg-[#f8fafc] rounded-3xl p-8 md:p-12 text-center transition-all duration-300 ease h-full flex flex-col items-center justify-center hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.05)] hover:bg-white group">
+        <i [class]="item.icon + ' text-4xl text-slate-900 mb-6 block'"></i>
+        <h3 class="text-lg font-bold text-slate-900 mb-4">{{item.title}}</h3>
+        <p class="text-sm text-slate-500 leading-relaxed m-0">{{item.description}}</p>
+    </div>
+</div>
+<div class="mb-24 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20">
+    <div class="relative max-w-5xl mx-auto text-center px-6 md:px-8">
+        <button (click)="prevTestimonial()"
+            class="w-10 h-10 rounded-full bg-[#f1f5f9] text-[#94a3b8] flex items-center justify-center transition-all duration-300 ease hover:bg-[#e2e8f0] hover:text-[#0f172a] absolute left-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button (click)="nextTestimonial()"
+            class="w-10 h-10 rounded-full bg-[#f1f5f9] text-[#94a3b8] flex items-center justify-center transition-all duration-300 ease hover:bg-[#e2e8f0] hover:text-[#0f172a] absolute right-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="flex items-center justify-center gap-1 mb-2 text-[#F59E0B]">
+            <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+                <i class="fa-solid fa-star" *ngIf="i < testimonials[currentTestimonialIndex].stars"></i>
+                <i class="fa-regular fa-star" *ngIf="i >= testimonials[currentTestimonialIndex].stars"></i>
+            </ng-container>
+        </div>
+        <div
+            class="font-medium text-slate-700 dark:text-gray-300 text-lg md:text-xl leading-relaxed mb-2 min-h-[120px] flex items-center justify-center">
+            "{{testimonials[currentTestimonialIndex].text}}"
+        </div>
+        <div class="flex flex-col items-center">
+            <span
+                class="font-bold text-slate-900 dark:text-white">{{testimonials[currentTestimonialIndex].author}}</span>
+            <span
+                class="text-xs text-gray-500 uppercase tracking-wider mt-1">{{testimonials[currentTestimonialIndex].role}}</span>
+        </div>
+    </div>
+</div>

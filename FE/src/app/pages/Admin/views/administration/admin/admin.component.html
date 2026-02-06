@@ -1,0 +1,37 @@
+<ng-container *ngIf="permissions['VIEW'] ">
+    <div class="card">
+        <app-breadcrumb [items]="breadcrumbList"></app-breadcrumb>
+        <app-table [title_list]="'Administration.AdminTitle'" [data]="dataList" [columns]="columns" [selection]="[]"
+            [globalFilterFields]="['name', 'email']" [config]="{
+              toolbar: { new: permissions['CREATED'] || false, delete: false, export: true, sync: false },
+                actions: { view:  permissions['DETAIL'] || false, edit:  permissions['UPDATED'] || false, delete:  permissions['REMOVE'] ,reset:true,isShowAction:permissions['UPDATED'] ||permissions['DETAIL']||permissions['REMOVE'] || false}
+            }" [actionCondition]="actionCondition"
+            [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
+            [exportdata]="true" (onView)="editOperator($event)" (onEdit)="editOperator($event)" [selectFilter]="true"
+            [selectFilter1]="true" [selectFilterData]="statusList" [selectFilter1Data]="roleList"
+            [selectFilterSearch1]="true" (selectFilterChange)="statusChange($event)"
+            placeholderTextSearch="Administration.placeholderTextSearch.Search"
+            (selectFilter1Change)="roleChange($event)" [placeholderSelectFilter1]="'Common.Role'"
+            [placeholderSelectFilter]="'Common.Status'" [showSelectionColumn]="false" [tagConfig]="tagConfig"
+            (onDelete)="onConfirmDeleteOperator($event)" (onSync)="editOperator($event)"
+            (onDeleteSelected)="editOperator()" (onExportCSV)="exportExcel()" (onLazyLoad)="handleLazyLoad($event)"
+            (onSearch)="handleSearchKeyword($event)" [totalRecords]="totalRecords" (onReset)="resetPassword($event)"
+            (onSwitchChange)="handleSwitchChange($event)" />
+    </div>
+</ng-container>
+
+<app-confirm-dialog [visible]="displayConfirmationStatus" [message]="'Common.ConfirmChangeStatusMessage'|translate"
+    [header]="'Common.ConfirmChangeStatusHeader'|translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="onConfirmSwitchChange()"
+    (cancel)="onCancelSwitchChange()" />
+
+<app-confirm-dialog [visible]="confirmationDeleteOperator"
+    [message]="'Common.ConfirmDeleteAdministratorMessage' | translate"
+    [header]="'Common.ConfirmDeleteHeader' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (cancel)="this.confirmationDeleteOperator = false" />
+
+
+
+<app-confirm-dialog [visible]="displayConfirmationResetPassword" [message]="'ResetPassword.Title'|translate"
+    [header]="'ResetPassword.ConfirmTitle'|translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (cancel)="displayConfirmationResetPassword = false" />

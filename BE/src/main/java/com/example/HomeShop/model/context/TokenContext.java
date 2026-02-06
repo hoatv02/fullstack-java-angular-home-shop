@@ -34,15 +34,17 @@ public class TokenContext {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getId())
+                .claim("role", user.getRole())
+                .claim("username", user.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)  // Dùng cách này
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Dùng cách này
                 .compact();
     }
 
     // Lấy username từ token
     public String getUsernameFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()  // Dùng parserBuilder()
+        Claims claims = Jwts.parserBuilder() // Dùng parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)

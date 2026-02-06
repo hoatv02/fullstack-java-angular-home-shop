@@ -7,10 +7,10 @@ import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import { lastValueFrom } from 'rxjs';
 import { appRoutes } from './app.routes';
-import { AuthService } from './app/layout/service/auth.service';
-import { LoadingService } from './app/layout/service/loading.service';
-import { JwtInterceptor } from './app/layout/service/token.interceptor';
-import { ConfigService } from './app/pages/service/config.service';
+import { AuthService } from './app/layout/Admins/service/auth.service';
+import { LoadingService } from './app/layout/Admins/service/loading.service';
+import { JwtInterceptor } from './app/layout/Admins/service/token.interceptor';
+import { ConfigService } from './app/pages/Admin/service/config.service';
 import { environment } from './environments/environment';
 export function appInitializer(configService: ConfigService, authorizeService: AuthService) {
     return async () => {

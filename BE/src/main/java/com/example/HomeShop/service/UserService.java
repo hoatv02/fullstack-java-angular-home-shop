@@ -5,6 +5,7 @@ import com.example.HomeShop.dto.RegisterDTO;
 import com.example.HomeShop.entity.User;
 import com.example.HomeShop.exception.AppException;
 import com.example.HomeShop.exception.ErrorCode;
+import com.example.HomeShop.exception.UserErrorCode;
 import com.example.HomeShop.model.context.TokenContext;
 import com.example.HomeShop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,18 @@ public class UserService {
     @Transactional
     public String register(RegisterDTO registerDTO) {
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(UserErrorCode.USERNAME_EXISTED);
         }
         if (userRepository.existsByEmail(registerDTO.getEmail())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(UserErrorCode.EMAIL_EXISTED);
         }
         if (userRepository.existsByPhone(registerDTO.getPhone())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(UserErrorCode.PHONE_EXISTED);
         }
+        if (userRepository.existsByCity(registerDTO.getCity())) {
+            throw new AppException(UserErrorCode.CITY_INVALID);
+        }
+
         User user = User.builder()
                 .username(registerDTO.getUsername())
                 .password(passwordEncoder.encode(registerDTO.getPassword()))
@@ -48,10 +53,10 @@ public class UserService {
 
     public User createUser(RegisterDTO registerDTO) {
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(UserErrorCode.USERNAME_EXISTED);
         }
         if (userRepository.existsByEmail(registerDTO.getEmail())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(UserErrorCode.EMAIL_EXISTED);
         }
         // ... simplistic check for brevity, or reuse logic
 
@@ -73,17 +78,16 @@ public class UserService {
 
     public Map<String, String> login(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD);
+            throw new AppException(UserErrorCode.LOGIN_FAILED);
         }
 
         String token = tokenContext.generateToken(user);
 
         Map<String, String> result = new HashMap<>();
         result.put("token", token);
-        result.put("username", user.getUsername());
 
         return result;
     }

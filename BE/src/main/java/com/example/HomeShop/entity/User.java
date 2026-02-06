@@ -33,4 +33,8 @@ public class User {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private String role = "USER";
+
 }

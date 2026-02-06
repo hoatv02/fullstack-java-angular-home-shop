@@ -1,0 +1,166 @@
+<div class="bg-slate-50 dark:bg-slate-900 min-h-screen pb-20">
+    <p-toast></p-toast>
+
+    <!-- Header Banner / Breadcrumb -->
+    <div class="h-[200px] w-full bg-slate-900 relative flex items-center justify-center mb-10">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxgY81BlkXLAsOYXbPn2tXlWVYq1pOCAkO2--B34J7z-gEv_vatuftlQ_YjNbOuDXJ-KXb45HSwB6pAr6H3GiypDBE6EScdeL58NrELC7ZmlNZa2CGNMMUnWcyPhFpqHqsxsfvkiSsxrybfuiMQ_g6kt9CXO84I8X1KSxpignIuoEtjZpji0QeNk2g_DfS60V2P742qXS8A8csiFhXvEPK8KiL_Vu2PKF77n99FkyLqC7Z1x4xOUrboUpTK2uBcQHxAh8Xb4YuFzU"
+            class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-white text-3xl font-bold mb-2">Thanh toán</h1>
+            <nav class="flex justify-center items-center text-sm text-slate-300">
+                <a routerLink="/" class="hover:text-white transition-colors">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a routerLink="/cart" class="hover:text-white transition-colors">Giỏ hàng</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Thanh toán</span>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-6xl">
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Side: Information -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Shipping Info -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <div
+                        class="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-truck-fast text-primary"></i>
+                            Thông tin giao hàng
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-500 uppercase">Họ và tên *</label>
+                                <input type="text" [(ngModel)]="shippingInfo.fullName"
+                                    placeholder="Nhập họ và tên người nhận"
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:border-primary transition-all text-sm">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-500 uppercase">Số điện thoại *</label>
+                                <input type="tel" [(ngModel)]="shippingInfo.phone" placeholder="Số điện thoại nhận hàng"
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:border-primary transition-all text-sm">
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase">Email</label>
+                            <input type="email" [(ngModel)]="shippingInfo.email"
+                                placeholder="địa chỉ email (không bắt buộc)"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:border-primary transition-all text-sm">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase">Địa chỉ nhận hàng *</label>
+                            <textarea [(ngModel)]="shippingInfo.address" rows="3"
+                                placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:border-primary transition-all text-sm resize-none"></textarea>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase">Ghi chú đơn hàng</label>
+                            <input type="text" [(ngModel)]="shippingInfo.note" placeholder="Lời nhắn cho shipper..."
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent outline-none focus:border-primary transition-all text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <div
+                        class="p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-primary"></i>
+                            Phương thức thanh toán
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all"
+                            [ngClass]="paymentMethod === 'cod' ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-700'">
+                            <input type="radio" name="payment" value="cod" [(ngModel)]="paymentMethod"
+                                class="w-4 h-4 accent-primary">
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-800 dark:text-white">Thanh toán khi nhận hàng
+                                    (COD)</p>
+                                <p class="text-xs text-slate-500">Thanh toán bằng tiền mặt khi nhận hàng</p>
+                            </div>
+                            <i class="fa-solid fa-money-bill-wave text-2xl text-green-500"></i>
+                        </label>
+
+                        <label
+                            class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all opacity-50 grayscale"
+                            [ngClass]="paymentMethod === 'bank' ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-700'">
+                            <input type="radio" name="payment" value="bank" [(ngModel)]="paymentMethod"
+                                class="w-4 h-4 accent-primary" disabled>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-slate-800 dark:text-white">Chuyển khoản ngân hàng</p>
+                                <p class="text-xs text-slate-500">Sắp ra mắt</p>
+                            </div>
+                            <i class="fa-solid fa-building-columns text-2xl text-blue-500"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Summary -->
+            <div class="lg:col-span-1">
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden sticky top-24">
+                    <div class="p-6 border-b border-slate-100 dark:border-slate-700">
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white">Tổng đơn hàng</h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <!-- Items List -->
+                        <div class="max-h-[300px] overflow-y-auto space-y-3 pr-2 scrollbar-thin">
+                            <div *ngFor="let item of cartItems" class="flex gap-3">
+                                <div
+                                    class="w-14 h-14 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden flex-shrink-0">
+                                    <img [src]="item.image" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-slate-800 dark:text-white truncate">{{ item.name }}
+                                    </p>
+                                    <p class="text-xs text-slate-500">{{ item.quantity }} x {{ formatPrice(item.price ||
+                                        0) }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-dashed border-slate-200 dark:border-slate-700 pt-4 space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Tạm tính:</span>
+                                <span class="font-bold text-slate-800 dark:text-white">{{ formatPrice(getSubtotal())
+                                    }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Phí vận chuyển:</span>
+                                <span class="font-bold text-slate-800 dark:text-white">{{ formatPrice(getShippingCost())
+                                    }}</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between items-baseline mb-6">
+                                <span class="text-lg font-bold text-slate-800 dark:text-white">Tổng cộng:</span>
+                                <span class="text-2xl font-black text-primary">{{ formatPrice(getTotal()) }}</span>
+                            </div>
+
+                            <button (click)="placeOrder()"
+                                class="w-full py-4 bg-primary text-white font-black rounded-xl hover:bg-primary-dark shadow-lg shadow-primary/30 transition-all uppercase tracking-widest flex items-center justify-center gap-3">
+                                <span>Đặt hàng ngay</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                            <p class="text-[10px] text-center text-slate-400 mt-4 leading-relaxed">
+                                Bằng cách nhấp vào "Đặt hàng ngay", bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo
+                                mật của chúng tôi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<section class="px-0 md:px-5">
+    <div class="relative w-full h-[500px] md:h-[700px] md:rounded-[2.5rem] overflow-hidden group bg-black"
+        (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+        <div class="relative w-full h-full">
+            <div *ngFor="let slide of slides; let i = index"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat flex items-center transition-opacity duration-[800ms] ease-in-out before:content-[''] before:absolute before:inset-0 before:bg-[linear-gradient(90deg,rgba(0,43,68,0.8)_0%,rgba(0,43,68,0.4)_50%,rgba(0,43,68,0.1)_100%)] before:z-[1]"
+                [class.opacity-100]="currentSlide === i" [class.opacity-0]="currentSlide !== i"
+                [class.pointer-events-none]="currentSlide !== i" [style.background-image]="'url(' + slide.image + ')'">
+                <div class="px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 relative z-10 h-full flex items-center">
+                    <div class="text-left space-y-6 max-w-2xl">
+                        <p class="text-white text-sm md:text-base font-bold tracking-[0.2em] uppercase opacity-80 animate-fade-left"
+                            [class.!animate-none]="currentSlide !== i">
+                            {{ slide.subtitle }}
+                        </p>
+                        <h1 class="text-2xl md:text-4xl font-black text-white leading-tight uppercase animate-fade-left"
+                            [class.!animate-none]="currentSlide !== i" style="animation-delay: 0.1s"
+                            [innerHTML]="slide.title"></h1>
+                        <p class="text-white/70 text-sm md:text-lg max-w-md hidden md:block animate-fade-left"
+                            [class.!animate-none]="currentSlide !== i" style="animation-delay: 0.2s">
+                            {{ slide.description }}
+                        </p>
+                        <div class="pt-6 animate-fade-left" [class.!animate-none]="currentSlide !== i"
+                            style="animation-delay: 0.3s">
+                            <a class="inline-flex items-center gap-3 bg-white/10 text-white px-10 py-4 rounded-full font-extrabold text-sm uppercase tracking-widest hover:bg-primary transition-all backdrop-blur-md border border-white/20 shadow-2xl hover:scale-105 active:scale-95"
+                                href="#">
+                                KHÁM PHÁ NGAY
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button (click)="prevSlide()"
+            class="absolute left-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 hover:bg-primary backdrop-blur-md hidden md:flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 border border-white/20">
+            <i class="fa-solid fa-angle-left text-2xl"></i>
+        </button>
+        <button (click)="nextSlide()"
+            class="absolute right-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 hover:bg-primary backdrop-blur-md hidden md:flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 border border-white/20">
+            <i class="fa-solid fa-angle-right text-2xl"></i>
+        </button>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+            <div *ngFor="let dot of slides; let i = index" (click)="setSlide(i)"
+                class="cursor-pointer transition-all duration-300 h-2 rounded-full"
+                [ngClass]="currentSlide === i ? 'w-10 bg-white' : 'w-3 bg-white/40'">
+            </div>
+        </div>
+    </div>
+</section>

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Các API liên quan đến xác thực và đăng ký")
 public class AuthController {
@@ -31,7 +31,6 @@ public class AuthController {
         apiResponse.setData(result);
         apiResponse.setMessage("Success");
         return ResponseEntity.ok(apiResponse);
-
     }
 
     @PostMapping("/login")
