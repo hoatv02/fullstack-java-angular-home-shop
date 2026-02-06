@@ -3,70 +3,15 @@
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-20">
-    <div class="category-card flex flex-col items-center group cursor-pointer">
+    <div *ngFor="let category of array" class="category-card flex flex-col items-center group cursor-pointer">
         <div
             class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Phụ kiện"
+            <img [alt]="category.name"
                 class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBybFLrU5tmFxN1zdFbIgu_4J80GiWQnqjcW7RBNCLDI-XHGKCcVsiNusi2sAeSwndpA2Iw7rjENHfnsZQd9II8uhuOq2KSGQb12mBX8fkRBZzn60adua7c2gheZXBVx0mnJRwVOLDjfPGXlGlB_4O7vdDHY-9p_sbK2VHucNrCrj67nN8godF4DKD6YR_vzYmAvB65YacV0M03V-AraAruFbo9F20SqH7q3ezIboidbWf24jKVXx7P0_UldmkkyXIY1C6VTg6FbBI" />
+                [src]="category.imageUrl" />
         </div>
         <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">Phụ
-            kiện</span>
-    </div>
-    <div class="category-card flex flex-col items-center group cursor-pointer">
-        <div
-            class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Khóa thông minh"
-                class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuADzaZ_4EQl321VUz8Q3E6dBIAEVv70GgYVKlueUnBlsMUBd4zf6XQgkWFFhtUAvSgdoZmGu35j9ea9fYg6F6fJiU8AvYqIg_3t0CvDAxH8u-ypBtWsBL4-v2x7A8QN5R86QkSQknoCQxOSqC5FinwI0-5J6jIEvMDY7EK9z-m7dgyETQ034lfMJImDCzx7VGIdHZxRXbQ0l2zvF9ITksLCRJH-4yS9ZRFxCimAF9xsnWov8i-0D79V7ySTINE8oluKczJcPKe7HLs" />
-        </div>
-        <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Khóa
-            thông minh</span>
-    </div>
-    <div class="category-card flex flex-col items-center group cursor-pointer">
-        <div
-            class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Đèn thông minh"
-                class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxZU-Q14rKM7J-hNANj2ihLYtE_lVFSEnh4KA_b7PB8ytau8SbqahFxhCtP9TlR0_yK4azJkNse0uwupoaR3aQwqR9q2y4DM2a42PhX-Zm2_PFa5vk0sUYRYgawnQjlhrghsmfrS6zbgqShZmlzqwS4oTMHmnedjSP4OunReZpHLTiviPJl3vIblSN0nJoFTYf5s3ZchKrN11sMn8J6Gnrvh8sKGE8nKQxRylxU7JQI78b84e8Pvb5HD0mHj7tKKEv8HrjKNMvrbM" />
-        </div>
-        <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Đèn
-            thông minh</span>
-    </div>
-    <div class="category-card flex flex-col items-center group cursor-pointer">
-        <div
-            class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Hệ thống giám sát"
-                class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_oeWP_ifM_aMRTLx3XAEP6QKbfezg6besMamt1RzJiHTRV1xc8EP00togS_9lwZNFoL2GC1dOaPCOEJ4BqSQ-zSQPUKhALkKoVGtlqD17TFkfxcd2NF63ZSPWW81beLhGFImZIaKH7mFE5Yu423BTaw4MH8CZkZs8YVYq595mViWl4rMXPkSoPlrO05mGkEvP0qNVMI8pfj_g5sgws4W3Vji232spoqCRBbAriS1i6CPZEsWmTPfngjSrog3XvhHsxA3sCEjv13A" />
-        </div>
-        <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Hệ
-            thống giám sát</span>
-    </div>
-    <div class="category-card flex flex-col items-center group cursor-pointer">
-        <div
-            class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Thiết bị nghe nhìn"
-                class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmx9mgu6vxWenPCyAwb1HhuxRQ3Y-hyNSWX8hhttG2C6DsY_93zi3WGLkjSV16cjljyF8XXuEPNgwkhttSztQvAdNvDEokrKLH5NSQ4cEx6CHeFI0uQL-1gPT0yXutHYjzEQLqPj0kw1ttTZSahgq_3Hqy-s6e863268I15P3OvS44UpxfKrzhLboJVkpUIH2UMm0UI5xgxKAMLWkhI0R08kHHSOoMJeiiUWnfJlrZbW4srChQ3_KzoXkwUV3nDH8kYS52ZuKmgEs" />
-        </div>
-        <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Thiết
-            bị nghe nhìn</span>
-    </div>
-    <div class="category-card flex flex-col items-center group cursor-pointer">
-        <div
-            class="w-full aspect-[4/3] bg-[#e8eaed] dark:bg-slate-800 rounded-3xl flex items-center justify-center p-6 mb-4 transition-all duration-300 ease group-hover:bg-[#dadce0] border border-gray-100/50 dark:border-slate-700">
-            <img alt="Gia dụng thông minh"
-                class="max-h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-[400ms] ease group-hover:scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHS84uP4-nxXy1fdd1v4WELmDdPB34eVL6GldmZdFSLcpXXtSok4aXJZgf8bU0Q7qGbuzqNW1nkyVwVlFv_Dk5MtOt5IbQfoK3VsZUzj-kPjNbW98UEQGO3rGWjcXRefeM8RY-XzKWgiV89eEpwoYTUEJViMfj7JZnxxy5cdPOz2-sWAMf91mzgEvMqe7fPZ3y9c0FKohFLB6_PQrZwrKapX3jbG5oT0bNBepXOdD0PrcCfVgc2DPv440t0m2NiVTcPvL4698dJDs" />
-        </div>
-        <span
-            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">Gia
-            dụng thông minh</span>
+            class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors text-center">{{
+            category.name }}</span>
     </div>
 </div>

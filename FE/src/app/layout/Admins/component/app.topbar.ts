@@ -11,8 +11,6 @@ import { catchError, finalize, of, Subject, Subscription, takeUntil } from 'rxjs
 import { TranslationService } from '../../../../assets/i18n/translation.service';
 import { ChangePasswordComponent } from '../../../pages/Admin/components/change-password/change-password.component';
 import { InformationComponent } from '../../../pages/Admin/components/information/information.component';
-import { LisenceService } from '../../../pages/Admin/service/Lisence.service';
-import { OperatorService } from '../../../pages/Admin/service/operator.service';
 import { SHARED_MODULES } from '../../../shared/shared.module';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../service/auth.service';
@@ -31,9 +29,14 @@ import { environment } from '../../../../environments/environment';
         <div class="layout-topbar border flex justify-between items-center px-4 md:px-6 py-2 bg-white dark:bg-gray-900">
             <div class="layout-topbar-logo-container">
                 <a class="layout-topbar-logo" routerLink="/">
-                    <!-- <img src="assets/images/logo_Bac_A_Bank.png" width="180" height="50" alt="" /> -->
-                    <img src="assets/images/LOGO-SAM-AUTH-HEADER.png" width="180" height="30" alt="" />
-                    <!-- <img src="https://savyint.com/wp-content/uploads/2023/11/Logo-Savyint.svg" width="180" style="height: 53px;" alt="" /> -->
+                    <div class="text-primary">
+                        <svg fill="none" height="32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="32">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <span class="text-navy-dark font-extrabold text-2xl tracking-tighter uppercase whitespace-nowrap">Home Shop</span>
+
                 </a>
                 <button class="layout-menu-button layout-topbar-action ml-20" (click)="layoutService.onMenuToggle()">
                     <i class="pi pi-bars"></i>
@@ -156,10 +159,7 @@ import { environment } from '../../../../environments/environment';
                     <p class="text-base font-bold text-gray-800 dark:text-gray-100 leading-snug mb-2">
                         {{ 'Common.PendingExport' | translate }}
                     </p>
-                    <!-- <div class="justify-center items-center gap-2 mt-4 py-1.5 px-3 bg-blue-50 dark:bg-blue-900/20 rounded-full inline-flex">
-                        <i class="pi pi-spin pi-spinner text-blue-500 text-xs"></i>
-                        <span class="text-[10px] uppercase tracking-widest font-bold text-blue-600 dark:text-blue-400">{{ 'Common.processing' | translate }}</span>
-                    </div> -->
+
                 </div>
             </div>
         </ng-template>
@@ -256,7 +256,6 @@ export class AppTopbar {
         private t: TranslationService,
         private cdr: ChangeDetectorRef,
         public noticeService: NotificationService,
-        private lisenceService: LisenceService,
         private fileExportService: FileExportService
     ) { }
     private destroy$ = new Subject<void>();
@@ -289,25 +288,7 @@ export class AppTopbar {
     }
 
     readNotification() {
-        const arrayNotifi = this.notifications?.map((n: any) => n.id) || [];
-        this.lisenceService
-            .readNotification([...arrayNotifi])
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    this.noticeService?.countNotifications();
-                    this.noticeService.countNotifications$.pipe(takeUntil(this.destroy$)).subscribe((count) => {
-                        this.count = count;
-                    });
-                }
-            });
+
     }
 
     selectMember(member: any) {
@@ -335,7 +316,6 @@ export class AppTopbar {
                         command: () => this.logout()
                     }
                 ];
-                this.getLisence();
                 this.getNotification();
                 this.noticeService.countNotifications();
             }
@@ -349,32 +329,10 @@ export class AppTopbar {
         this.cdr.detectChanges();
     }
 
-    getLisence() {
-        this.loadingService.show();
-        this.lisenceService
-            .getDataExpired()
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.code === 200) {
-                        this.isExpiringSoon = this.noticeService.checkExpiry(data?.data?.product);
-                    }
-                }
-            });
-    }
+
 
     getNotification() {
-        this.noticeService.refreshNotifications();
-        this.noticeService.notifications$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-            this.notifications = data;
-        });
+
     }
     getIconByType(type: string) {
         switch (type) {
@@ -460,11 +418,7 @@ export class AppTopbar {
 
         if (item.isRead === 0) {
             this.notifications = this.notifications.map((n: any) => (n.id === item.id ? { ...n, isRead: 1, color: 'gray' } : n));
-            this.lisenceService.readNotification([item.id]).subscribe({
-                next: () => {
-                    this.noticeService.countNotifications();
-                }
-            });
+
         }
     }
 

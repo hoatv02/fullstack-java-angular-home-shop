@@ -1,10 +1,23 @@
-<div class="bg-slate-50 dark:bg-slate-900 min-h-screen py-10">
+<div class="bg-slate-50 dark:bg-slate-900 min-h-screen pb-20">
     <p-toast></p-toast>
+
+    <!-- Header Banner / Breadcrumb -->
+    <div class="h-[200px] w-full bg-slate-900 relative flex items-center justify-center mb-10">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxgY81BlkXLAsOYXbPn2tXlWVYq1pOCAkO2--B34J7z-gEv_vatuftlQ_YjNbOuDXJ-KXb45HSwB6pAr6H3GiypDBE6EScdeL58NrELC7ZmlNZa2CGNMMUnWcyPhFpqHqsxsfvkiSsxrybfuiMQ_g6kt9CXO84I8X1KSxpignIuoEtjZpji0QeNk2g_DfS60V2P742qXS8A8csiFhXvEPK8KiL_Vu2PKF77n99FkyLqC7Z1x4xOUrboUpTK2uBcQHxAh8Xb4YuFzU"
+            class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-white text-3xl font-bold mb-2">Thanh toán</h1>
+            <nav class="flex justify-center items-center text-sm text-slate-300">
+                <a routerLink="/" class="hover:text-white transition-colors">Trang chủ</a>
+                <span class="mx-2">/</span>
+                <a routerLink="/cart" class="hover:text-white transition-colors">Giỏ hàng</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Thanh toán</span>
+            </nav>
+        </div>
+    </div>
+
     <div class="container mx-auto px-4 max-w-6xl">
-        <h1 class="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
-            <i class="fa-solid fa-file-invoice-dollar text-primary"></i>
-            Tiến hành thanh toán
-        </h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Side: Information -->

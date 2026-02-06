@@ -73,32 +73,11 @@ export class TableDemo implements OnInit {
     }
 
     ngOnInit() {
-        this.getData()
     }
     handleLazyLoad(event: any) {
     }
 
-    getData() {
-        // this.loadingService.show();
-        // this.productService
-        //     .getProducts()
-        //     .pipe(
-        //         catchError((error) => {
-        //             return of([]); // trả về giá trị rỗng để không làm hỏng stream
-        //         }),
-        //         finalize(() => {
-        //             this.loadingService.hide();
-        //             // Luôn được gọi khi Observable kết thúc (thành công hoặc lỗi)
-        //         })
-        //     )
-        //     .subscribe({
-        //         next: (data: any) => {
-        //             this.dataList = data?.data
-        //         },
-        //         complete: () => {
-        //         }
-        //     });
-    }
+
     editCustomer(customer?: any | null) {
         this.loadingService.show()
         if (customer) {
@@ -130,9 +109,7 @@ export class TableDemo implements OnInit {
         this.selectedCustomers1 = [];
     }
 
-    exportCSV() {
-        // this.tableComponent?.exportCSV();
-    }
+
 
     onSort() {
         this.updateRowGroupMetaData();

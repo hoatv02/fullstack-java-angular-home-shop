@@ -7,7 +7,6 @@ import { LayoutService } from '../service/layout.service';
 import { NotificationService } from '../service/notification.service';
 import { AppFooter } from './app.footer';
 import { AppSidebar } from './app.sidebar';
-import { OperatorService } from '../../../pages/Admin/service/operator.service';
 import { AppTopbar } from './app.topbar';
 
 @Component({
@@ -36,7 +35,6 @@ export class AppLayout {
     menuOutsideClickListener: any;
     @ViewChild(AppSidebar) appSidebar!: AppSidebar;
     @ViewChild(AppTopbar) appTopBar!: AppTopbar;
-    private operatorService = inject(OperatorService);
     userId: string = '';
     roleId: string = '';
     private routerSubscription: Subscription;
@@ -72,24 +70,7 @@ export class AppLayout {
 
     }
     getDataUserInfo() {
-        const dataLocalStorage = this.authService.deCodeAccessToken();
-        const id = dataLocalStorage?.['x-user-id'];
-        if (!id) return;
-        this.operatorService
-            .getOperatorById({ requestId: id })
-            .pipe(
-                take(1),
-                catchError(() => of(null)))
-            .subscribe((data: any) => {
-                if (data?.data) {
-                    this.userInfo$.next({
-                        roleId: data?.data?.roleId || '',
-                        userId: data?.data?.requestId || '',
-                        username: (data?.data?.firstName || '') + ' ' + (data?.data?.lastName || '')
-                    });
-                }
-                this.cdf.detectChanges()
-            });
+
     }
     isOutsideClicked(event: MouseEvent) {
         const sidebarEl = document.querySelector('.layout-sidebar');

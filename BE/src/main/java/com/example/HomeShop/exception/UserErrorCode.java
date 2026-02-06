@@ -8,9 +8,14 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 @RequiredArgsConstructor
 public enum UserErrorCode implements IErrorCode {
-    USER_EXISTED(1002, "User existed", HttpStatus.BAD_REQUEST),
-    USERNAME_INVALID(1003, "Username must be at least 3 characters", HttpStatus.BAD_REQUEST),
-    PASSWORD_INVALID(1004, "Password must be at least 8 characters", HttpStatus.BAD_REQUEST),
+    USERNAME_EXISTED(1001, "Tên đăng nhập đã tồn tại", HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTED(1002, "Email đã tồn tại", HttpStatus.BAD_REQUEST),
+    PHONE_EXISTED(1003, "Số điện thoại đã tồn tại", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(1001, "Không tìm thấy người dùng", HttpStatus.BAD_REQUEST),
+    USER_INVALID(1005, "Thông tin người dùng không hợp lệ", HttpStatus.BAD_REQUEST),
+    CITY_INVALID(1006, "Tỉnh/Thành phố không hợp lệ", HttpStatus.BAD_REQUEST),
+    LOGIN_FAILED(1007, "Tên đăng nhập hoặc mật khẩu không chính xác", HttpStatus.UNAUTHORIZED),
+    UNAUTHENTICATED(1008, "Vui lòng đăng nhập để thực hiện thao tác này", HttpStatus.UNAUTHORIZED),
     ;
 
     private final int code;

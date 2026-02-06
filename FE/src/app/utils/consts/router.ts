@@ -135,6 +135,7 @@ export enum customerRouter {
     customerExportReport = '/admin/report/user/export',
     DeviceUpdateStatusLock = '/device/update-status',
     customerUpdateStatusLock = '/user/update-status',
+    customerUpdateUnlock = '/unlock-user-suspend',
     sendOtpDevice = "/device/send-otp?userId=",
     sendOtpCustomer = "/user/send-otp?userId=",
     downloadFilPem = "/user/public-key/",

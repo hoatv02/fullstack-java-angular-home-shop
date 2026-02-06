@@ -5,11 +5,9 @@ import { MenuItem } from 'primeng/api';
 import { catchError, finalize, of, Subject, takeUntil } from 'rxjs';
 import { TranslationService } from '../../../../assets/i18n/translation.service';
 import { ModulePermission } from '../../../models/IPermission';
-import { PermissionService } from '../../../pages/Admin/service/permission.service';
 import { modelMenu } from '../../../utils/consts/menu';
 import { AuthService } from '../service/auth.service';
 import { AppMenuitem } from './app.menuitem';
-import { OperatorService } from '../../../pages/Admin/service/operator.service';
 import { PermissionCommonService } from '../../../pages/Admin/service/PermissionCommon.service';
 
 @Component({
@@ -33,10 +31,7 @@ export class AppMenu {
     private t: TranslationService,
     private authService: AuthService,
     private cdf: ChangeDetectorRef,
-    private permissionService: PermissionService,
-    private permissionCommon: PermissionCommonService
   ) { }
-  private operatorService = inject(OperatorService);
 
   private destroy$ = new Subject<void>();
 
@@ -45,27 +40,27 @@ export class AppMenu {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    if (changes['roleId'] && !changes['roleId'].firstChange) {
-      const roleId = changes['roleId'].currentValue;
-      if (modelMenu && this.roleId) {
-        this.permissionCommon.loadPermissions(this.roleId);
+    console.log("🚀 This is! __ changes:", changes)
+    // if (changes['roleId'] && !changes['roleId'].firstChange) {
+    //   const roleId = changes['roleId'].currentValue;
+    //   if (modelMenu && this.roleId) {
+    //     this.permissionCommon.loadPermissions(this.roleId);
 
-        this.permissionCommon.modulePermissions$
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(modules => {
-            this.modulePermissions = modules;
-            this.updateMenu();
-          });
+    //     this.permissionCommon.modulePermissions$
+    //       .pipe(takeUntil(this.destroy$))
+    //       .subscribe(modules => {
+    //         this.modulePermissions = modules;
+    //         this.updateMenu();
+    //       });
 
-        this.t.lang$
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            this.updateMenu();
-          });
-      }
-    }
+    //     this.t.lang$
+    //       .pipe(takeUntil(this.destroy$))
+    //       .subscribe(() => {
+    //         this.updateMenu();
+    //       });
+    //   }
+    // }
+    this.updateMenu();
 
   }
   ngOnDestroy() {
@@ -76,14 +71,16 @@ export class AppMenu {
   filterMenu(items: MenuItem[]): MenuItem[] {
     return items
       .map((i: any) => {
-        const hasView = this.hasPermission(i.moduleCode!, 'VIEW');
+        console.log("🚀 This is! __ i:", i)
+        // const hasView = this.hasPermission(i.moduleCode!, 'VIEW');
+        // console.log("🚀 This is! __ hasView:", hasView)
 
         const children = i.items ? this.filterMenu(i.items) : [];
 
         if (children.length > 0) return { ...i, items: children };
-        if (hasView) return i;
+        // if (hasView) return i;
 
-        return null;
+        return i;
       })
       .filter(Boolean) as MenuItem[];
   }

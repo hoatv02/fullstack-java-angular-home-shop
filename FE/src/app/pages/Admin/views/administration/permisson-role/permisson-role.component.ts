@@ -1,15 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { catchError, finalize, of, Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LoadingService } from '../../../../../layout/Admins/service/loading.service';
 import { FormInputModel } from '../../../../../models/IFormInput';
 import { IPermission } from '../../../../../models/IPermission';
 import { SHARED_MODULES } from '../../../../../shared/shared.module';
-import { ACTION } from '../../../../../utils/enums/action.enum';
 import { TableComponent } from '../../../components/table/table.component';
 import { CustomerService } from '../../../service/customer.service';
-import { PermissionService } from '../../../service/permission.service';
 import { PermissionCommonService } from '../../../service/PermissionCommon.service';
 
 @Component({
@@ -72,24 +70,11 @@ export class PermissonRoleComponent {
         private loadingService: LoadingService,
         public router: Router,
         private route: ActivatedRoute,
-        private permissionService: PermissionService,
-        public permissionCommon: PermissionCommonService
     ) { }
+
     ngOnInit(): void {
-        this.loadFunctionPermission();
-    }
-    loadFunctionPermission() {
-        this.permissionCommon
-            .subscribePermissions('ROLE', ['VIEW', 'DETAIL', 'CREATED', 'UPDATED', 'REMOVE'])
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((result) => {
-                this.permissions = result;
-            });
     }
 
-    ngOnDestroy() {
-        this.permissionsSub?.unsubscribe();
-    }
     handleLazyLoad(event: any) {
         this.first = event.first * event.rows;
         this.formInput.pageNumber = event.first + 1;
@@ -109,77 +94,7 @@ export class PermissonRoleComponent {
         this.getData();
     }
     getData() {
-        this.loadingService.show();
-        const { page, size, ...formInput } = this.formInput;
 
-        this.permissionService
-            .getListDataPermission({
-                ...formInput
-            })
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.data) {
-                        this.dataList =
-                            data?.data?.data?.map((items: any, index: number) => {
-                                return {
-                                    ...items,
-                                    stt: (data?.data?.pageNumber - 1) * data?.data?.pageSize + index + 1
-                                };
-                            }) || [];
-                        this.totalRecords = data?.data?.totalCount || 0;
-                    }
-                }
-            });
-    }
-    editPermission(event?: any) {
-        const action = event?.action;
-        const id = event?.row?.id || event?.id;
-        this.router.navigate([`/role/edit/${id}`], { relativeTo: this.route });
-        if (action === ACTION.EDIT) {
-        } else if (action === ACTION.DETAIL) {
-            this.router.navigate([`/role/detail/${id}`], { relativeTo: this.route });
-        } else {
-            this.router.navigate(['/role/create'], { relativeTo: this.route });
-        }
-    }
-
-    handleSearchKeyword(keyword: any) {
-        this.currentFirstPage();
-        this.formInput.textSearch = keyword.trim() || '';
-        this.getData();
-    }
-    onConfirmDeletePermission(permission: any) {
-        this.confirmationDeletePermission = true;
-        this.permission = { ...permission?.row };
-    }
-    deleteCustomer() {
-        this.loadingService.show();
-        this.permissionService
-            .deletePermission(this.permission.id)
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.code === 200) {
-                        this.confirmationDeletePermission = false;
-                        this.getData();
-                    }
-                }
-            });
     }
     deleteSelectedCustomers() { }
 
@@ -211,49 +126,12 @@ export class PermissonRoleComponent {
     }
 
     activeStatusAdmin() {
-        this.loadingService.show();
-        this.permissionService
-            .activeStatusPermission(this.tempSwitchChange?.row?.id)
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.code === 200) {
-                        this.displayConfirmationStatus = false;
-                        this.tempSwitchChange = null;
-                        this.getData();
-                    }
-                }
-            });
+
     }
     deActiveStatusAdmin() {
-        this.loadingService.show();
-        this.permissionService
-            .deActiveStatusPermission(this.tempSwitchChange?.row?.id)
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.code === 200) {
-                        this.displayConfirmationStatus = false;
-                        this.tempSwitchChange = null;
-                        this.getData();
-                    }
-                }
-            });
+
     }
+
 
     onCancelSwitchChange() {
         if (this.tempSwitchChange) {

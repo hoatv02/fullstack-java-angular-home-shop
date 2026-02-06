@@ -44,9 +44,7 @@ export class TranslationService {
     const lang = this.getLanguage();
     return this.translations[lang]?.[section] || {};
   }
-  // getValueByPath(obj: any, path: string): any {
-  //   return path.split('.').reduce((o, key) => (o ? o[key] : null), obj);
-  // }
+
 }
 
 

@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
                     <div class="space-y-5">
                         <div class="flex items-center gap-3">
                             <i class="fa-solid fa-house-chimney text-primary text-3xl"></i>
-                            <span class="text-2xl font-bold tracking-tight dark:text-white uppercase">HOMESHOP</span>
+                            <span class="text-2xl font-bold tracking-tight dark:text-white uppercase cursor-pointer" routerLink="/">HOMESHOP</span>
                         </div>
                         <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-[240px]">Tầng 4, Tòa nhà số 97 - 99 Láng Hạ, Đống Đa, Hà Nội (Tòa nhà Petrowaco)</p>
                         <div class="flex gap-3 pt-2">
@@ -53,30 +53,30 @@ import { CommonModule } from '@angular/common';
                     <div class="space-y-5">
                         <h3 class="font-bold  dark:text-white uppercase tracking-wider text-sm">Về chúng tôi</h3>
                         <nav class="flex flex-col gap-2.5">
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Về chúng tôi</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Sản phẩm</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Tin khuyến mại</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Kiến thức</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Tuyển dụng</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/introduce">Về chúng tôi</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/products">Sản phẩm</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Tin khuyến mại</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Kiến thức</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Tuyển dụng</a>
                         </nav>
                     </div>
                     <div class="space-y-5">
                         <h3 class="font-bold  dark:text-white uppercase tracking-wider text-sm">Liên kết</h3>
                         <nav class="flex flex-col gap-2.5">
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Điều hòa không khí</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Gia dụng thông minh</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Thiết bị nghe nhìn</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Hệ thống giám sát</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/products">Điều hòa không khí</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/products">Gia dụng thông minh</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/products">Thiết bị nghe nhìn</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/products">Hệ thống giám sát</a>
                         </nav>
                     </div>
                     <div class="space-y-5">
                         <h3 class="font-bold  dark:text-white uppercase tracking-wider text-sm">Chăm sóc khách hàng</h3>
                         <nav class="flex flex-col gap-2.5">
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Tài khoản</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Dịch vụ khách hàng</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Trả lại/Đổi hàng</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Hỗ trợ sản phẩm</a>
-                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Câu hỏi thường gặp</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Tài khoản</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Dịch vụ khách hàng</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Trả lại/Đổi hàng</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Hỗ trợ sản phẩm</a>
+                            <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer" routerLink="/">Câu hỏi thường gặp</a>
                         </nav>
                     </div>
                 </div>

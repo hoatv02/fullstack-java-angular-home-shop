@@ -10,9 +10,8 @@
             }" [paginationConfig]="{ enabled: true, rows: 10, rowsPerPageOptions: [5, 10, 25, 50] }" [first]="first"
             [exportdata]="true" [selectFilter]="true" [selectFilterData]="statusList"
             [placeholderSelectFilter]="'Common.Status'" (selectFilterChange)="statusChange($event)"
-            (onView)="editPermission($event)" (onEdit)="editPermission($event)" [showSelectionColumn]="false"
-            (onDelete)="onConfirmDeletePermission($event)" (onExportCSV)="exportCSV()" [tagConfig]="tagConfig"
-            (onLazyLoad)="handleLazyLoad($event)" (onSearch)="handleSearchKeyword($event)" [totalRecords]="totalRecords"
+            [showSelectionColumn]="false" (onExportCSV)="exportCSV()" [tagConfig]="tagConfig"
+            (onLazyLoad)="handleLazyLoad($event)" [totalRecords]="totalRecords"
             (onSwitchChange)="handleSwitchChange($event)"
             placeholderTextSearch="Administration.RolePermission.placeholderTextSearch.Search" />
     </div>
@@ -25,5 +24,4 @@
 <app-confirm-dialog [visible]="confirmationDeletePermission"
     [message]="'Common.ConfirmDeleteRolePermissionMessage' | translate"
     [header]="'Common.ConfirmDeleteHeader' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
-    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="deleteCustomer()"
-    (cancel)="this.confirmationDeletePermission = false" />
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (cancel)="this.confirmationDeletePermission = false" />

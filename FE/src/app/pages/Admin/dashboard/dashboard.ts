@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
 import { I18nModule } from '../../../../assets/i18n/i18n.module';
-import { DashboardService } from '../service/dashboard.service';
 import { LoadingService } from '../../../layout/Admins/service/loading.service';
 import { CustomerWidget } from './components/customerWidget';
 import { SmartOtpWidget } from './components/smartotpWidget';
@@ -51,53 +50,9 @@ export class Dashboard {
     dataReponseSmartOtp: any
     constructor(
         private loadingService: LoadingService,
-        private dashboardservice: DashboardService
     ) {
     }
     ngOnInit(): void {
-        this.loadingService.show();
-        forkJoin({
-            summary: this.dashboardservice.getAdminSummaryReport().pipe(
-                catchError((error) => {
-                    return of(null);
-                })
-            ),
-            otp: this.dashboardservice.getAdminSummaryReportOTP().pipe(
-                catchError((error) => {
-                    return of(null);
-                })
-            )
-        })
-            .pipe(
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: ({ summary, otp }) => {
-                    if (summary?.data) {
-                        this.dataReponseTransaction = summary.data.map((item: any) => ({
-                            month: item.month,
-                            ...item.transactionStatistic
-                        }));
 
-                        this.dataReponseUser = summary.data.map((item: any) => ({
-                            month: item.month,
-                            ...item.userStatistic
-                        }));
-
-                        this.dataReponseDevice = summary.data.map((item: any) => ({
-                            month: item.month,
-                            ...item.deviceStatistic
-                        }));
-                    }
-                    if (otp?.data) {
-                        this.dataReponseSmartOtp = otp.data?.smartOtp;
-                        this.dataReponseSmsOtp = otp.data?.smsOtp;
-                    }
-                },
-                error: (err) => {
-                }
-            });
     }
 }

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, of } from 'rxjs';
-import { PermissionService } from './permission.service';
 import { ModulePermission } from '../../../models/IPermission';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionCommonService {
     private modulePermissionsSubject = new BehaviorSubject<ModulePermission[]>([]);
     modulePermissions$ = this.modulePermissionsSubject.asObservable();
-    constructor(private permissionApi: PermissionService) { }
+    constructor() { }
     /** Load permissions từ API, tự động cập nhật BehaviorSubject */
     loadPermissions(roleId: string) {
         if (!roleId) {
@@ -15,26 +14,6 @@ export class PermissionCommonService {
             return;
         }
 
-        this.permissionApi.getMenuPermission(roleId)
-            .pipe(
-                catchError(() => of({ data: { modules: [] } })),
-                map((res: any) => {
-                    const modules = res?.data?.modules ?? [];
-                    return modules.map((m: any) => ({
-                        moduleCode: m.moduleCode,
-                        permissions: {
-                            VIEW: m.permissionCodes.includes('VIEW'),
-                            DETAIL: m.permissionCodes.includes('DETAIL'),
-                            CREATED: m.permissionCodes.includes('CREATED'),
-                            UPDATED: m.permissionCodes.includes('UPDATED'),
-                            REMOVE: m.permissionCodes.includes('REMOVE')
-                        }
-                    }));
-                })
-            )
-            .subscribe((modules: ModulePermission[]) => {
-                this.modulePermissionsSubject.next(modules);
-            });
     }
 
     /** Kiểm tra quyền */

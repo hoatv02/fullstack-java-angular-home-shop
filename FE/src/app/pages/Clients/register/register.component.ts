@@ -2,15 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ClientBreadcrumbComponent, BreadcrumbItem } from '../../../shared/components/client-breadcrumb/client-breadcrumb.component';
+import { AuthService } from '../../../layout/Admins/service/auth.service';
+import { NotificationService } from '../../../layout/Admins/service/notification.service';
 
 @Component({
     selector: 'app-register',
     standalone: true,
     imports: [CommonModule, FormsModule, RouterModule, ToastModule, ClientBreadcrumbComponent],
-    providers: [MessageService],
+    providers: [],
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
@@ -20,56 +21,38 @@ export class RegisterComponent {
     ];
 
     registerData = {
-        fullName: '',
         username: '',
         password: '',
-        confirmPassword: '',
         email: '',
         phone: '',
-        province: '',
-        district: '',
-        ward: '',
+        city: '',
         address: ''
     };
 
     constructor(
         private router: Router,
-        private messageService: MessageService
+        private notification: NotificationService,
+        private authService: AuthService
     ) { }
 
     onRegister(): void {
-        const { fullName, username, password, confirmPassword, email, phone, address } = this.registerData;
+        const { username, password, email, phone, city, address } = this.registerData;
 
-        if (!fullName || !username || !password || !confirmPassword || !email || !phone || !address) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail: 'Vui lòng điền đầy đủ các thông tin bắt buộc (*)',
-                life: 3000
-            });
+        if (!username || !password || !email || !phone || !city || !address) {
+            this.notification.error('Lỗi', 'Vui lòng điền đầy đủ thông tin (*)');
             return;
         }
 
-        if (password !== confirmPassword) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail: 'Mật khẩu xác nhận không khớp',
-                life: 3000
-            });
-            return;
-        }
-
-        // Mock registration logic
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Thành công',
-            detail: 'Đăng ký tài khoản thành công',
-            life: 3000
+        this.authService.register(this.registerData).subscribe({
+            next: (response) => {
+                this.notification.success('Thành công', 'Đăng ký tài khoản thành công');
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 2000);
+            },
+            error: (error) => {
+                this.notification.error('Lỗi', error?.error?.message || 'Đăng ký thất bại');
+            }
         });
-
-        setTimeout(() => {
-            this.router.navigate(['/']);
-        }, 2000);
     }
 }

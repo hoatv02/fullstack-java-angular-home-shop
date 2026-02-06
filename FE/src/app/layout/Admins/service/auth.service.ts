@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, finalize } from 'rxjs';
+import { BehaviorSubject, Observable, finalize, map } from 'rxjs';
 import { ResponseHandlerService } from './responseHandler.service';
 import { HttpClient } from '@angular/common/http';
 import { authenRouter, operatorRouter } from '../../../utils/consts/router';
@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 import { LOCAL_STORAGE_AUTH_KEY } from '../../../utils/enums/const';
 import { TranslationService } from '../../../../assets/i18n/translation.service';
 
-import { getCookie } from '../../../utils/utils';
+import { getCookie, parseJwt } from '../../../utils/utils';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -24,6 +24,11 @@ export class AuthService {
     isAuthenticated(): boolean {
         const dataAuth = this.getDataAuthLocalStorage();
         return !!dataAuth || !!getCookie('ACCESS_TOKEN');
+    }
+
+    isAdmin(): boolean {
+        const dataAuth = this.getDataAuthLocalStorage();
+        return dataAuth?.role === 'ADMIN';
     }
 
     getToken(): string | null {
@@ -85,7 +90,47 @@ export class AuthService {
                 successMessage: this.translationService.translate('AUTH.SEND_OTP.SUCCESS'),
                 errorMessage: this.translationService.translate('AUTH.SEND_OTP.FAIL')
             }
+        ).pipe(
+            map(response => {
+                if (response?.data?.token) {
+                    const decoded = parseJwt(response.data.token);
+                    if (decoded) {
+                        const authData = {
+                            token: response.data.token,
+                            username: decoded.username || decoded.sub, // Fallback to subject if username claim missing 
+                            role: decoded.role,
+                            userId: decoded.userId
+                        };
+                        this.setLocalStorage(authData);
+                    }
+                }
+                return response;
+            })
         );
+    }
+
+    loginClient(body: { username: string; password: string }): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/auth/login`, body).pipe(
+            map(response => {
+                if (response?.data?.token) {
+                    const decoded = parseJwt(response.data.token);
+                    if (decoded) {
+                        const authData = {
+                            token: response.data.token,
+                            username: decoded.username || decoded.sub,
+                            role: decoded.role,
+                            userId: decoded.userId
+                        };
+                        this.setLocalStorage(authData);
+                    }
+                }
+                return response;
+            })
+        );
+    }
+
+    register(body: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/auth/register`, body);
     }
 
     verifyOtp(body: { userName: string; otp?: string }): Observable<any> {

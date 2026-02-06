@@ -43,7 +43,7 @@ import TranslatePipe from '../../../../assets/i18n/translate.pipe';
                 <span class="layout-menuitem-text">{{ (item.label ?? '') | translate }}</span>
                 <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
             </a>
-<!-- [@children]="submenuAnimation" -->
+
             <ul *ngIf="item.items && item.visible !== false" >
                 <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
                     <li app-menuitem [item]="child" [index]="i" [parentKey]="key" [class]="child['badgeClass']"></li>
@@ -51,23 +51,7 @@ import TranslatePipe from '../../../../assets/i18n/translate.pipe';
             </ul>
         </ng-container>
     `,
-    // animations: [
-    //     trigger('children', [
-    //         state(
-    //             'collapsed',
-    //             style({
-    //                 height: '0'
-    //             })
-    //         ),
-    //         state(
-    //             'expanded',
-    //             style({
-    //                 height: '*'
-    //             })
-    //         ),
-    //         transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-    //     ])
-    // ],
+
 })
 export class AppMenuitem {
     @Input() item!: MenuItem;

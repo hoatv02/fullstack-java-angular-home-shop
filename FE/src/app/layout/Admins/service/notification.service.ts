@@ -11,7 +11,7 @@ import moment from 'moment';
 @Injectable({ providedIn: 'root' })
 export class NotificationService implements OnDestroy {
   private destroy$ = new Subject<void>();
-  private noticeStatusSubject = new BehaviorSubject<boolean>(this.getInitialStatus());
+  private noticeStatusSubject = new BehaviorSubject<any>(null);
   private notificationSubject = new BehaviorSubject<any[]>([]);
   private countNotificationSubject = new BehaviorSubject<number>(0);
   private pendingExportSubject = new BehaviorSubject<boolean>(false);
@@ -126,13 +126,7 @@ export class NotificationService implements OnDestroy {
   // =============================
   // Notifications
   // =============================
-  refreshNotifications() {
-    this.loadNotifications()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((list: any[]) => {
-        this.notificationSubject.next(list);
-      });
-  }
+
   private hideTimeout: any;
 
   countNotifications() {
@@ -141,25 +135,7 @@ export class NotificationService implements OnDestroy {
       return;
     }
 
-    this.countNotification()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((count: number) => {
-        const currentCount = this.countNotificationSubject.value;
 
-        if (!this.isFirstLoad && count > currentCount) {
-          this.newNoticeStatusSubject.next(true);
-
-          if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-          }
-
-          this.hideTimeout = setTimeout(() => {
-            this.closeNewNotice();
-          }, 25000); // Tự động đóng sau 25 giây (khớp với animation marquee)
-        }
-        this.countNotificationSubject.next(count);
-        this.isFirstLoad = false;
-      });
   }
 
   closeNewNotice() {
@@ -171,37 +147,7 @@ export class NotificationService implements OnDestroy {
   }
 
 
-  countNotification(): Observable<any> {
-    this.updateUserId();
-    return this.api.countNotification(this.userId).pipe(
-      map((res: any) => {
-        if (res.code !== 200) return 0;
-        return res.data;
-      }),
-      catchError(() => of(0))
-    );
-  }
-  loadNotifications(): Observable<any[]> {
-    this.updateUserId();
-    return this.api.getNotifications(this.userId).pipe(
-      map((res: any) => {
-        if (res.code !== 200) return [];
-        return res.data.map((item: any) => ({
-          id: item.recipientId,
-          icon: this.getIconByType(item.type),
-          color: item.isRead === 0 ? 'blue' : 'gray',
-          title: item.title,
-          content: item.content,
-          time: this.formatTime(item.deliveredAt),
-          isRead: item.isRead,
-          type: item.type,
-          data: item.data,
-          code: item.code
-        }));
-      }),
-      catchError(() => of([]))
-    );
-  }
+
 
 
   markAllAsRead() {

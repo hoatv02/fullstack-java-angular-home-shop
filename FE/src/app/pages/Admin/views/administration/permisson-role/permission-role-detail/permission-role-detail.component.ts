@@ -8,7 +8,6 @@ import { SHARED_MODULES } from '../../../../../../shared/shared.module';
 import { ACTION, buildBreadcrumb } from '../../../../../../utils/enums/action.enum';
 import { NOSPECIALCHARREGEX_CODE } from '../../../../../../utils/enums/const';
 import { CustomerService } from '../../../../service/customer.service';
-import { PermissionService } from '../../../../service/permission.service';
 import { PermissionCommonService } from '../../../../service/PermissionCommon.service';
 import { AuthService } from '../../../../../../layout/Admins/service/auth.service';
 import { cleanForm } from '../../../../../../utils/utils';
@@ -50,7 +49,6 @@ export class PermissionRoleDetailComponent implements OnInit {
         private loadingService: LoadingService,
         public router: Router,
         private route: ActivatedRoute,
-        private permissionService: PermissionService,
         private t: TranslationService,
         private permissionCommon: PermissionCommonService,
         private authService: AuthService
@@ -273,22 +271,7 @@ export class PermissionRoleDetailComponent implements OnInit {
         }
     }
 
-    // onChildPermissionChange(parent: PermissionEntry, perm: string): void {
-    //     const children = this.childMap[parent.name] || [];
-    //     for (const child of children) {
-    //         if (child.permissionStates?.[perm]?.disabled && child.permissionStates[perm].value === true) {
-    //             child.permissionStates[perm].value = false;
-    //             child.permissionStates = { ...child.permissionStates };
-    //         }
-    //     }
-    //     const allChecked = children.every((child) => child.permissionStates?.[perm]?.value);
-    //     const noneChecked = children.every((child) => !child.permissionStates?.[perm]?.value);
-    //     if (allChecked) {
-    //         parent.permissionStates![perm].value = true;
-    //     } else if (noneChecked) {
-    //         parent.permissionStates![perm].value = false;
-    //     }
-    // }
+
     onChildPermissionChange(parent: PermissionEntry, perm: string): void {
         const children = this.childMap[parent.name] || [];
         for (const child of children) {
@@ -328,126 +311,18 @@ export class PermissionRoleDetailComponent implements OnInit {
     }
 
     getDataPermission(callback?: () => void) {
-        this.loadingService.show();
-        this.permissionService
-            .getAllModulePermission()
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.data) {
-                        this.rawPermissions = data.data;
-                        this.initPermissionStates();
-                        if (this.action === ACTION.CREATE) {
-                            this.clearPermissionStates();
-                        }
-                        this.groupHierarchy();
-                        if (callback) callback();
-                    }
-                }
-            });
+
     }
 
     getPermissionDetail(id: string) {
-        this.loadingService.show();
-        this.permissionService
-            .getPermissionById(id)
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (!data || !data.data) return;
-                    this.roleForm.patchValue({
-                        id: data.data.id,
-                        code: data.data.code,
-                        name: data.data.name,
-                        description: data.data.description,
-                        status: data.data.status
-                    });
-                    const modulesFromDetail = data.data.modules;
-                    for (const item of this.rawPermissions) {
-                        const matched = modulesFromDetail.find((m: any) => m.moduleCode === item.value);
-                        for (const perm of this.allPermissions) {
-                            if (item.permissionStates) {
-                                item.permissionStates[perm].value = matched?.permissionCodes.includes(perm) || false;
-                            }
-                        }
-                        if (!item.permissionStates) {
-                            item.permissionStates = {};
-                            for (const perm of this.allPermissions) {
-                                item.permissionStates[perm] = { value: false, disabled: false };
-                            }
-                            item.permissionStates['ALL'] = { value: false, disabled: false };
-                        }
-                        item.permissionStates['ALL'].value = this.allPermissions.every((perm) => item.permissionStates![perm].value || item.permissionStates![perm].disabled);
-                    }
-                    for (const parent of this.parentPermissions) {
-                        const children = this.childMap[parent.name] || [];
-                        if (children.length === 0) continue;
-                        const allChecked = children.every(child =>
-                            this.allPermissions
-                                .filter(perm => !child.permissionStates![perm].disabled)
-                                .every(perm => child.permissionStates![perm].value)
-                        );
-                        parent.permissionStates!['ALL'].value = allChecked;
-                        // parent.permissionStates!['ALL'].value = allChecked ? true : noneChecked ? false : parent.permissionStates!['ALL'].value;
-                    }
-                    this.syncDisabledAndValue();
-                    this.groupHierarchy();
-                }
-            });
+
     }
 
     createPermission(payload: any) {
-        this.loadingService.show();
-        this.permissionService
-            .createPermission({
-                ...payload
-            })
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => { }
-            });
+
     }
     updatePermission(payload: any) {
-        this.loadingService.show();
-        this.permissionService
-            .updatePermission({
-                ...payload
-            })
-            .pipe(
-                catchError((error) => {
-                    return of([]);
-                }),
-                finalize(() => {
-                    this.loadingService.hide();
-                })
-            )
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.code === 200) {
-                    }
-                }
-            });
+
     }
     getDataRoleDetail(roleId: string) {
         this.permissionCommon.loadPermissions(roleId);

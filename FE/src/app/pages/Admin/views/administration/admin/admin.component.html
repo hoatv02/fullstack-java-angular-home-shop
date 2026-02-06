@@ -28,12 +28,10 @@
 <app-confirm-dialog [visible]="confirmationDeleteOperator"
     [message]="'Common.ConfirmDeleteAdministratorMessage' | translate"
     [header]="'Common.ConfirmDeleteHeader' | translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
-    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="deleteOperator()"
-    (cancel)="this.confirmationDeleteOperator = false" />
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (cancel)="this.confirmationDeleteOperator = false" />
 
 
 
 <app-confirm-dialog [visible]="displayConfirmationResetPassword" [message]="'ResetPassword.Title'|translate"
     [header]="'ResetPassword.ConfirmTitle'|translate" [confirmLabel]="'Common.ConfirmDeleteYes' | translate"
-    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (confirm)="onConfirmResetPassword()"
-    (cancel)="displayConfirmationResetPassword = false" />
+    [cancelLabel]="'Common.ConfirmDeleteNo' | translate" (cancel)="displayConfirmationResetPassword = false" />

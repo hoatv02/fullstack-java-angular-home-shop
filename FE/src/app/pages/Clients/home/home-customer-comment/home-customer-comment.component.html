@@ -10,10 +10,8 @@
         <p class="text-sm text-slate-500 leading-relaxed m-0">{{item.description}}</p>
     </div>
 </div>
-<!-- Section: Testimonials -->
 <div class="mb-24 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20">
     <div class="relative max-w-5xl mx-auto text-center px-6 md:px-8">
-        <!-- Navigation -->
         <button (click)="prevTestimonial()"
             class="w-10 h-10 rounded-full bg-[#f1f5f9] text-[#94a3b8] flex items-center justify-center transition-all duration-300 ease hover:bg-[#e2e8f0] hover:text-[#0f172a] absolute left-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
             <i class="fa-solid fa-chevron-left"></i>
@@ -22,19 +20,16 @@
             class="w-10 h-10 rounded-full bg-[#f1f5f9] text-[#94a3b8] flex items-center justify-center transition-all duration-300 ease hover:bg-[#e2e8f0] hover:text-[#0f172a] absolute right-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
-        <!-- Stars -->
         <div class="flex items-center justify-center gap-1 mb-2 text-[#F59E0B]">
             <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
                 <i class="fa-solid fa-star" *ngIf="i < testimonials[currentTestimonialIndex].stars"></i>
                 <i class="fa-regular fa-star" *ngIf="i >= testimonials[currentTestimonialIndex].stars"></i>
             </ng-container>
         </div>
-        <!-- Content -->
         <div
             class="font-medium text-slate-700 dark:text-gray-300 text-lg md:text-xl leading-relaxed mb-2 min-h-[120px] flex items-center justify-center">
             "{{testimonials[currentTestimonialIndex].text}}"
         </div>
-        <!-- Author -->
         <div class="flex flex-col items-center">
             <span
                 class="font-bold text-slate-900 dark:text-white">{{testimonials[currentTestimonialIndex].author}}</span>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnInit } from '@angular/core';
 import { StyleClassModule } from 'primeng/styleclass';
 import { Router, RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { LoginModalComponent } from './login-modal/login-modal.component';
+import { AuthService } from '../Admins/service/auth.service';
+import { LOCAL_STORAGE_AUTH_KEY } from '../../utils/enums/const';
 
 @Component({
     selector: 'app-topbar',
@@ -20,7 +22,7 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
                     <span class="leading-none hidden sm:inline">Bạn cần giúp đỡ? Gọi cho chúng tôi <span class="font-bold">1900 6680</span></span>
                     <span class="leading-none sm:hidden font-bold">1900 6680</span>
                 </div>
-                <div class="font-medium text-center hidden md:block truncate px-4">Khuyến mãi mùa hè giảm giá 50%! <a class="font-bold underline ml-1" href="#">Mua ngay</a></div>
+                <div class="font-medium text-center hidden md:block truncate px-4">Khuyến mãi mùa hè giảm giá 50%! <a class="font-bold underline ml-1" routerLink="/products">Mua ngay</a></div>
                 <div class="flex items-center gap-2 cursor-pointer group shrink-0">
                     <img
                         alt="Vietnam Flag"
@@ -35,7 +37,7 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
         </div>
         <header class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
             <div class="py-4 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between gap-4">
-                <a class="flex items-center gap-2 shrink-0" href="#">
+                <a class="flex items-center gap-2 shrink-0" routerLink="/">
                     <div class="text-primary">
                         <svg fill="none" height="32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="32">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -45,40 +47,59 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
                     <span class="text-navy-dark font-extrabold text-2xl tracking-tighter uppercase whitespace-nowrap">Home Shop</span>
                 </a>
                 <nav class="hidden lg:flex items-center gap-8 xl:gap-10">
-                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" href="#">TRANG CHỦ</a>
-                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" href="/introduce">GIỚI THIỆU</a>
+                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" routerLink="/" routerLinkActive="text-primary" [routerLinkActiveOptions]="{exact: true}">TRANG CHỦ</a>
+                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" routerLink="/introduce" routerLinkActive="text-primary">GIỚI THIỆU</a>
                     <div class="relative group cursor-pointer h-full flex items-center">
-                        <div class="flex items-center gap-1.5 text-primary font-bold text-sm tracking-wide transition-colors"  >
-                            <a href="/products">
+                        <div class="flex items-center gap-1.5 font-bold text-sm tracking-wide transition-colors">
+                            <a class="text-navy-dark hover:text-primary flex items-center gap-1.5 transition-colors" routerLink="/products" routerLinkActive="text-primary">
                                 SẢN PHẨM
-                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                <i class="fa-solid fa-chevron-down text-[10px]"></i>
                             </a>
                         </div>
-                        
                         <!-- Desktop Dropdown -->
                         <div class="absolute top-full left-0 w-64 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <ul class="list-none p-0 m-0 bg-white shadow-xl border border-gray-100 rounded-b-lg py-2">
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Phụ kiện</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Khóa thông minh</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Đèn thông minh</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Hệ thống giám sát</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Thiết bị nghe nhìn</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Gia dụng thông minh</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Điều hòa không khí</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Robot hút bụi</a></li>
-                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Cảm biến thông minh</a></li>
-                                <li class="last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" href="#">Cổng tự động</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Phụ kiện</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Khóa thông minh</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Đèn thông minh</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Hệ thống giám sát</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Thiết bị nghe nhìn</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Gia dụng thông minh</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Điều hòa không khí</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Robot hút bụi</a></li>
+                                <li class="border-b border-gray-50 last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Cảm biến thông minh</a></li>
+                                <li class="last:border-0"><a (click)="isMenuVisible = false" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors" routerLink="/products">Cổng tự động</a></li>
                             </ul>
                         </div>
                     </div>
-                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" href="#">LIÊN HỆ</a>
+                    <a class="text-navy-dark hover:text-primary font-bold text-sm tracking-wide transition-colors" routerLink="/introduce">LIÊN HỆ</a>
                 </nav>
                 <div class="flex items-center gap-2">
                     <div class="flex items-center gap-4 xl:gap-6">
-                        <a class="flex items-center gap-2 text-navy-dark hover:text-primary transition-colors cursor-pointer" (click)="isLoginModalVisible = true">
+                        <a *ngIf="!isLoggedIn" class="flex items-center gap-2 text-navy-dark hover:text-primary transition-colors cursor-pointer" (click)="isLoginModalVisible = true">
                              <i class="fa-solid fa-user text-lg"></i>
                             <span class="hidden xl:inline text-sm font-semibold mt-0.5">Tài khoản</span>
                         </a>
+                        <!-- Logged in -->
+                        <div *ngIf="isLoggedIn" class="relative">
+                            <button (click)="toggleUserMenu()" class="flex items-center gap-2 text-navy-dark hover:text-primary transition-colors cursor-pointer">
+                                <i class="fa-solid fa-user-circle text-lg"></i>
+                                <span class="hidden xl:inline text-sm font-semibold mt-0.5">{{ username }}</span>
+                                <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                            </button>
+                            
+                            <!-- User dropdown menu -->
+                            <div *ngIf="isUserMenuVisible" class="absolute top-full right-0 w-56 mt-2 bg-white shadow-xl border border-gray-100 rounded-lg overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                                <a *ngIf="isAdmin" (click)="navigateToAdmin()" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors cursor-pointer border-b border-gray-100">
+                                    <i class="fa-solid fa-gauge text-primary"></i>
+                                    <span class="font-medium">Trang quản trị</span>
+                                </a>
+                                <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span class="font-medium">Đăng xuất</span>
+                                </button>
+                            </div>
+                        </div>
                         <div class="flex items-center gap-2 relative z-[100]">
                             <div [class.w-64]="isSearchExpanded" class="w-0 overflow-hidden transition-all duration-300 ease-out">
                                 <input 
@@ -150,9 +171,10 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
             </div>
         </header>
         
-        <app-login-modal [(visible)]="isLoginModalVisible"></app-login-modal>
+        <app-login-modal [(visible)]="isLoginModalVisible" (loginSuccess)="onLoginSuccess($event)"></app-login-modal>
 
         <div *ngIf="isSearchExpanded" class="fixed inset-0 z-[40]" (click)="isSearchExpanded = false; searchValue = ''"></div>
+        <div *ngIf="isUserMenuVisible" class="fixed inset-0 z-[40]" (click)="isUserMenuVisible = false"></div>
 
         <!-- Cart Sidebar Overlay -->
         <div class="fixed inset-0 z-[110] transition-all duration-300"
@@ -223,14 +245,14 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
                 <nav class="flex-1 overflow-y-auto">
                     <ul class="list-none p-0 m-0">
                         <li class="border-b border-gray-100">
-                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" href="#">TRANG CHỦ</a>
+                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" routerLink="/">TRANG CHỦ</a>
                         </li>
                         <li class="border-b border-gray-100">
-                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" href="/introduce">GIỚI THIỆU</a>
+                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" routerLink="/introduce">GIỚI THIỆU</a>
                         </li>
                         <li class="border-b border-gray-100">
                             <div class="flex items-center justify-between">
-                                <a (click)="isMenuVisible = false" class="flex-1 px-6 py-4 text-primary font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" href="#">SẢN PHẨM</a>
+                                <a (click)="isMenuVisible = false" class="flex-1 px-6 py-4 text-primary font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" routerLink="/products">SẢN PHẨM</a>
                                 <button (click)="productsExpanded = !productsExpanded" class="px-6 py-4 border-l border-gray-100 text-gray-900 hover:bg-gray-50 transition-all">
                                     <i class="fa-solid" [ngClass]="productsExpanded ? 'fa-minus' : 'fa-plus'"></i>
                                 </button>
@@ -238,21 +260,21 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
                             <!-- Submenu -->
                             <div class="bg-white overflow-hidden transition-all duration-300" [style.max-height]="productsExpanded ? '500px' : '0'">
                                 <ul class="list-none p-0 m-0 border-t border-gray-100">
-                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' href='#'>Phụ kiện</a></li>
-                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' href='#'>Khóa thông minh</a></li>
-                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' href='#'>Đèn thông minh</a></li>
-                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' href='#'>Hệ thống giám sát</a></li>
-                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' href='#'>Thiết bị nghe nhìn</a></li>
-                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" href="#">Gia dụng thông minh</a></li>
-                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" href="#">Điều hòa không khí</a></li>
-                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" href="#">Robot hút bụi</a></li>
-                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" href="#">Cảm biến thông minh</a></li>
-                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" href="#">Cổng tự động</a></li>
+                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' routerLink="/products">Phụ kiện</a></li>
+                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' routerLink="/products">Khóa thông minh</a></li>
+                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' routerLink="/products">Đèn thông minh</a></li>
+                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' routerLink="/products">Hệ thống giám sát</a></li>
+                                    <li class="border-b border-gray-100"><a (click)='isMenuVisible = false' class='flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all' routerLink="/products">Thiết bị nghe nhìn</a></li>
+                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" routerLink="/products">Gia dụng thông minh</a></li>
+                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" routerLink="/products">Điều hòa không khí</a></li>
+                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" routerLink="/products">Robot hút bụi</a></li>
+                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" routerLink="/products">Cảm biến thông minh</a></li>
+                                    <li class="border-b border-gray-100"><a (click)="isMenuVisible = false" class="flex items-center px-10 py-3.5 text-gray-600 text-sm hover:bg-gray-50 transition-all" routerLink="/products">Cổng tự động</a></li>
                                 </ul>
                             </div>
                         </li>
                         <li class="border-b border-gray-100">
-                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" href="#">LIÊN HỆ</a>
+                            <a (click)="isMenuVisible = false" class="flex items-center px-6 py-4 text-navy-dark font-bold text-sm tracking-wide hover:bg-gray-50 transition-all" routerLink="/introduce">LIÊN HỆ</a>
                         </li>
                     </ul>
                 </nav>
@@ -265,16 +287,22 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
             </div>
         </div> `
 })
-export class AppTopbar {
+export class AppTopbar implements OnInit {
     @ViewChild('searchInput') searchInput!: ElementRef;
     isMenuVisible = false;
     isCartVisible = false;
     isSearchExpanded = false;
     isLoginModalVisible = false;
+    isUserMenuVisible = false;
     productsExpanded = true;
     knowledgeExpanded = false;
     newsExpanded = false;
     searchValue: string = '';
+
+    // Auth state
+    isLoggedIn = false;
+    isAdmin = false;
+    username = '';
 
     toggleSearch() {
         this.isSearchExpanded = !this.isSearchExpanded;
@@ -291,7 +319,43 @@ export class AppTopbar {
         console.log('Added to cart:', product.name);
     }
 
-    constructor(public router: Router, public cartService: CartService) { }
+    constructor(public router: Router, public cartService: CartService, private authService: AuthService) { }
+
+    ngOnInit() {
+        this.checkAuthStatus();
+    }
+
+    checkAuthStatus() {
+        const authData = this.authService.getDataAuthLocalStorage();
+        if (authData && authData.username) {
+            this.isLoggedIn = true;
+            this.username = authData.username;
+            this.isAdmin = authData.role === 'ADMIN'; // Manual check for 'hoatv' as admin for now if needed, or just role
+        }
+    }
+
+    onLoginSuccess(userData: any) {
+        this.isLoggedIn = true;
+        this.username = userData.username;
+        this.isAdmin = userData.role === 'ADMIN';
+    }
+
+    toggleUserMenu() {
+        this.isUserMenuVisible = !this.isUserMenuVisible;
+    }
+
+    navigateToAdmin() {
+        this.isUserMenuVisible = false;
+        this.router.navigate(['/admin']);
+    }
+
+    logout() {
+        localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
+        this.isLoggedIn = false;
+        this.username = '';
+        this.isUserMenuVisible = false;
+        this.router.navigate(['/']);
+    }
 
     @HostListener('window:resize')
     onResize() {

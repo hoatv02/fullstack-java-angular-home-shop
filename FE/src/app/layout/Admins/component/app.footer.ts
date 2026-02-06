@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
     standalone: true,
     selector: 'app-footer',
     template: `<div class="layout-footer">
-         Copyright 2025. Savyint Inc. All Rights Reserved
+         Copyright 2025. HomeShop Inc. All Rights Reserved
     </div>`
 })
 export class AppFooter { }

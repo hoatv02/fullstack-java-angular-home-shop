@@ -35,7 +35,6 @@
 import { Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { DetailsComponent } from './admin/detail/detail.component';
-import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { PermissonRoleComponent } from './permisson-role/permisson-role.component';
 import { PermissionRoleDetailComponent } from './permisson-role/permission-role-detail/permission-role-detail.component';
 
@@ -58,11 +57,6 @@ export default [
         component: DetailsComponent,
     },
 
-    // ACTIVITY LOG
-    {
-        path: 'activity-log',
-        component: ActivityLogComponent,
-    },
 
     // ROLE
     {

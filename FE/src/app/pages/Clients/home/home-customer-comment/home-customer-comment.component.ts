@@ -8,9 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './home-customer-comment.component.scss'
 })
 export class HomeCustomerCommentComponent {
-  // Policy Data
   currentTestimonialIndex = 0;
-  // Testimonial Data & Logic
   testimonials = [
     {
       stars: 5,
