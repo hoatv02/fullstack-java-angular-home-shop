@@ -20,24 +20,21 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // Lấy token từ header
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
+            throw new AppException(ErrorCode.INVALID_TOKEN);
         }
 
         String token = authHeader.substring(7);
 
         try {
-            // Validate token
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            // Lưu thông tin user vào request attribute để dùng trong controller
             request.setAttribute("userId", claims.getSubject());
 
             return true;
